@@ -121,3 +121,14 @@ class ClothUpdateAPIView(mixins.UpdateModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(None)
+
+
+class ClothFilteredViewSet(mixins.ListModelMixin,
+                           GenericViewSet):
+    serializer_class = ClothDetailSerializer
+    pagination_class = PostPageNumberPagination
+    
+    def get_queryset(self):
+        user = self.kwargs['userId']
+        return Cloth.objects.filter(userId=user)
+    

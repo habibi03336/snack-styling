@@ -16,4 +16,7 @@ urlpatterns = [
         'patch': 'update',
         # 'delete': 'destroy',
     })),
+    path('user/<int:userId>/', views.ClothFilteredViewSet.as_view({
+        'get': 'list'
+    }))
 ]
