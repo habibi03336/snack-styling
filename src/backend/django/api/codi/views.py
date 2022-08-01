@@ -1,0 +1,87 @@
+from collections import OrderedDict
+
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
+
+import api.codi.schemas as exampleSchema
+from api.codi.serializers import CodiSerializer, CodiCreateSerializer, CodiListSerializer
+
+from model.codimodel.models import Codi
+
+from drf_spectacular.utils import extend_schema
+
+
+class CodiListPagination(PageNumberPagination):
+    page_size = 10
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('codiList', data),
+            ('pageCnt', self.page.paginator.num_pages),
+            ('curPage', self.page.number),
+        ]))
+
+    def get_paginated_response_schema(self, schema):
+        return {
+            'type': 'object',
+            'properties': {
+                'codiList': schema,
+                'pageCnt': {
+                    'type': 'integer',
+                    'example': 12,
+                },
+                'curPage': {
+                    'type': 'integer',
+                    'example': 1,
+                }
+            }
+        }
+
+
+class CodiViewSet(mixins.CreateModelMixin,
+                  mixins.ListModelMixin,
+                  GenericViewSet):
+    queryset = Codi.objects.all()
+    serializer_class = CodiSerializer
+    pagination_class = CodiListPagination
+
+    @extend_schema(
+        summary="옷 조합 등록",
+        responses=CodiCreateSerializer,
+        examples=[exampleSchema.CODI_CREATE_RESPONSE_EXAMPLE]
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="옷 조합 목록 출력",
+        responses={200: CodiListSerializer},
+        examples=[exampleSchema.CODI_LIST_EXAMPLE]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action') == False:
+            return self.serializer_class
+
+        if self.action == 'create':
+            return CodiCreateSerializer
+        if self.action == 'list':
+            return CodiListSerializer
+        return self.serializer_class
+
+
+class CodiRetrieveViewSet(mixins.RetrieveModelMixin,
+                          GenericViewSet):
+    queryset = Codi.objects.all()
+    serializer_class = CodiSerializer
+
+    @extend_schema(
+        summary="옷 조합 단일출력",        
+        examples=[exampleSchema.CODI_RETRIEVE_EXAMPLE]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
