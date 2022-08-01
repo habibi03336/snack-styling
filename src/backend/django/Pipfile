@@ -6,9 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
-rembg = {extras = ["gpu"], version = "*"}
+rembg = "*"
 pillow = "*"
-onnxruntime-gpu = "*"
+onnxruntime = "*"
 
 [dev-packages]
 autopep8 = "*"
