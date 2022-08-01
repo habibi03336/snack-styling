@@ -5,19 +5,25 @@ ENV PYTHONUNBUFFERED=1
 
 VOLUME [ "./src" ]
 
-RUN pip install pipenv
 RUN apt-get update && apt-get install -y --no-install-recommends gcc
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN pip install —no-cache-dir pipenv gdown
 
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 
-COPY . .
-# RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --system --deploy
+COPY ./Pipfile .
+COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
-RUN python manage.py migrate
+RUN mkdir -p ~/.u2net
+RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
+
+
+COPY . .
 
 EXPOSE 8000
 
+CMD ["python", "manage.py", "migrate"]
 ENTRYPOINT ["python","manage.py", "runserver","0.0.0.0:8000"]
