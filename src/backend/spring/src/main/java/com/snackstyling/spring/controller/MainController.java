@@ -1,6 +1,7 @@
 package com.snackstyling.spring.controller;
 
 import com.snackstyling.spring.domain.Login;
+import com.snackstyling.spring.domain.Member;
 import com.snackstyling.spring.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,16 @@ public class MainController {
         loginService.joinUser(new Login(email,encPwd));
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(value="/user/information", method = RequestMethod.POST)
+    public ResponseEntity information(@RequestBody Map<String, Object> req){
+        String nickname=req.get("nickname").toString();
+        int gender=(int)req.get("gender");
+        int age=(int)req.get("age");
+        int weight=(int)req.get("weight");
+        int height=(int)req.get("height");
+        loginService.insertInf(new Member(nickname,gender,age,weight,height));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
