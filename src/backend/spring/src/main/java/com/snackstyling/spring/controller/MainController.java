@@ -31,18 +31,14 @@ public class MainController {
 
     @RequestMapping(value="/user/information", method = RequestMethod.POST)
     public ResponseEntity information(@RequestBody Map<String, Object> req){
-        System.out.println(req.get("age"));
-
         Member user=new Member();
         user.setLogin(loginService.selectLogin(Long.parseLong(req.get("id").toString())));
-        System.out.println(user.getLogin().getEmail());
         user.setAge((Integer) req.get("age"));
         user.setNickname(req.get("nickname").toString());
         user.setGender((Integer) req.get("gender"));
         user.setWeight((Integer) req.get("weight"));
         user.setHeight((Integer) req.get("height"));
         loginService.insertInf(user);
-
         return new ResponseEntity(HttpStatus.OK);
     }
 
