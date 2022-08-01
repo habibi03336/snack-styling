@@ -25,13 +25,4 @@ public class Member {
     private Integer age;
     private Integer weight;
     private Integer height;
-
-
-    public Member(String nickname, Integer gender, Integer age, Integer weight, Integer height) {
-        this.nickname=nickname;
-        this.gender=gender;
-        this.age=age;
-        this.weight=weight;
-        this.height=height;
-    }
 }

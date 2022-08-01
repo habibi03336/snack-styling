@@ -18,9 +18,4 @@ public class Login {
     private String email;
     private String password;
     private int used;
-    public Login(String email, String password) {
-        this.email=email;
-        this.password=password;
-        this.used=1;
-    }
 }

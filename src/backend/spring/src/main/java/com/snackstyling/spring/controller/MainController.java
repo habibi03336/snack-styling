@@ -21,20 +21,28 @@ public class MainController {
 
     @RequestMapping(value="/oauth/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody Map<String, Object> req){
-        String email=req.get("email").toString();
-        String encPwd=passwordEncoder.encode(req.get("password").toString());
-        loginService.joinUser(new Login(email,encPwd));
+        Login user=new Login();
+        user.setEmail(req.get("email").toString());
+        user.setPassword(passwordEncoder.encode(req.get("password").toString()));
+        user.setUsed(1);
+        loginService.joinUser(user);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value="/user/information", method = RequestMethod.POST)
     public ResponseEntity information(@RequestBody Map<String, Object> req){
-        String nickname=req.get("nickname").toString();
-        int gender=(int)req.get("gender");
-        int age=(int)req.get("age");
-        int weight=(int)req.get("weight");
-        int height=(int)req.get("height");
-        loginService.insertInf(new Member(nickname,gender,age,weight,height));
+        System.out.println(req.get("age"));
+
+        Member user=new Member();
+        user.setLogin(loginService.selectLogin(Long.parseLong(req.get("id").toString())));
+        System.out.println(user.getLogin().getEmail());
+        user.setAge((Integer) req.get("age"));
+        user.setNickname(req.get("nickname").toString());
+        user.setGender((Integer) req.get("gender"));
+        user.setWeight((Integer) req.get("weight"));
+        user.setHeight((Integer) req.get("height"));
+        loginService.insertInf(user);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
