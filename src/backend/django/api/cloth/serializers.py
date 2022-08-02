@@ -50,6 +50,10 @@ class ClothCreateSerializer(serializers.ModelSerializer):
 
         return super().create(validated_data)
 
+class ClothUserCreateSerializer(ClothCreateSerializer):
+    class Meta:
+        model = Cloth
+        fields = ['id', 'userId', 'image']
 
 class ClothRetrieveUpdateSerializer(serializers.ModelSerializer):
     class Meta:

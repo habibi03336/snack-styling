@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.pagination import PageNumberPagination
 
-from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
+from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
 
 from model.clothmodel.models import Cloth
 
@@ -121,3 +121,28 @@ class ClothUpdateAPIView(mixins.UpdateModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(None)
+
+
+class ClothFilteredViewSet(mixins.ListModelMixin,
+                           mixins.CreateModelMixin,
+                           GenericViewSet):
+    serializer_class = ClothSerializer
+    pagination_class = PostPageNumberPagination
+    
+    def get_queryset(self):
+        user = self.kwargs['userId']
+        return Cloth.objects.filter(userId=user)
+    
+    def create(self, request, *args, **kwargs):
+        request.data['userId'] = self.kwargs['userId']
+        return super().create(request, *args, **kwargs)
+    
+    def get_serializer_class(self):
+        if hasattr(self, 'action') == False:
+            return self.serializer_class
+
+        if self.action == 'create':
+            return ClothUserCreateSerializer
+        if self.action == 'list':
+            return ClothDetailSerializer
+        return self.serializer_class
