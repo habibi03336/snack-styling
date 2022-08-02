@@ -4,19 +4,18 @@ import com.snackstyling.spring.domain.Login;
 import com.snackstyling.spring.domain.Member;
 import com.snackstyling.spring.service.LoginService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
 
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class MainController {
+@CrossOrigin("*")
+public class LoginController {
     private final LoginService loginService;
     @Autowired
     private PasswordEncoder passwordEncoder;
