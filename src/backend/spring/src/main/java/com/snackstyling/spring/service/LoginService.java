@@ -23,9 +23,10 @@ public class LoginService {
     public Login selectLogin(Long id){
         return loginRepository.findById(id).orElse(null);
     }
-    public Login loginUser(String email){
-        return loginRepository.findByEmail(email);
+    public Member selectMember(Long id){
+        return memberRepository.findById(id).orElse(null);
     }
+    public Login loginUser(String email){ return loginRepository.findByEmail(email); }
     public void insertInf(Member member){
         memberRepository.save(member);
     }
