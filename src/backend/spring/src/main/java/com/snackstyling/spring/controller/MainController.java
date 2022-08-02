@@ -4,11 +4,13 @@ import com.snackstyling.spring.domain.Login;
 import com.snackstyling.spring.domain.Member;
 import com.snackstyling.spring.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Map;
 
@@ -41,5 +43,16 @@ public class MainController {
         loginService.insertInf(user);
         return new ResponseEntity(HttpStatus.OK);
     }
-
+    @RequestMapping(value="/oauth/login", method = RequestMethod.POST)
+    public ResponseEntity userLogin(@RequestBody Map<String, Object> req){
+        try{
+            Login user = loginService.loginUser(req.get("email").toString());
+            if(passwordEncoder.matches(req.get("pwd").toString(),user.getPassword())){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }
