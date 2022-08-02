@@ -132,7 +132,10 @@ class ClothFilteredViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         user = self.kwargs['userId']
         return Cloth.objects.filter(userId=user)
-    
+    @extend_schema(
+        summary="userId 기반 옷 이미지 등록",
+        request=ClothCreateSerializer,
+    )
     def create(self, request, *args, **kwargs):
         request.data['userId'] = self.kwargs['userId']
         return super().create(request, *args, **kwargs)
