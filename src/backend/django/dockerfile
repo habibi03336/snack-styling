@@ -22,9 +22,7 @@ RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/
 
 
 COPY . .
-RUN mkdir src
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "migrate"]
 ENTRYPOINT ["sh","entrypoint.sh"]
