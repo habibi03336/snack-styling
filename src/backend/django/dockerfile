@@ -3,25 +3,28 @@ FROM python:3.9
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-VOLUME [ "./src" ]
-
+# init image
 RUN apt-get update && apt-get install -y --no-install-recommends gcc
 RUN apt-get install ffmpeg libsm6 libxext6  -y
-RUN pip install —no-cache-dir pipenv gdown
+RUN pip install pipenv gdown
 
+# Download deeplearning model
+RUN mkdir -p ~/.u2net
+RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
+
+# User change
 RUN useradd --create-home appuser
-WORKDIR /home/appuser
 USER appuser
+WORKDIR /home/appuser
 
+# Copy data
 COPY ./Pipfile .
 COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
-RUN mkdir -p ~/.u2net
-RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
-
-
 COPY . .
+
+VOLUME [ "./src" ]
 
 EXPOSE 8000
 
