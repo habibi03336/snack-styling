@@ -2,6 +2,7 @@ package com.snackstyling.spring.service;
 
 import com.snackstyling.spring.domain.Login;
 import com.snackstyling.spring.domain.Member;
+import com.snackstyling.spring.domain.Question;
 import com.snackstyling.spring.repository.LoginRepository;
 import com.snackstyling.spring.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

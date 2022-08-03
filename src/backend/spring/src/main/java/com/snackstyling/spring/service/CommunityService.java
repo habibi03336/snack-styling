@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +28,8 @@ public class CommunityService {
     public Page<Question> loadQuestion(Integer page){
         Pageable pageable = PageRequest.of(page,2, Sort.by("postDate").descending());
         return questionRepository.findAll(pageable);
+    }
+    public List<Answer> detailQuestion(Question question){
+        return answerRepository.findByQuestion(question);
     }
 }

@@ -73,4 +73,32 @@ public class CommunityController {
         }
         return ja.toString();
     }
+    @RequestMapping(value="/board/detail", method = RequestMethod.GET)
+    public String detailBoard(@RequestParam("id") Long id){
+        Question question=communityService.selectQuestion(id);
+        JsonObject total=new JsonObject();
+        JsonObject que=new JsonObject();
+        que.addProperty("id",question.getId());
+        que.addProperty("id",question.getMember().getWeight());
+        que.addProperty("id",question.getMember().getHeight());
+        que.addProperty("id",question.getPostDate().toString());
+        que.addProperty("id",question.getEndDate().toString());
+        que.addProperty("id",question.getTpo());
+        que.addProperty("id",question.getComments());
+        total.addProperty("que",que.toString());
+
+        JsonArray ans=new JsonArray();
+        List<Answer> answer=communityService.detailQuestion(question);
+        for(Answer temp : answer){
+            JsonObject obj = new JsonObject();
+            obj.addProperty("nickname",temp.getMember().getNickname());
+            // 랭크는 좀있다가 추가
+            // API 호출 필요 이 때 codi id를 넘겨주면 된다
+            obj.addProperty("height",temp.getMember().getHeight());
+            obj.addProperty("comments",temp.getComments());
+            ans.add(obj);
+        }
+        total.addProperty("ans",ans.toString());
+        return total.toString();
+    }
 }
