@@ -1,16 +1,17 @@
 from collections import OrderedDict
 
 from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.pagination import PageNumberPagination
 
-import api.codi.schemas as exampleSchema
+from drf_spectacular.utils import extend_schema
+
 from api.codi.serializers import CodiSerializer, CodiCreateSerializer, CodiListSerializer
 
 from model.codimodel.models import Codi
 
-from drf_spectacular.utils import extend_schema
+import api.codi.schemas as exampleSchema
 
 
 class CodiListPagination(PageNumberPagination):
@@ -49,6 +50,7 @@ class CodiViewSet(mixins.CreateModelMixin,
 
     @extend_schema(
         summary="옷 조합 등록",
+        tags=["Codi"],
         responses=CodiCreateSerializer,
         examples=[exampleSchema.CODI_CREATE_RESPONSE_EXAMPLE]
     )
@@ -57,7 +59,8 @@ class CodiViewSet(mixins.CreateModelMixin,
 
     @extend_schema(
         summary="옷 조합 목록 출력",
-        responses={200: CodiListSerializer},
+        tags=["Codi"],
+        responses=CodiListSerializer,
         examples=[exampleSchema.CODI_LIST_EXAMPLE]
     )
     def list(self, request, *args, **kwargs):
@@ -80,7 +83,8 @@ class CodiRetrieveViewSet(mixins.RetrieveModelMixin,
     serializer_class = CodiSerializer
 
     @extend_schema(
-        summary="옷 조합 단일출력",        
+        summary="옷 조합 단일출력",
+        tags=["Codi"],
         examples=[exampleSchema.CODI_RETRIEVE_EXAMPLE]
     )
     def retrieve(self, request, *args, **kwargs):
