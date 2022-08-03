@@ -11,7 +11,7 @@ class CodiSerializer(serializers.ModelSerializer):
 class CodiCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        exclude = ['userId']
+        exclude = ('userId',)
     
     def to_representation(self, instance):
         data = super().to_representation(instance)

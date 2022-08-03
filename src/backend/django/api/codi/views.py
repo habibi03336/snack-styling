@@ -113,7 +113,7 @@ class CodiUserViewSet(mixins.CreateModelMixin,
     @extend_schema(
         summary="userId 기반 코디 등록",
         tags=["Codi"],
-        responses=CodiCreateSerializer,
+        request=CodiCreateSerializer,
         examples=[exampleSchema.CODI_CREATE_RESPONSE_EXAMPLE],
     )
     def create(self, request, *args, **kwargs):
