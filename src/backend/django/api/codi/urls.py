@@ -10,5 +10,9 @@ urlpatterns = [
     })),
     path('<int:pk>/', views.CodiRetrieveViewSet.as_view({
         'get': 'retrieve',
+    })),
+    path('user/<int:userId>/', views.CodiUserViewSet.as_view({
+        'get':'list',
+        'post':'create',
     }))
 ]
