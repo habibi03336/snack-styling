@@ -2,7 +2,9 @@ package com.snackstyling.spring.controller;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.snackstyling.spring.domain.Answer;
 import com.snackstyling.spring.domain.Question;
+import com.snackstyling.spring.dto.Coordination;
 import com.snackstyling.spring.service.CommunityService;
 import com.snackstyling.spring.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +38,21 @@ public class CommunityController {
         System.out.println(question.getPostDate());
         System.out.println(question.getEndDate());
         communityService.postQuestion(question);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @RequestMapping(value="/board/answer", method = RequestMethod.POST)
+    public ResponseEntity ansPost(@RequestBody Map<String, Object> req){
+        Answer answer= new Answer();
+        answer.setMember(loginService.selectMember(Long.parseLong(req.get("mid").toString())));
+        answer.setQuestion(communityService.selectQuestion(Long.parseLong(req.get("qid").toString())));;
+        answer.setPostDate(LocalDateTime.now());
+        answer.setComments(req.get("comments").toString());
+        //codi는 django server에 있으므로 조회해야함
+        RestTemplate restTemplate=new RestTemplate();
+        String url="민수주소";
+        ResponseEntity<Coordination> result=restTemplate.postForEntity(url,req,Coordination.class);
+        answer.setCodi(result.getBody().getId());
+        communityService.postAnswer(answer);
         return new ResponseEntity(HttpStatus.OK);
     }
     @RequestMapping(value="/board/load", method = RequestMethod.GET)
