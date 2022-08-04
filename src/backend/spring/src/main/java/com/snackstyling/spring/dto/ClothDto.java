@@ -5,6 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Coordination {
+public class ClothDto {
     private int id;
+    private String top;
+    private String bottom;
 }
