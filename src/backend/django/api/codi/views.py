@@ -80,7 +80,7 @@ class CodiViewSet(mixins.CreateModelMixin,
 class CodiRetrieveViewSet(mixins.RetrieveModelMixin,
                           GenericViewSet):
     queryset = Codi.objects.all()
-    serializer_class = CodiSerializer
+    serializer_class = CodiListSerializer
 
     @extend_schema(
         summary="옷 조합 단일출력",
