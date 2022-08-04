@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.snackstyling.spring.domain.Answer;
 import com.snackstyling.spring.domain.Question;
 import com.snackstyling.spring.dto.Coordination;
+import com.snackstyling.spring.dto.UrlCorrdination;
 import com.snackstyling.spring.service.CommunityService;
 import com.snackstyling.spring.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +51,11 @@ public class CommunityController {
         answer.setComments(req.get("comments").toString());
         //codi는 django server에 있으므로 조회해야함
         RestTemplate restTemplate=new RestTemplate();
-        String url="민수주소";
-        ResponseEntity<Coordination> result=restTemplate.postForEntity(url,req,Coordination.class);
+        Map<String, Integer> codi=new HashMap<>();
+        codi.put("top",(Integer) req.get("top"));
+        codi.put("bottom",(Integer) req.get("bottom"));
+        String url="http://localhost:4000/api/codi/";
+        ResponseEntity<Coordination> result=restTemplate.postForEntity(url,codi,Coordination.class);
         answer.setCodi(result.getBody().getId());
         communityService.postAnswer(answer);
         return new ResponseEntity(HttpStatus.OK);
@@ -76,29 +81,37 @@ public class CommunityController {
     @RequestMapping(value="/board/detail", method = RequestMethod.GET)
     public String detailBoard(@RequestParam("id") Long id){
         Question question=communityService.selectQuestion(id);
-        JsonObject total=new JsonObject();
+        Map<String, Object> total = new HashMap<>();
         JsonObject que=new JsonObject();
         que.addProperty("id",question.getId());
-        que.addProperty("id",question.getMember().getWeight());
-        que.addProperty("id",question.getMember().getHeight());
-        que.addProperty("id",question.getPostDate().toString());
-        que.addProperty("id",question.getEndDate().toString());
-        que.addProperty("id",question.getTpo());
-        que.addProperty("id",question.getComments());
-        total.addProperty("que",que.toString());
+        que.addProperty("weight",question.getMember().getWeight());
+        que.addProperty("height",question.getMember().getHeight());
+        que.addProperty("postDate",question.getPostDate().toString());
+        que.addProperty("endDate",question.getEndDate().toString());
+        que.addProperty("tpo",question.getTpo());
+        que.addProperty("comments",question.getComments());
+        total.put("que",que.toString());
 
         JsonArray ans=new JsonArray();
         List<Answer> answer=communityService.detailQuestion(question);
+        RestTemplate restTemplate=new RestTemplate();
+        /*
+        String urll="http://localhost:4000/api/codi/";
+        ResponseEntity<Map> result=restTemplate.getForEntity(urll,Map.class);
+        System.out.println(result.getBody().get("codiList"));
+        */
         for(Answer temp : answer){
             JsonObject obj = new JsonObject();
             obj.addProperty("nickname",temp.getMember().getNickname());
-            // 랭크는 좀있다가 추가
-            // API 호출 필요 이 때 codi id를 넘겨주면 된다
+            String url="http://localhost:4000/api/codi/"+temp.getCodi().toString()+"/";
+            ResponseEntity<UrlCorrdination> result=restTemplate.getForEntity(url, UrlCorrdination.class);
+            obj.addProperty("top",result.getBody().getTop());
+            obj.addProperty("bottom",result.getBody().getBottom());
             obj.addProperty("height",temp.getMember().getHeight());
             obj.addProperty("comments",temp.getComments());
             ans.add(obj);
         }
-        total.addProperty("ans",ans.toString());
+        total.put("ans",ans.toString());
         return total.toString();
     }
 }
