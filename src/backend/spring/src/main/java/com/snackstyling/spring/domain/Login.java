@@ -1,5 +1,6 @@
 package com.snackstyling.spring.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
