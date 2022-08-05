@@ -1,0 +1,17 @@
+.position-div {
+    position: relative;
+    height: 0px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.board-img{
+    width: fit-content;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
