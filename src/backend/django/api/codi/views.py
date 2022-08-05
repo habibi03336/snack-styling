@@ -48,6 +48,13 @@ class CodiViewSet(mixins.CreateModelMixin,
     serializer_class = CodiSerializer
     pagination_class = CodiListPagination
 
+    def get_serializer_context(self):
+        return {
+            'request': None,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
     @extend_schema(
         summary="코디 등록",
         tags=["Codi"],
@@ -82,6 +89,13 @@ class CodiRetrieveViewSet(mixins.RetrieveModelMixin,
     queryset = Codi.objects.all()
     serializer_class = CodiListSerializer
 
+    def get_serializer_context(self):
+        return {
+            'request': None,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
     @extend_schema(
         summary="코디 상세정보 출력",
         tags=["Codi"],
@@ -96,6 +110,13 @@ class CodiUserViewSet(mixins.CreateModelMixin,
                       GenericViewSet):
     serializer_class = CodiSerializer
     pagination_class = CodiListPagination
+
+    def get_serializer_context(self):
+        return {
+            'request': None,
+            'format': self.format_kwarg,
+            'view': self
+        }
 
     def get_queryset(self):
         user = self.kwargs['userId']
