@@ -53,7 +53,7 @@ public class CommunityController {
         Map<String, Integer> codi=new HashMap<>();
         codi.put("top",answerDto.getTop());
         codi.put("bottom",answerDto.getBottom());
-        String url="http://localhost:4000/api/codi/";
+        String url="http://backend-django:8000/api/codi/";
         ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
         answer.setCodi(result.getBody().getId());
         communityService.postAnswer(answer);
@@ -104,11 +104,12 @@ public class CommunityController {
         for(Answer temp : answer){
             AnswerListDto obj=new AnswerListDto();
             obj.setNickname(temp.getMember().getNickname());
-            String url="http://localhost:4000/api/codi/"+temp.getCodi().toString()+"/";
+            String url="http://backend-django:8000/api/codi/"+temp.getCodi().toString()+"/";
             ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
             obj.setTop(result.getBody().getTop());
             obj.setBottom(result.getBody().getBottom());
             obj.setComments(temp.getComments());
+            System.out.println(result.getBody().getTop());
             ans.add(obj);
         }
         questionDetail.setAns(ans);

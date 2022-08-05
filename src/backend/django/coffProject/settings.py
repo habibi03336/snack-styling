@@ -175,13 +175,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://192.168.238.99:3000',   
+    'http://*:*',   
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://192.168.238.99:3000',
+    'http://*:*',
 ]
 
 CSRF_TRUSTED_ORIGINS = (
-    'http://192.168.238.99:3000',
+    'http://*:*',
 )
