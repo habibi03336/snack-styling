@@ -30,11 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
-    'api.cloth.apps.ClothApiConfig',
-    'api.tag.apps.TagApiConfig',
-    'api.codi.apps.CodiApiConfig',
-    
+INSTALLED_APPS = [    
     'model.clothmodel.apps.ClothModelConfig',
     'model.tagmodel.apps.TagModelConfig',
     'model.codimodel.apps.CodiModelConfig',
