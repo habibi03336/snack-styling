@@ -1,12 +1,11 @@
-from collections import OrderedDict
-
 from rest_framework import mixins
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.pagination import PageNumberPagination
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
+from api.cloth.paginations import ClothPagePagination
 from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
 
 from model.clothmodel.models import Cloth
@@ -14,97 +13,66 @@ from model.clothmodel.models import Cloth
 import api.cloth.schemas as exampleSchema
 
 
-class PostPageNumberPagination(PageNumberPagination):
-    page_size = 100
-
-    def get_paginated_response(self, data):
-        return Response(OrderedDict([
-            ('clothList', data),
-            ('pageCnt', self.page.paginator.num_pages),
-            ('curPage', self.page.number),
-        ]))
-
-    def get_paginated_response_schema(self, schema):
-        return {
-            'type': 'object',
-            'properties': {
-                'clothList': schema,
-                'pageCnt': {
-                    'type': 'integer',
-                    'example': 12,
-                },
-                'curPage': {
-                    'type': 'integer',
-                    'example': 1,
-                }
-            }
-
-        }
-
-class ClothViewSet(mixins.CreateModelMixin,
-                   mixins.ListModelMixin,
-                   GenericViewSet):
-    queryset = Cloth.objects.all()
-    serializer_class = ClothSerializer
-    pagination_class = PostPageNumberPagination
-
-    @extend_schema(
+@extend_schema_view(
+    create=extend_schema(
         summary="옷 이미지 등록",
         tags=["Cloth"],
-    )
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-    @extend_schema(
+    ),
+    retrieve=extend_schema(
+        summary="옷 상세정보 출력",
+        tags=["Cloth"],
+    ),
+    partial_update=extend_schema(
+        summary="개별 옷 정보 업데이트",
+        tags=["Cloth"],
+    ),
+    list=extend_schema(
         summary="모든 옷 리스트를 출력",
         tags=["Cloth"],
         responses=ClothDetailSerializer,
-        examples=[exampleSchema.CLOTH_LIST_EXAMPLE],
     )
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+)
+class ClothViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+    queryset = Cloth.objects.all()
+    pagination_class = ClothPagePagination
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
-            return self.serializer_class
+            return ClothSerializer
 
         if self.action == 'create':
             return ClothCreateSerializer
-        if self.action == 'list':
-            return ClothDetailSerializer
-        return self.serializer_class
-
-
-class ClothRetrieveViewSet(mixins.RetrieveModelMixin,
-                           mixins.UpdateModelMixin,
-                        #    mixins.DestroyModelMixin,
-                           GenericViewSet):
-    queryset = Cloth.objects.all()
-    serializer_class = ClothSerializer
-    
-    @extend_schema(
-        summary="옷 상세정보 출력",
-        tags=["Cloth"],
-    )
-    def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
-    
-    @extend_schema(
-        summary="개별 옷 정보 업데이트",
-        tags=["Cloth"],
-    )
-    def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
-
-    def get_serializer_class(self):
-        if hasattr(self, 'action') == False:
-            return self.serializer_class
-
-        if self.action == 'update':
+        if self.action == 'partial_update':
             return ClothRetrieveUpdateSerializer
         if self.action == 'retrieve':
             return ClothDetailSerializer
-        return self.serializer_class
+        if self.action == 'list':
+            return ClothDetailSerializer
+        if self.action == 'multiple_tag_update':
+            return ClothTagSerializer
+        return ClothSerializer
+
+    @extend_schema(
+        summary="여러 옷 세부정보 업데이트",
+        tags=["Cloth"],
+        request=ClothTagSerializer(many=True),
+        responses=None
+    )
+    @action(detail=False, methods=['patch'], url_path="multi-update")
+    def multiple_tag_update(self, request, *args, **kwargs):
+        print("Cloth: Partial update RUN")
+        requestData = request.data["clothes"]
+        serializer = self.get_serializer(many=True, data=requestData, **kwargs)
+        serializer.is_valid(raise_exception=True)
+        id_list = serializer.get_id_list(requestData)
+        instance = self.get_queryset().filter(id__in=id_list)
+        serializer.instance = instance
+        serializer.save()
+        return Response(None)
 
 
 class ClothUpdateAPIView(mixins.UpdateModelMixin,
@@ -115,8 +83,8 @@ class ClothUpdateAPIView(mixins.UpdateModelMixin,
     @extend_schema(
         summary="여러 옷 세부정보 업데이트",
         tags=["Cloth"],
-        examples=[exampleSchema.CLOTH_TAG_UPDATE_QUERY_EXAMPLE],
-        responses={200: {}}
+        request=ClothTagSerializer(many=True),
+        responses=None
     )
     def update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
@@ -131,34 +99,28 @@ class ClothUpdateAPIView(mixins.UpdateModelMixin,
         return Response(None)
 
 
-class ClothFilteredViewSet(mixins.ListModelMixin,
-                           mixins.CreateModelMixin,
-                           GenericViewSet):
-    serializer_class = ClothSerializer
-    pagination_class = PostPageNumberPagination
-    
-    def get_queryset(self):
-        user = self.kwargs['userId']
-        return Cloth.objects.filter(userId=user)
-    
-    @extend_schema(
-        summary="userId 기반 옷 리스트 출력",
-        tags=["Cloth"],
-        responses=ClothDetailSerializer,
-        examples=[exampleSchema.CLOTH_LIST_EXAMPLE],
-    )    
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-    
-    @extend_schema(
+@extend_schema_view(
+    create=extend_schema(
         summary="userId 기반 옷 이미지 등록",
         tags=["Cloth"],
         request=ClothCreateSerializer,
+    ),
+    list=extend_schema(
+        summary="userId 기반 옷 리스트 출력",
+        tags=["Cloth"],
     )
-    def create(self, request, *args, **kwargs):
-        request.data['userId'] = self.kwargs['userId']
-        return super().create(request, *args, **kwargs)
-    
+)
+class ClothUserViewSet(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       GenericViewSet):
+    queryset = Cloth.objects.all()
+    serializer_class = ClothSerializer
+    pagination_class = ClothPagePagination
+
+    def get_queryset(self):
+        user = self.kwargs['userId']
+        return Cloth.objects.filter(userId=user)
+
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
             return self.serializer_class
@@ -168,3 +130,7 @@ class ClothFilteredViewSet(mixins.ListModelMixin,
         if self.action == 'list':
             return ClothDetailSerializer
         return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        request.data['userId'] = self.kwargs['userId']
+        return super().create(request, *args, **kwargs)

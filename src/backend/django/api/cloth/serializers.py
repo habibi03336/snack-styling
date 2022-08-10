@@ -12,15 +12,24 @@ from io import BytesIO
 from rembg import remove
 
 
-def removebg(raw_img):
-    max_value = max(raw_img.width, raw_img.height)
-    div = max_value // 1000
-    if div == 0:
-        div = 1
-    img_resize = raw_img.resize(
-        (int(raw_img.width/div), int(raw_img.height/div)))
-    result_img = remove(img_resize)
-    return result_img
+def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
+    pil_img = Image.open(raw_img).convert('RGBA')
+    
+    max_value = max(pil_img.width, pil_img.height)
+    div_value = max(max_value // 1000, 1)
+    resize_img = pil_img.resize((
+        int(pil_img.width/div_value),
+        int(pil_img.height/div_value),
+    ))
+    new_img = remove(resize_img)
+    print(new_img)
+
+    new_img_io = BytesIO()
+    new_img.save(new_img_io, format='PNG')
+    result = InMemoryUploadedFile(
+        new_img_io, 'ImageField', raw_img.name, 'image/png', new_img_io.getbuffer().nbytes, raw_img.charset
+    )
+    return result
 
 
 class ClothSerializer(serializers.ModelSerializer):
@@ -35,31 +44,21 @@ class ClothCreateSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
     def create(self, validated_data):
-        raw_img = validated_data['image']
-        pil_img_obj = Image.open(validated_data['image']).convert('RGBA')
-        new_img = removebg(pil_img_obj)
-        print(type(new_img))
-
-        new_img_io = BytesIO()
-        new_img.save(new_img_io, format='PNG')
-        print
-        result = InMemoryUploadedFile(new_img_io, 'ImageField', raw_img.name,
-                                      'image/png', new_img_io.getbuffer().nbytes, raw_img.charset)
-
+        result = removeBackground(validated_data['image'])
         validated_data['image'] = result
-
         return super().create(validated_data)
+
 
 class ClothUserCreateSerializer(ClothCreateSerializer):
     class Meta:
         model = Cloth
         fields = ['id', 'userId', 'image']
 
+
 class ClothRetrieveUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cloth
-        # fields = '__all__'
-        exclude = ('id', 'create_dt',)
+        fields = ['tags']
 
 
 class ClothDetailSerializer(serializers.ModelSerializer):
@@ -82,16 +81,26 @@ class ClothListSerializer(serializers.ListSerializer):
     def update(self, instance, validated_data):
         # print(instance)
         # print(validated_data)
-        cloth_mapping = {cloth.id: cloth for cloth in instance}
-        data_mapping = {item['id']: item for item in validated_data}
+        # cloth_mapping = {cloth.id: cloth for cloth in instance}
+        # data_mapping = {item['id']: item for item in validated_data}
 
-        ret = []
-        for cloth_id, data in data_mapping.items():
-            cloth = cloth_mapping.get(cloth_id, None)
-            if cloth is not None:
-                ret.append(self.child.update(cloth, data))
-        print('list', ret)
-        return ret
+        # ret = []
+        # for cloth_id, data in data_mapping.items():
+        #     cloth = cloth_mapping.get(cloth_id, None)
+        #     if cloth is not None:
+        #         ret.append(self.child.update(cloth, data))
+        # print('list', ret)
+        # return ret
+        data_mapping = {item['id']: item for item in validated_data}
+        for one in instance:
+            self.child.update(one, data_mapping[one.id])
+            
+        return instance
+    
+    def get_id_list(self, data):
+        result = {item['id'] for item in data}
+        return result
+        
 
 
 class ClothTagSerializer(serializers.Serializer):
@@ -100,10 +109,9 @@ class ClothTagSerializer(serializers.Serializer):
 
     class Meta:
         model = Cloth
-        fields = '__all__'
+        fields = ['id', 'tags']
         list_serializer_class = ClothListSerializer
 
     def update(self, instance, validated_data):
         instance.tags.set(validated_data.get('tags', instance.tags))
-        instance.save()
         return instance
