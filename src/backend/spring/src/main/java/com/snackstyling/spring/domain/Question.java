@@ -24,4 +24,5 @@ public class Question {
     private Integer tpo;
     @Column(length = 1000)
     private String comments;
+    private Integer adopt;
 }

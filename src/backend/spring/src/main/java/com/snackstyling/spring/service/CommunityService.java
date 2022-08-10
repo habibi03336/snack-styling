@@ -26,10 +26,12 @@ public class CommunityService {
         return questionRepository.findById(id).orElse(null);
     }
     public Page<Question> loadQuestion(Integer page){
-        Pageable pageable = PageRequest.of(page,2, Sort.by("postDate").descending());
+        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
         return questionRepository.findAll(pageable);
     }
     public List<Answer> detailQuestion(Question question){
         return answerRepository.findByQuestion(question);
     }
+    //Count는 롱형
+    public Long countAnswer(Question question){return answerRepository.getAnswerCount(question);}
 }

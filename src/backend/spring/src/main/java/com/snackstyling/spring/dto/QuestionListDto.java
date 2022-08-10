@@ -16,6 +16,7 @@ public class QuestionListDto {
     private Integer height;
     private LocalDate end_date;
     private LocalDateTime post_date;
-    private Integer tpo;
+    private String tpo;
     private String comments;
+    private Long ans_count;
 }
