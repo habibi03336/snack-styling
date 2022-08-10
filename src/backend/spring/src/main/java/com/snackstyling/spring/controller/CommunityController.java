@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.CodingErrorAction;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,15 +31,18 @@ public class CommunityController {
 
     @ApiOperation(value="질문 등록",notes = "<strong>질문 정보를 받아 저장한다.</strong>")
     @RequestMapping(value="/board/question", method = RequestMethod.POST)
-    public ResponseEntity quePost(@RequestBody QuestionDto questionDto) {
+    public CodiDto quePost(@RequestBody QuestionDto questionDto) {
         Question question=new Question();
         question.setMember(loginService.selectMember(questionDto.getId()));
         question.setTpo(questionDto.getTpo());
         question.setEndDate(questionDto.getEnd_date());
         question.setPostDate(LocalDateTime.now());
         question.setComments(questionDto.getComments());
+        question.setAdopt(0);
         communityService.postQuestion(question);
-        return new ResponseEntity(HttpStatus.OK);
+        CodiDto res=new CodiDto();
+        res.setId(question.getId());
+        return res;
     }
     @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
     @RequestMapping(value="/board/answer", method = RequestMethod.POST)
@@ -73,8 +77,9 @@ public class CommunityController {
             one_list.setHeight(temp.getMember().getHeight());
             one_list.setPost_date(temp.getPostDate());
             one_list.setEnd_date(temp.getEndDate());
-            one_list.setTpo(temp.getTpo());
+            one_list.setTpo(new TpoType().getTpo(temp.getTpo()));
             one_list.setComments(temp.getComments());
+            one_list.setAns_count(communityService.countAnswer(temp));
             listDto.add(one_list);
         }
         return listDto;
@@ -93,8 +98,9 @@ public class CommunityController {
         que.setHeight(question.getMember().getHeight());
         que.setPost_date(question.getPostDate());
         que.setEnd_date(question.getEndDate());
-        que.setTpo(question.getTpo());
+        que.setTpo(new TpoType().getTpo(question.getTpo()));
         que.setComments(question.getComments());
+        que.setAns_count(communityService.countAnswer(question));
         questionDetail.setQue(que);
 
         //답변
@@ -113,38 +119,6 @@ public class CommunityController {
             ans.add(obj);
         }
         questionDetail.setAns(ans);
-        /*
-        Map<String, Object> total = new HashMap<>();
-        JsonObject que=new JsonObject();
-        que.addProperty("id",question.getId());
-        que.addProperty("weight",question.getMember().getWeight());
-        que.addProperty("height",question.getMember().getHeight());
-        que.addProperty("postDate",question.getPostDate().toString());
-        que.addProperty("endDate",question.getEndDate().toString());
-        que.addProperty("tpo",question.getTpo());
-        que.addProperty("comments",question.getComments());
-        total.put("que",que.toString());
-
-        JsonArray ans=new JsonArray();
-        List<Answer> answer=communityService.detailQuestion(question);
-        RestTemplate restTemplate=new RestTemplate();
-
-        String urll="http://localhost:4000/api/codi/";
-        ResponseEntity<Map> result=restTemplate.getForEntity(urll,Map.class);
-        System.out.println(result.getBody().get("codiList"));
-
-        for(Answer temp : answer){
-            JsonObject obj = new JsonObject();
-            obj.addProperty("nickname",temp.getMember().getNickname());
-            String url="http://localhost:4000/api/codi/"+temp.getCodi().toString()+"/";
-            ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
-            obj.addProperty("top",result.getBody().getTop());
-            obj.addProperty("bottom",result.getBody().getBottom());
-            obj.addProperty("comments",temp.getComments());
-            ans.add(obj);
-        }
-        total.put("ans",ans.toString());
-        */
         return questionDetail;
     }
 }

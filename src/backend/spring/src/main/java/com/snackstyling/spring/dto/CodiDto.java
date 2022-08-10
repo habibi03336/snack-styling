@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CodiDto {
-    private int id;
+    private Long id;
 }

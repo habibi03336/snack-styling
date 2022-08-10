@@ -22,7 +22,7 @@ public class Answer {
     @JoinColumn(name="queId")
     private Question question;
     private LocalDateTime postDate;
-    private Integer codi;
+    private Long codi;
     @Column(length = 1000)
     private String comments;
 }
