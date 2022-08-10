@@ -81,16 +81,26 @@ class ClothListSerializer(serializers.ListSerializer):
     def update(self, instance, validated_data):
         # print(instance)
         # print(validated_data)
-        cloth_mapping = {cloth.id: cloth for cloth in instance}
-        data_mapping = {item['id']: item for item in validated_data}
+        # cloth_mapping = {cloth.id: cloth for cloth in instance}
+        # data_mapping = {item['id']: item for item in validated_data}
 
-        ret = []
-        for cloth_id, data in data_mapping.items():
-            cloth = cloth_mapping.get(cloth_id, None)
-            if cloth is not None:
-                ret.append(self.child.update(cloth, data))
-        print('list', ret)
-        return ret
+        # ret = []
+        # for cloth_id, data in data_mapping.items():
+        #     cloth = cloth_mapping.get(cloth_id, None)
+        #     if cloth is not None:
+        #         ret.append(self.child.update(cloth, data))
+        # print('list', ret)
+        # return ret
+        data_mapping = {item['id']: item for item in validated_data}
+        for one in instance:
+            self.child.update(one, data_mapping[one.id])
+            
+        return instance
+    
+    def get_id_list(self, data):
+        result = {item['id'] for item in data}
+        return result
+        
 
 
 class ClothTagSerializer(serializers.Serializer):
@@ -99,10 +109,9 @@ class ClothTagSerializer(serializers.Serializer):
 
     class Meta:
         model = Cloth
-        fields = '__all__'
+        fields = ['id', 'tags']
         list_serializer_class = ClothListSerializer
 
     def update(self, instance, validated_data):
         instance.tags.set(validated_data.get('tags', instance.tags))
-        instance.save()
         return instance

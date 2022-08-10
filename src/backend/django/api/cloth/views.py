@@ -1,4 +1,5 @@
 from rest_framework import mixins
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -51,7 +52,27 @@ class ClothViewSet(mixins.CreateModelMixin,
             return ClothDetailSerializer
         if self.action == 'list':
             return ClothDetailSerializer
+        if self.action == 'multiple_tag_update':
+            return ClothTagSerializer
         return ClothSerializer
+
+    @extend_schema(
+        summary="여러 옷 세부정보 업데이트",
+        tags=["Cloth"],
+        request=ClothTagSerializer(many=True),
+        responses=None
+    )
+    @action(detail=False, methods=['patch'], url_path="multi-update")
+    def multiple_tag_update(self, request, *args, **kwargs):
+        print("Cloth: Partial update RUN")
+        requestData = request.data["clothes"]
+        serializer = self.get_serializer(many=True, data=requestData, **kwargs)
+        serializer.is_valid(raise_exception=True)
+        id_list = serializer.get_id_list(requestData)
+        instance = self.get_queryset().filter(id__in=id_list)
+        serializer.instance = instance
+        serializer.save()
+        return Response(None)
 
 
 class ClothUpdateAPIView(mixins.UpdateModelMixin,
@@ -62,9 +83,8 @@ class ClothUpdateAPIView(mixins.UpdateModelMixin,
     @extend_schema(
         summary="여러 옷 세부정보 업데이트",
         tags=["Cloth"],
-        # examples=[exampleSchema.CLOTH_TAG_UPDATE_QUERY_EXAMPLE],
         request=ClothTagSerializer(many=True),
-        responses={200: {}}
+        responses=None
     )
     def update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
