@@ -29,13 +29,15 @@ public class LoginController {
 
     @ApiOperation(value="회원 가입",notes = "<strong>이메일과 패스워드를 입력받아 회원 가입을 진행한다.</strong>")
     @RequestMapping(value="/oauth/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody LoginDto loginDto){
+    public CodiDto register(@RequestBody LoginDto loginDto){
         Login user=new Login();
         user.setEmail(loginDto.getEmail());
         user.setPassword(passwordEncoder.encode(loginDto.getPwd()));
         user.setUsed(1);
         loginService.joinUser(user);
-        return new ResponseEntity(HttpStatus.OK);
+        CodiDto loginId=new CodiDto();
+        loginId.setId(user.getId());
+        return loginId;
     }
 
     @ApiOperation(value="맴버정보 입력",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장한다.</strong>")
