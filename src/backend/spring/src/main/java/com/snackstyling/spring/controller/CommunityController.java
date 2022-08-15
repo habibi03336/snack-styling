@@ -72,7 +72,9 @@ public class CommunityController {
         List<QuestionListDto> listDto=new ArrayList<>();
         for (Question temp: list){
             QuestionListDto one_list=new QuestionListDto();
-            one_list.setId(temp.getId());
+            one_list.setQid(temp.getId());
+            one_list.setMid(temp.getMember().getId());
+            one_list.setNickname(temp.getMember().getNickname());
             one_list.setWeight(temp.getMember().getWeight());
             one_list.setHeight(temp.getMember().getHeight());
             one_list.setPost_date(temp.getPostDate());
@@ -93,7 +95,9 @@ public class CommunityController {
         QuestionDetailDto questionDetail=new QuestionDetailDto();
         //질문
         QuestionListDto que=new QuestionListDto();
-        que.setId(question.getId());
+        que.setQid(question.getId());
+        que.setMid(question.getMember().getId());
+        que.setNickname(question.getMember().getNickname());
         que.setWeight(question.getMember().getWeight());
         que.setHeight(question.getMember().getHeight());
         que.setPost_date(question.getPostDate());
