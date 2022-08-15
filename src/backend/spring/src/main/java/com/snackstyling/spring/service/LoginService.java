@@ -31,5 +31,6 @@ public class LoginService {
     public void insertInf(Member member){
         memberRepository.save(member);
     }
+    public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
 
 }

@@ -2,6 +2,7 @@ package com.snackstyling.spring.controller;
 
 import com.snackstyling.spring.domain.Login;
 import com.snackstyling.spring.domain.Member;
+import com.snackstyling.spring.dto.CodiDto;
 import com.snackstyling.spring.dto.LoginDto;
 import com.snackstyling.spring.dto.MemberDto;
 import com.snackstyling.spring.service.LoginService;
@@ -52,15 +53,17 @@ public class LoginController {
     }
     @ApiOperation(value="로그인",notes = "<strong>이메일과 패스워드를 입력받아 성공 여부를 알린다.</strong>")
     @RequestMapping(value="/oauth/login", method = RequestMethod.POST)
-    public ResponseEntity userLogin(@RequestBody LoginDto loginDto){
+    public CodiDto userLogin(@RequestBody LoginDto loginDto){
+        CodiDto memberId= new CodiDto();
         try{
             Login user = loginService.loginUser(loginDto.getEmail());
             if(passwordEncoder.matches(loginDto.getPwd(),user.getPassword())){
-                return new ResponseEntity(HttpStatus.OK);
+                memberId.setId(loginService.findMemberId(user).getId());
+                return memberId;
             }
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return memberId;
         } catch(Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return memberId;
         }
     }
 }
