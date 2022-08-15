@@ -138,7 +138,7 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         examples=[exampleSchema.CODI_CREATE_RESPONSE_EXAMPLE],
     )
     def create(self, request, *args, **kwargs):
-        setattr(request.data, '_mutable', True)
+        setattr(request, '_mutable', True)
         request.data['userId'] = self.kwargs['userId']
         return super().create(request, *args, **kwargs)
 
