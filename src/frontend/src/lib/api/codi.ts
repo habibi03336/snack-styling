@@ -1,14 +1,17 @@
 import client from "./client";
 import address from "./address";
 
-client.defaults.baseURL = address["imgAPI"];
+const baseURL = address["imgAPI"];
 
 export interface ICodiData {
-  top?: number;
-  bottom?: number;
+  top: number;
+  bottom: number;
+  qid?: number;
+  comments?: string;
 }
 
-export const getCodis = () => client.get("/api/codi/");
+export const getCodis = (userId: number) =>
+  client.get(baseURL + `/api/codi/user/${userId}/`);
 
-export const postCodi = (codiData: ICodiData) =>
-  client.post("/api/codi/", codiData);
+export const postCodi = (userId: number, codiData: ICodiData) =>
+  client.post(baseURL + `/api/codi/user/${userId}/`, codiData);
