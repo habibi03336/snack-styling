@@ -7,26 +7,25 @@ import {
   IonPage,
 } from "@ionic/react";
 
-import TagChip from "../components/common/TagChip";
-import Header from "../components/common/Header";
+import TagChip from "../../components/common/TagChip";
+import Header from "../../components/common/Header";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "@ionic/react/css/ionic-swiper.css";
-import useTags from "../hooks/useTags";
-import useClothRegist from "../hooks/useClothRegist";
-import { useRecoilState } from "recoil";
-import page from "../recoil/page";
+import useTags from "../../hooks/useTags";
+import useClothRegist from "../../hooks/useClothRegist";
+import { useHistory } from "react-router-dom";
 
 const ClothRegist: React.FC = () => {
-  const [pageState, setPageState] = useRecoilState(page);
   const { processClothes, setProcessClothes, updateClothesInfo } =
     useClothRegist();
   const { tags } = useTags();
+  const history = useHistory();
 
   return (
     <IonPage>
-      <Header />
+      <Header type="back" onHeaderClick={() => history.goBack()} />
       <IonContent>
         <Swiper>
           {processClothes.map((cloth, idx) => {
@@ -61,7 +60,10 @@ const ClothRegist: React.FC = () => {
 
             // make cloth swiper with tags
             return (
-              <SwiperSlide key={cloth.tempId}>
+              <SwiperSlide
+                style={{ height: window.innerHeight * 0.5 }}
+                key={cloth.tempId}
+              >
                 <IonCard>
                   <IonCardHeader>
                     <img
@@ -78,14 +80,17 @@ const ClothRegist: React.FC = () => {
             );
           })}
 
-          <SwiperSlide key="this is regist button slide">
+          <SwiperSlide
+            style={{ height: window.innerHeight * 0.5 }}
+            key="this is regist button slide"
+          >
             <IonButton
               onClick={() => {
                 updateClothesInfo.subscribe({
                   // next(){},
                   // error(){},
                   complete() {
-                    setPageState({ ...pageState, pageType: "main" });
+                    window.location.href = "/closet/cloth";
                   },
                 });
               }}

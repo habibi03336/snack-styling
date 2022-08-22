@@ -1,10 +1,8 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
-  IonContent,
   IonIcon,
   IonLabel,
-  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -12,7 +10,13 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
+import {
+  notificationsOutline,
+  personOutline,
+  reorderThreeOutline,
+  searchOutline,
+  shirtOutline,
+} from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -32,57 +36,81 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { useRecoilState } from "recoil";
-import page from "./recoil/page";
 
 setupIonicReact();
 
-import Closet from "./pages/Closet/Closet";
-import ClothRegist from "./pages/ClothRegist";
+import Closet from "./pages/closet/Closet";
+import ClothRegist from "./pages/closet/ClothRegist";
 import CodiShowCase from "./pages/CodiShowCase";
+import StyleQList from "./pages/styleQ/StyleQList";
+import StyleQDetail from "./pages/styleQ/StyleQDetail";
+import ApplyForm from "./pages/ApplyForm";
+import Login from "./pages/Login";
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
+import MemberDetailRegist from "./pages/MemberDetail";
+import { useRecoilState } from "recoil";
+import user from "./recoil/user";
 
 const App: React.FC = () => {
-  const [pageState] = useRecoilState(page);
+  const [userState] = useRecoilState(user);
+
+  if (!userState.isLogined) {
+    return (
+      <IonApp>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signin" component={Signin} />
+            <Route
+              exact
+              path="/memberDetailRegist"
+              component={MemberDetailRegist}
+            />
+            <Redirect exact from="/" to="/login" />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonApp>
+    );
+  }
   return (
     <IonApp>
-      {pageState === "main" && (
-        <IonContent>
-          <IonReactRouter>
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route exact path="/tab1">
-                  <IonPage>hello</IonPage>
-                </Route>
-                <Route exact path="/tab2">
-                  <IonPage>good bye</IonPage>
-                </Route>
-                <Route exact path="/tab3">
-                  <Closet />
-                </Route>
-                <Route exact path="/">
-                  <Redirect to="/tab1" />
-                </Route>
-              </IonRouterOutlet>
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="tab1" href="/tab1">
-                  <IonIcon icon={triangle} />
-                  <IonLabel>Tab 1</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="tab2" href="/tab2">
-                  <IonIcon icon={ellipse} />
-                  <IonLabel>Tab 2</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="tab3" href="/tab3">
-                  <IonIcon icon={square} />
-                  <IonLabel>Tab 3</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </IonReactRouter>
-        </IonContent>
-      )}
-      {pageState === "clothRegist" && <ClothRegist />}
-      {pageState === "codiShowCase" && <CodiShowCase />}
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/styleQ" component={StyleQList} />
+            <Route exact path="/closet/:defaultTab" component={Closet} />
+            <Route path="/styleQ/:id" component={StyleQDetail} />
+            <Route path="/clothRegist" component={ClothRegist} />
+            <Route path="/codiShowcase/:mid/:qid" component={CodiShowCase} />
+            <Route path="/apply" component={ApplyForm} />
+            <Redirect exact from="/" to="/home" />
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={reorderThreeOutline} />
+              <IonLabel>홈</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="styleQ" href="/styleQ">
+              <IonIcon icon={searchOutline} />
+              <IonLabel>스타일Q</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="closet" href="/closet/cloth">
+              <IonIcon icon={shirtOutline} />
+              <IonLabel>옷장</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="alarm" href="/a">
+              <IonIcon icon={notificationsOutline} />
+              <IonLabel>알람</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="mypage" href="/b">
+              <IonIcon icon={personOutline} />
+              <IonLabel>마이페이지</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
     </IonApp>
   );
 };
