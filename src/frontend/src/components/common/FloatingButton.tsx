@@ -1,10 +1,12 @@
-import { IonFab, IonFabButton } from "@ionic/react";
+import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { addOutline } from "ionicons/icons";
 
 interface IFloatingButton {
-  onButtonClick: () => void;
+  type?: "plus";
+  routeTo?: string;
 }
 
-const FloatingButton = ({ onButtonClick }: IFloatingButton) => {
+const FloatingButton = ({ type, routeTo }: IFloatingButton) => {
   return (
     <IonFab
       vertical="bottom"
@@ -12,7 +14,12 @@ const FloatingButton = ({ onButtonClick }: IFloatingButton) => {
       style={{ position: "fixed" }}
       slot="fixed"
     >
-      <IonFabButton onClick={onButtonClick}></IonFabButton>
+      <IonFabButton routerLink={routeTo}>
+        <IonIcon
+          icon={type === "plus" || type === undefined ? addOutline : ""}
+          style={{ position: "absolute" }}
+        />
+      </IonFabButton>
     </IonFab>
   );
 };

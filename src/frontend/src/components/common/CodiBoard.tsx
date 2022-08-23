@@ -1,5 +1,5 @@
-import "./CodiBoard.css";
 import * as I from "../../interfaces";
+import styled from "styled-components";
 
 const CodiBoard = ({
   codiClothes,
@@ -12,9 +12,8 @@ const CodiBoard = ({
 }) => {
   const ImageElems = codiClothes.map((data, idx) => {
     return (
-      <div
+      <PositionDiv
         key={data.image + idx}
-        className="position-div"
         style={{
           left: `${
             boardConfig.width * data.positionX - boardConfig.clothWidth / 2
@@ -23,8 +22,7 @@ const CodiBoard = ({
         }}
       >
         <div>
-          <img
-            className="board-img"
+          <BoardImage
             src={data.image}
             alt="cloth-img"
             style={{
@@ -34,19 +32,39 @@ const CodiBoard = ({
             onClick={() => onBoardImgClick(data.category)}
           />
         </div>
-      </div>
+      </PositionDiv>
     );
   });
   return (
-    <div
+    <CodiBoardDiv
       style={{
         width: `${boardConfig.width}px`,
         height: `${boardConfig.height}px`,
       }}
     >
       {ImageElems}
-    </div>
+    </CodiBoardDiv>
   );
 };
 
 export default CodiBoard;
+
+const CodiBoardDiv = styled.div``;
+
+const PositionDiv = styled.div`
+  position: relative;
+  height: 0px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+`;
+
+const BoardImage = styled.img`
+  width: fit-content;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  -webkit-box-pack: center;
+  justify-content: center;
+`;
