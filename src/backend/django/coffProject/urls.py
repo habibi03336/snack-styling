@@ -7,7 +7,7 @@ from drf_spectacular.views import SpectacularJSONAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 
 urlpatterns = [
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.urls')),
     path('admin/', admin.site.urls),
     path("docs/json/", SpectacularJSONAPIView.as_view(), name="schema-json"),
     path('docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema-json'), name="swagger-ui"),
