@@ -81,17 +81,17 @@ public class LoginController {
     }
     @ApiOperation(value="한 맴버 조회",notes = "<strong>회원 신체 정보 및 옷장 관련 조회</strong>")
     @RequestMapping(value="/api/v1/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity getUserOne(@RequestParam Long id){
+    public ResponseEntity getUserOne(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="맴버정보 삭제",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장한다.</strong>")
     @RequestMapping(value="/api/v1/users/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity DelUser(@RequestParam Long id){
+    public ResponseEntity DelUser(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="맴버정보 수정",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장한다.</strong>")
     @RequestMapping(value="/api/v1/users/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity UpdateUsers(@RequestParam Long id){
+    public ResponseEntity UpdateUsers(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
 }

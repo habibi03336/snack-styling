@@ -69,8 +69,8 @@ public class CommunityController {
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
     @RequestMapping(value="api/v1/board/question/{id}", method = RequestMethod.GET)
-    public QuestionDetailDto detailBoard(@RequestParam("id") Long id){
-        Question question=communityService.selectQuestion(id);
+    public QuestionDetailDto detailBoard(@PathVariable(value="id") String id){
+        Question question=communityService.selectQuestion(Long.parseLong(id));
         QuestionDetailDto questionDetail=new QuestionDetailDto();
         //질문
         QuestionListDto que=new QuestionListDto();
@@ -93,12 +93,13 @@ public class CommunityController {
         for(Answer temp : answer){
             AnswerListDto obj=new AnswerListDto();
             obj.setNickname(temp.getMember().getNickname());
-            String url="http://backend-django:8000/api/codi/"+temp.getCodi().toString()+"/";
+            String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
             ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
             obj.setTop(result.getBody().getTop());
             obj.setBottom(result.getBody().getBottom());
+            obj.setCap(result.getBody().getCap());
+            obj.setFootwear(result.getBody().getFootwear());
             obj.setComments(temp.getComments());
-            System.out.println(result.getBody().getTop());
             ans.add(obj);
         }
         questionDetail.setAns(ans);
@@ -106,12 +107,12 @@ public class CommunityController {
     }
     @ApiOperation(value="질문 삭제",notes = "<strong>질문 삭제</strong>")
     @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity queDelete(@RequestParam Long id){
+    public ResponseEntity queDelete(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="질문 수정",notes = "<strong>질문 수정</strong>")
     @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity queUpdate(@RequestParam Long id){
+    public ResponseEntity queUpdate(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
@@ -129,7 +130,7 @@ public class CommunityController {
         codi.put("bottom",answerDto.getBottom());
         codi.put("cap",answerDto.getCap());
         codi.put("footwear",answerDto.getFootwear());
-        String url="http://backend-django:8000/api/codi/";
+        String url="http://backend-django:8000/api/v1/codi/";
         ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
         answer.setCodi(result.getBody().getId());
         communityService.postAnswer(answer);
@@ -137,22 +138,22 @@ public class CommunityController {
     }
     @ApiOperation(value="답변 조회",notes = "<strong>답변 조회</strong>")
     @RequestMapping(value="/api/v1/board/answer/", method = RequestMethod.GET)
-    public ResponseEntity ansSelect(@RequestParam Long id) {
+    public ResponseEntity ansSelect() {
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="답변 하나 조회",notes = "<strong>답변 하나 조회</strong>")
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.GET)
-    public ResponseEntity ansSelectOne(@RequestParam Long id) {
+    public ResponseEntity ansSelectOne(@PathVariable(value="id") String id) {
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="답변 삭제",notes = "<strong>답변 삭제</strong>")
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity ansDelete(@RequestParam Long id){
+    public ResponseEntity ansDelete(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
     @ApiOperation(value="답변 수정",notes = "<strong>답변 수정</strong>")
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity ansUpdate(@RequestParam Long id){
+    public ResponseEntity ansUpdate(@PathVariable(value="id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
 }

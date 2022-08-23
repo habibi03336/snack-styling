@@ -9,4 +9,6 @@ public class ClothDto {
     private int id;
     private String top;
     private String bottom;
+    private String cap;
+    private String footwear;
 }
