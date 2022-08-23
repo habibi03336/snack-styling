@@ -61,8 +61,8 @@ const ClothRegist: React.FC = () => {
             // make cloth swiper with tags
             return (
               <SwiperSlide
-                style={{ height: window.innerHeight * 0.5 }}
                 key={cloth.tempId}
+                style={{ display: "flex", flexDirection: "column" }}
               >
                 <IonCard>
                   <IonCardHeader>
@@ -74,15 +74,19 @@ const ClothRegist: React.FC = () => {
                       }
                     />
                   </IonCardHeader>
-                  <IonCardContent>{tagChips}</IonCardContent>
                 </IonCard>
+                <IonCardContent>{tagChips}</IonCardContent>
               </SwiperSlide>
             );
           })}
 
           <SwiperSlide
-            style={{ height: window.innerHeight * 0.5 }}
             key="this is regist button slide"
+            style={{
+              minHeight: "350px",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
             <IonButton
               onClick={() => {

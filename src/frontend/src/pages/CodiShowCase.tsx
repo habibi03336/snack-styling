@@ -62,7 +62,10 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
           codiClothes={codiTemplate.clothes}
           onBoardImgClick={onBoardImgClick}
         />
-        <Swiper slidesPerView={2.5} style={{ height: "calc(25vh)" }}>
+        <Swiper
+          slidesPerView={2.5}
+          style={{ height: "calc(25vh)", padding: "10px" }}
+        >
           {
             // render cloth cards filterd by selected category.
             clothes.map((cloth) => {

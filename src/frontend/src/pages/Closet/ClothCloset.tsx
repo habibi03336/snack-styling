@@ -109,20 +109,22 @@ const ClothCloset = () => {
         </TagDiv>
       )}
       <CardLayout
-        cardComponents={clothes.map((cloth) => {
-          if (!selectedTags.every((tagName) => cloth.tags.has(tagName)))
-            return "";
-          return (
-            <div
-              onClick={() => {
-                setModalDetail(cloth);
-              }}
-              key={cloth.id}
-            >
-              <ClothCard cloth={cloth} />
-            </div>
-          );
-        })}
+        cardComponents={clothes
+          .map((cloth) => {
+            if (!selectedTags.every((tagName) => cloth.tags.has(tagName)))
+              return "";
+            return (
+              <div
+                onClick={() => {
+                  setModalDetail(cloth);
+                }}
+                key={cloth.id}
+              >
+                <ClothCard cloth={cloth} />
+              </div>
+            );
+          })
+          .filter((elem) => elem !== "")}
       />
       <IonFab
         vertical="bottom"
