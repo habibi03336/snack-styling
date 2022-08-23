@@ -7,14 +7,20 @@ import {
 } from "@ionic/react";
 
 import React, { MouseEventHandler, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import Header from "../../components/common/Header";
 
 import ClothCloset from "./ClothCloset";
 import CodiCloset from "./CodiCloset";
 
-const Closet: React.FC = () => {
-  const [tabState, setTabState] = useState<"cloth" | "codi">("cloth");
+type IClosetSetting = RouteComponentProps<{
+  defaultTab: "cloth" | "codi";
+}>;
 
+const Closet = ({ match }: IClosetSetting) => {
+  const [tabState, setTabState] = useState<"cloth" | "codi">(
+    match.params.defaultTab
+  );
   const toggleTab: MouseEventHandler = (e) => {
     const target = e.target as HTMLButtonElement;
     if (tabState === target.value) return;
@@ -25,7 +31,7 @@ const Closet: React.FC = () => {
   return (
     <IonPage>
       <Header />
-      <IonSegment>
+      <IonSegment value={tabState} mode="md">
         <IonSegmentButton value="cloth" onClick={toggleTab}>
           <IonLabel>옷</IonLabel>
         </IonSegmentButton>
@@ -33,6 +39,7 @@ const Closet: React.FC = () => {
           <IonLabel>코디</IonLabel>
         </IonSegmentButton>
       </IonSegment>
+
       <IonContent>
         {tabState === "cloth" && <ClothCloset />}
         {tabState === "codi" && <CodiCloset />}

@@ -1,6 +1,6 @@
-import { IonCard, IonCardHeader } from "@ionic/react";
-import TagChip from "../common/TagChip";
+import { IonCard } from "@ionic/react";
 import * as I from "../../interfaces";
+import styled from "styled-components";
 
 interface IClothCard {
   onCardClick?: () => void;
@@ -9,16 +9,16 @@ interface IClothCard {
 
 const ClothCard = ({ cloth, onCardClick }: IClothCard) => {
   return (
-    <IonCard onClick={onCardClick} key={cloth.id} style={{ width: "40%" }}>
-      <IonCardHeader>
-        <img src={cloth.image} />
-        <p>{cloth.category}</p>
-        {[...cloth.tags].map((tagName) => (
-          <TagChip key={tagName} tagName={tagName} isSelected={true} />
-        ))}
-      </IonCardHeader>
+    <IonCard onClick={onCardClick} key={cloth.id} style={{ margin: "8px" }}>
+      <Img src={cloth.image} />
     </IonCard>
   );
 };
 
 export default ClothCard;
+
+const Img = styled.img`
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
+`;

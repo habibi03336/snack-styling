@@ -2,22 +2,14 @@ import { getTags } from "../lib/api/tags";
 import { useEffect, useState } from "react";
 import * as I from "../interfaces";
 
-interface ITags {
-  [key: string]: {
-    id: number;
-    selected: boolean;
-  };
-}
-
 const useTags = () => {
-  const [tags, setTags] = useState<ITags>({});
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<I.Tags>({});
 
   useEffect(() => {
     (async () => {
       const res = await getTags();
       const data: I.Tag[] = res.data;
-      const tagsData: ITags = {};
+      const tagsData: I.Tags = {};
       data.forEach((tag) => {
         tagsData[tag.name] = { id: tag.id, selected: false };
       });
@@ -28,19 +20,19 @@ const useTags = () => {
   const selectTag = (tagName: string) => {
     const newTags = { ...tags };
     newTags[tagName].selected = true;
-    tagsSelectionChange(newTags);
+    setTags(newTags);
   };
 
   const unselectTag = (tagName: string) => {
     const newTags = { ...tags };
     newTags[tagName].selected = false;
-    tagsSelectionChange(newTags);
+    setTags(newTags);
   };
 
   const toggleTag = (tagName: string) => {
     const newTags = { ...tags };
     newTags[tagName].selected = !newTags[tagName].selected;
-    tagsSelectionChange(newTags);
+    setTags(newTags);
   };
 
   const clearSelection = () => {
@@ -48,21 +40,11 @@ const useTags = () => {
     Object.keys(newTags).forEach(
       (tagName) => (newTags[tagName].selected = false)
     );
-    tagsSelectionChange(newTags);
-  };
-
-  const tagsSelectionChange = (newTags: ITags) => {
     setTags(newTags);
-    setSelectedTags(getSelectedTags());
   };
 
-  const getSelectedTags = () => {
-    const selectTags: string[] = [];
-    Object.keys(tags).forEach((tagName) => {
-      if (tags[tagName].selected) selectTags.push(tagName);
-    });
-
-    return selectTags;
+  const useSelectedTags = () => {
+    return Object.keys(tags).filter((tagName) => tags[tagName].selected);
   };
 
   return {
@@ -71,7 +53,7 @@ const useTags = () => {
     unselectTag,
     toggleTag,
     clearSelection,
-    selectedTags,
+    useSelectedTags,
   };
 };
 
