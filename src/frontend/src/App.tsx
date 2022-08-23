@@ -49,6 +49,7 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import MemberDetailRegist from "./pages/MemberDetail";
+import Mypage from "./pages/Mypage";
 import { useRecoilState } from "recoil";
 import user from "./recoil/user";
 
@@ -56,6 +57,7 @@ const App: React.FC = () => {
   const [userState] = useRecoilState(user);
 
   if (!userState.isLogined) {
+    console.log("user is not logined");
     return (
       <IonApp>
         <IonReactRouter>
@@ -81,6 +83,8 @@ const App: React.FC = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/styleQ" component={StyleQList} />
             <Route exact path="/closet/:defaultTab" component={Closet} />
+            <Route path="/alarm" component={Mypage} />
+            <Route path="/mypage" component={Mypage} />
             <Route path="/styleQ/:id" component={StyleQDetail} />
             <Route path="/clothRegist" component={ClothRegist} />
             <Route path="/codiShowcase/:mid/:qid" component={CodiShowCase} />
@@ -100,11 +104,11 @@ const App: React.FC = () => {
               <IonIcon icon={shirtOutline} />
               <IonLabel>옷장</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="alarm" href="/a">
+            <IonTabButton tab="alarm" href="/alarm">
               <IonIcon icon={notificationsOutline} />
               <IonLabel>알람</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="mypage" href="/b">
+            <IonTabButton tab="mypage" href="/mypage">
               <IonIcon icon={personOutline} />
               <IonLabel>마이페이지</IonLabel>
             </IonTabButton>
