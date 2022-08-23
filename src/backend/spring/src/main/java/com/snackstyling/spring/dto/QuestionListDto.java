@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class QuestionListDto {
-    private Long id;
+    private Long qid;
+    private Long mid;
+    private String nickname;
     private Integer weight;
     private Integer height;
     private LocalDate end_date;
