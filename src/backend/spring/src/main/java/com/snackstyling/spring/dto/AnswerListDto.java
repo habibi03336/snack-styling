@@ -11,5 +11,7 @@ public class AnswerListDto {
     private String nickname;
     private String top;
     private String bottom;
+    private String cap;
+    private String footwear;
     private String comments;
 }
