@@ -66,13 +66,13 @@ class ClothViewSet(mixins.CreateModelMixin,
     def multiple_tag_update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
         requestData = request.data["clothes"]
-        serializer = self.get_serializer(many=True, data=requestData, **kwargs)
+        serializer = self.get_serializer(many=True, data=requestData)
         serializer.is_valid(raise_exception=True)
-        id_list = serializer.get_id_list(requestData)
+        id_list = serializer.get_id_list()
         instance = self.get_queryset().filter(id__in=id_list)
         serializer.instance = instance
         serializer.save()
-        return Response(None)
+        return Response(serializer.data)
 
 
 class ClothUpdateAPIView(mixins.UpdateModelMixin,
