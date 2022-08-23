@@ -30,7 +30,7 @@ public class CommunityController {
     private final LoginService loginService;
 
     @ApiOperation(value="질문 등록",notes = "<strong>질문 정보를 받아 저장한다.</strong>")
-    @RequestMapping(value="/board/question", method = RequestMethod.POST)
+    @RequestMapping(value="/api/v1/board/question", method = RequestMethod.POST)
     public CodiDto quePost(@RequestBody QuestionDto questionDto) {
         Question question=new Question();
         question.setMember(loginService.selectMember(questionDto.getId()));
@@ -44,29 +44,9 @@ public class CommunityController {
         res.setId(question.getId());
         return res;
     }
-    @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
-    @RequestMapping(value="/board/answer", method = RequestMethod.POST)
-    public ResponseEntity ansPost(@RequestBody AnswerDto answerDto){
-        Answer answer= new Answer();
-        answer.setMember(loginService.selectMember(answerDto.getMid()));
-        answer.setQuestion(communityService.selectQuestion(answerDto.getQid()));
-        answer.setPostDate(LocalDateTime.now());
-        answer.setComments(answerDto.getComments());
-        //codi는 django server에 있으므로 조회해야함
-        RestTemplate restTemplate=new RestTemplate();
-        Map<String, Integer> codi=new HashMap<>();
-        codi.put("top",answerDto.getTop());
-        codi.put("bottom",answerDto.getBottom());
-        String url="http://backend-django:8000/api/codi/";
-        ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
-        answer.setCodi(result.getBody().getId());
-        communityService.postAnswer(answer);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
     @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
     @ApiImplicitParam(name = "page", value = "페이지 번호", required = true, dataType = "int", defaultValue = "None")
-    @RequestMapping(value="/board/load", method = RequestMethod.GET)
+    @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
     public List<QuestionListDto> loadBoard(@RequestParam("page") Integer page){
         List<Question> list=communityService.loadQuestion(page).getContent();
         List<QuestionListDto> listDto=new ArrayList<>();
@@ -86,10 +66,9 @@ public class CommunityController {
         }
         return listDto;
     }
-
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
-    @RequestMapping(value="/board/detail", method = RequestMethod.GET)
+    @RequestMapping(value="api/v1/board/question/{id}", method = RequestMethod.GET)
     public QuestionDetailDto detailBoard(@RequestParam("id") Long id){
         Question question=communityService.selectQuestion(id);
         QuestionDetailDto questionDetail=new QuestionDetailDto();
@@ -124,5 +103,56 @@ public class CommunityController {
         }
         questionDetail.setAns(ans);
         return questionDetail;
+    }
+    @ApiOperation(value="질문 삭제",notes = "<strong>질문 삭제</strong>")
+    @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity queDelete(@RequestParam Long id){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="질문 수정",notes = "<strong>질문 수정</strong>")
+    @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity queUpdate(@RequestParam Long id){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
+    @RequestMapping(value="/api/v1/board/answer", method = RequestMethod.POST)
+    public ResponseEntity ansPost(@RequestBody AnswerDto answerDto){
+        Answer answer= new Answer();
+        answer.setMember(loginService.selectMember(answerDto.getMid()));
+        answer.setQuestion(communityService.selectQuestion(answerDto.getQid()));
+        answer.setPostDate(LocalDateTime.now());
+        answer.setComments(answerDto.getComments());
+        //codi는 django server에 있으므로 조회해야함
+        RestTemplate restTemplate=new RestTemplate();
+        Map<String, Integer> codi=new HashMap<>();
+        codi.put("top",answerDto.getTop());
+        codi.put("bottom",answerDto.getBottom());
+        codi.put("cap",answerDto.getCap());
+        codi.put("footwear",answerDto.getFootwear());
+        String url="http://backend-django:8000/api/codi/";
+        ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
+        answer.setCodi(result.getBody().getId());
+        communityService.postAnswer(answer);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="답변 조회",notes = "<strong>답변 조회</strong>")
+    @RequestMapping(value="/api/v1/board/answer/", method = RequestMethod.GET)
+    public ResponseEntity ansSelect(@RequestParam Long id) {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="답변 하나 조회",notes = "<strong>답변 하나 조회</strong>")
+    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.GET)
+    public ResponseEntity ansSelectOne(@RequestParam Long id) {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="답변 삭제",notes = "<strong>답변 삭제</strong>")
+    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity ansDelete(@RequestParam Long id){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @ApiOperation(value="답변 수정",notes = "<strong>답변 수정</strong>")
+    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity ansUpdate(@RequestParam Long id){
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

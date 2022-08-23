@@ -15,6 +15,10 @@ public class AnswerDto {
     private Integer top;
     @ApiModelProperty(value = "bottom id", example = "4", required = true)
     private Integer bottom;
+    @ApiModelProperty(value = "cap id", example = "5", required = true)
+    private Integer cap;
+    @ApiModelProperty(value = "footwear id", example = "6", required = true)
+    private Integer footwear;
     @ApiModelProperty(value = "내용", example = "이렇게 코디해서 입어보세요!!", required = true)
     private String comments;
 }
