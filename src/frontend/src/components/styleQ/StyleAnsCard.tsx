@@ -1,20 +1,37 @@
-import { IonCardHeader, IonCardSubtitle, IonCardTitle } from "@ionic/react";
 import styled from "styled-components";
 import * as I from "../../interfaces";
 import CodiBoard from "../common/CodiBoard";
 import Block from "../styleComponent/Block";
+import LevelIcon from "../styleQ/LevelIcon";
 
 interface IStyleAnsCard {
   styleAns: I.StyleAns;
 }
 
 const StyleAnsCard = ({ styleAns }: IStyleAnsCard) => {
+  console.log(styleAns);
+  const level: [0, 1, 2, 3] = [0, 1, 2, 3];
   return (
     <Block>
-      <IonCardHeader>
-        <IonCardSubtitle>{styleAns.nickname}</IonCardSubtitle>
-        <IonCardTitle>{styleAns.rank}</IonCardTitle>
-      </IonCardHeader>
+      <div style={{ display: "flex", height: "40px" }}>
+        <LevelIcon level={level[Math.floor(Math.random() * 4)]} />
+        <div
+          style={{
+            margin: "0px 12px",
+            height: "40px",
+            fontSize: "16px",
+            fontWeight: "600",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>{styleAns.nickname}님의 답변</div>
+          <div style={{ fontSize: "12px", color: "lightgray" }}>
+            {`2021년 8월 ${Math.floor(Math.random() * 31 + 1)}일`}
+          </div>
+        </div>
+      </div>
       <StyleAnsContainer>
         <CodiBoardDiv>
           <CodiBoard
@@ -28,7 +45,9 @@ const StyleAnsCard = ({ styleAns }: IStyleAnsCard) => {
             onBoardImgClick={() => console.log("style ans codi board clicked")}
           />
         </CodiBoardDiv>
-        <div style={{ padding: "10px 20px" }}>{styleAns.comments}</div>
+        <div style={{ padding: "10px 20px", fontSize: "16px" }}>
+          {styleAns.comments}
+        </div>
       </StyleAnsContainer>
     </Block>
   );
@@ -36,7 +55,6 @@ const StyleAnsCard = ({ styleAns }: IStyleAnsCard) => {
 
 const CodiBoardDiv = styled.div`
   display: flex;
-  border: 2px solid black;
   justify-content: center;
   border-radius: 10px;
   margin: 10px;

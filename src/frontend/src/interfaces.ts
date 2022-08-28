@@ -5,6 +5,9 @@ export interface Cloth {
   tags: Set<string>;
 }
 
+export interface Tags {
+  [key: string]: { id: number; selected: boolean };
+}
 export interface Tag {
   name: string;
   id: number;
@@ -21,8 +24,10 @@ export interface BoardConfig {
 
 export interface Codi {
   id: number;
-  top: string;
-  bottom: string;
+  top: string | null;
+  bottom: string | null;
+  cap: string | null;
+  footwear: string | null;
 }
 
 export interface CodiTemplate {
@@ -30,7 +35,7 @@ export interface CodiTemplate {
   clothes: CodiCloth[];
 }
 
-export type category = "상의" | "하의";
+export type category = "상의" | "하의" | "신발" | "모자";
 
 export interface CodiCloth {
   id?: number;
@@ -41,19 +46,27 @@ export interface CodiCloth {
 }
 
 export interface StyleQs {
-  id: number;
+  mid: number;
+  qid: number;
   weight: number;
-  bodyType: number;
-  postDate: string;
-  endDate: string;
+  height: number;
+  nickname: string;
+  ans_count: number;
+  body_type: number;
+  post_date: string;
+  end_date: string;
   tpo: string;
   comments: string;
 }
 
 export interface StyleAns {
+  id: number;
   nickname: string;
   rank: string;
-  codi: Codi;
+  top: string | null;
+  bottom: string | null;
+  cap: string | null;
+  footwear: string | null;
   comments: string;
   codiTemplate: CodiTemplate;
 }

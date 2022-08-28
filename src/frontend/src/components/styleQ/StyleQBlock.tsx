@@ -1,38 +1,77 @@
-import {
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCardContent,
-  IonRouterLink,
-} from "@ionic/react";
+import { IonRouterLink } from "@ionic/react";
 import Block from "../styleComponent/Block";
 import * as I from "../../interfaces";
-import styled from "styled-components";
+import RowFiller from "../common/RowFiller";
 
 interface IStyleQBlock {
-  routeTo: string;
+  routeTo?: string;
   styleQ: I.StyleQs;
+  type: "small" | "big";
 }
 
-const AnswerCountDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #040720;
-  color: beige;
-`;
-
-const StyleQBlock = ({ styleQ, routeTo }: IStyleQBlock) => {
+const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
+  const [year, month, day] = styleQ.end_date.split("-");
   return (
     <IonRouterLink routerLink={routeTo}>
       <Block>
-        <IonCardHeader>
-          <IonCardSubtitle>{styleQ.end_date}</IonCardSubtitle>
-          <IonCardSubtitle>{styleQ.nickname}</IonCardSubtitle>
-          <IonCardTitle>{styleQ.tpo}</IonCardTitle>
-        </IonCardHeader>
+        <div>
+          <div
+            style={{
+              fontFamily: "Pretendard",
+              fontSize: "12px",
+              fontStyle: "normal",
+              color: "#999999",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: "bolder",
+                fontSize: type === "small" ? "16px" : "24px",
+                color: "black",
+              }}
+            >
+              {styleQ.tpo}
+            </div>
+            <div>{`${year}년 ${month}월 ${day}일`}</div>
+          </div>
+          {type === "small" && (
+            <div style={{ fontSize: "14px", margin: "4px 0 8px 0" }}>
+              {styleQ.comments}
+            </div>
+          )}
+        </div>
+        <RowFiller px={10} />
+        <div
+          style={{
+            verticalAlign: "middle",
+            fontFamily: "Pretendard",
+            fontSize: type === "small" ? "12px" : "14px",
+            fontStyle: "normal",
+            color: "#999999",
+          }}
+        >
+          <div>{styleQ.nickname}</div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <span>
+              {styleQ.height}cm · {styleQ.weight}kg{" "}
+            </span>
+            <span>{type === "small" && `${styleQ.ans_count}개의 답변`}</span>
+          </div>
+        </div>
 
-        <IonCardContent>{styleQ.comments}</IonCardContent>
-        <AnswerCountDiv>답변: {styleQ.ans_count}개</AnswerCountDiv>
+        {type === "big" && (
+          <>
+            <RowFiller px={16}></RowFiller>
+            <div style={{ margin: "4px 0 8px 0" }}>{styleQ.comments}</div>
+          </>
+        )}
       </Block>
     </IonRouterLink>
   );

@@ -1,6 +1,4 @@
 import {
-  IonCard,
-  IonCardHeader,
   IonContent,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
@@ -13,24 +11,22 @@ import useStyleQList from "../../hooks/useStyleQList";
 
 import FloatingButton from "../../components/common/FloatingButton";
 import ListDiv from "../../components/styleComponent/ListDiv";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Title from "../../components/common/Title";
 
-const dummyContents = [
-  { title: "옷 예쁘게 입는법 1탄", id: 1 },
-  { title: "옷 예쁘게 입는법 2탄", id: 2 },
-  { title: "옷 예쁘게 입는법 3탄", id: 3 },
-  { title: "옷 예쁘게 입는법 4탄", id: 4 },
-];
+// const dummyContents = [
+//   { title: "옷 예쁘게 입는법 1탄", id: 1 },
+//   { title: "옷 예쁘게 입는법 2탄", id: 2 },
+//   { title: "옷 예쁘게 입는법 3탄", id: 3 },
+//   { title: "옷 예쁘게 입는법 4탄", id: 4 },
+// ];
 
 const StyleQList = () => {
-  const { styleQs, load, loadMore } = useStyleQList();
+  const { styleQs, loadDone, loadMore } = useStyleQList();
 
   return (
     <IonPage>
-      <Header />
+      <Header text="스타일 커뮤니티" type="title" />
       <IonContent>
-        <Title title={"Magazine"} />
+        {/* <Title title={"Magazine"} />
         <Swiper slidesPerView={2.5} style={{ height: "calc(25vh)" }}>
           {dummyContents.map((content) => {
             // make cloth swiper with tags
@@ -43,7 +39,8 @@ const StyleQList = () => {
             );
           })}
         </Swiper>
-        <Title title={"Open Styling"} />
+        <Label text={"Open Styling"} type="big" />
+        <RowFiller px={12} /> */}
         <ListDiv>
           {
             //render styleQs
@@ -52,6 +49,7 @@ const StyleQList = () => {
                 key={styleQ.qid}
                 routeTo={`/styleQ/${styleQ.qid}`}
                 styleQ={styleQ}
+                type="small"
               />
             ))
           }
@@ -60,7 +58,7 @@ const StyleQList = () => {
         <IonInfiniteScroll
           onIonInfinite={loadMore}
           threshold="100px"
-          disabled={load}
+          disabled={loadDone}
         >
           <IonInfiniteScrollContent
             loadingSpinner="bubbles"

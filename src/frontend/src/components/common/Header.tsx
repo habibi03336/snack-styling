@@ -2,22 +2,31 @@ import {
   IonHeader,
   IonToolbar,
   IonButtons,
-  IonIcon,
   IonButton,
   IonImg,
 } from "@ionic/react";
-import { returnUpBackOutline } from "ionicons/icons";
 
+import styled from "styled-components";
+import Backarrow from "../../assets/common/backarrow.png";
 interface IHeader {
-  type?: "default" | "back";
+  type?: "default" | "back" | "title";
   routeTo?: string;
+  text?: string;
   onHeaderClick?: () => void;
 }
-const Header = ({ type, routeTo, onHeaderClick }: IHeader) => {
+const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
   return (
-    <IonHeader>
-      {["default", undefined].includes(type) ? (
-        <IonToolbar>
+    <IonHeader
+      style={{
+        height: "60px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+      className="ion-no-border"
+    >
+      <IonToolbar color="light">
+        {["default", undefined].includes(type) ? (
           <IonButtons style={{ justifyContent: "center" }}>
             {" "}
             &nbsp;{" "}
@@ -26,24 +35,50 @@ const Header = ({ type, routeTo, onHeaderClick }: IHeader) => {
               src={require("../../assets/logo.png")}
             />
           </IonButtons>
-        </IonToolbar>
-      ) : (
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton
-              onClick={onHeaderClick}
-              routerLink={routeTo}
-              routerDirection="back"
-              style={{ fontSize: "x-large", padding: "0 10px" }}
-            >
-              {" "}
-              <IonIcon icon={returnUpBackOutline} />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      )}
+        ) : type === "back" ? (
+          <>
+            <IonButtons slot="start">
+              <IonButton
+                onClick={onHeaderClick}
+                routerLink={routeTo}
+                routerDirection="back"
+              >
+                {" "}
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src={Backarrow}
+                  alt="back-arrow"
+                />
+              </IonButton>
+            </IonButtons>
+            <TextDiv>{text}</TextDiv>
+          </>
+        ) : type === "title" ? (
+          <div
+            style={{
+              height: "60px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <TextDiv style={{ margin: "0px" }}>{text}</TextDiv>
+          </div>
+        ) : (
+          ""
+        )}
+      </IonToolbar>
     </IonHeader>
   );
 };
+
+const TextDiv = styled.div`
+  font-family: "Pretendard";
+  font-weight: bolder;
+  font-style: normal;
+  font-size: 20px;
+  color: #111111;
+  margin: 0px 0px 0px 16px;
+`;
 
 export default Header;

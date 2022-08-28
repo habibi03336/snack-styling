@@ -5,15 +5,12 @@ const CardLayout = ({
 }: {
   cardComponents: Array<JSX.Element | "">;
 }) => {
-  const count = 0;
-
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
-        width: `${window.innerWidth}px`,
+        justifyContent: "space-between",
       }}
     >
       <Column>
@@ -38,5 +35,4 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${window.innerWidth * 0.45}px;
 `;
