@@ -3,6 +3,8 @@ import * as I from "../../interfaces";
 const categoryMap = new Map([
   ["top", "상의"],
   ["bottom", "하의"],
+  ["cap", "모자"],
+  ["footwear", "신발"],
 ]);
 
 export const makeCodiTemplate = (codis: I.Codi[], template: I.CodiTemplate) => {
