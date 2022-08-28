@@ -1,4 +1,4 @@
-import { postCloth, patchClothes } from "../lib/api/cloth";
+import { POST_CLOTHS, PATCH_CLOTHS } from "../lib/api/cloth";
 import { useRecoilState } from "recoil";
 import { processClothesState, IProcessClothes } from "../recoil/processCloth";
 import { Observable } from "rxjs";
@@ -29,7 +29,7 @@ const useClothRegist = () => {
     for (let i = 0; i < newProcessRegist.length; i++) {
       const frm = new FormData();
       frm.append("image", newProcessRegist[i].imageFile);
-      postCloth(userState.id!, frm)
+      POST_CLOTHS(userState.id!, frm)
         .then((res) => res.data)
         .then((data) => {
           processRegist[i] = {
@@ -52,7 +52,7 @@ const useClothRegist = () => {
         clothes.push({ id: cloth.id, tags: cloth.tags });
       });
 
-      const res = await patchClothes(clothes);
+      const res = await PATCH_CLOTHS(clothes);
 
       const data = res.data;
       subscriber.complete();

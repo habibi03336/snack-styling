@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
-import { registMemberDetail, IMemberInfo } from "../lib/api/user";
+import { PATCH_MEMBER_DETAIL, IMemberInfo } from "../lib/api/user";
 import user from "../recoil/user";
 
 const defaultFeatures: IMemberInfo = {
@@ -19,7 +19,7 @@ const userMemeberRegist = () => {
 
   const postSignin = new Observable((subscriber) => {
     (async () => {
-      const res = await registMemberDetail({ ...features, id: userState.uid! });
+      const res = await PATCH_MEMBER_DETAIL({ ...features, id: userState.uid! });
       console.log(res.status);
       subscriber.complete();
     })();

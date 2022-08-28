@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
-import { postStyleQ } from "../lib/api/styleQ";
+import { POST_STYLEQ } from "../lib/api/styleQ";
 import user from "../recoil/user";
 
 interface tpoTagSelection {
@@ -39,6 +39,14 @@ const useApplyForm = () => {
     setTpos(newTpos);
   };
 
+  const clearTpoSelection = () => {
+    const newTpos = { ...tpos };
+    Object.keys(newTpos).forEach((tpoName) => {
+      newTpos[tpoName] = false;
+    });
+    setTpos(newTpos);
+  };
+
   const uploadStyleQ = new Observable<number>((subscriber) => {
     const selectedTpo = Object.keys(tpos).find((key) => tpos[key]) || "";
     (async () => {
@@ -50,7 +58,7 @@ const useApplyForm = () => {
       };
 
       // body.tpo = selectedTpo;
-      const res_ = await postStyleQ(body);
+      const res_ = await POST_STYLEQ(body);
       const data = res_.data;
       subscriber.next(data.id);
       subscriber.complete();
@@ -62,6 +70,7 @@ const useApplyForm = () => {
     setDate,
     tpos,
     selectTpo,
+    clearTpoSelection,
     description,
     setDescription,
     uploadStyleQ,

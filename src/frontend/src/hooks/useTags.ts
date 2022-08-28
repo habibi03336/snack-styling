@@ -1,4 +1,4 @@
-import { getTags } from "../lib/api/tags";
+import { GET_TAGS } from "../lib/api/tags";
 import { useEffect, useState } from "react";
 import * as I from "../interfaces";
 
@@ -7,7 +7,7 @@ const useTags = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getTags();
+      const res = await GET_TAGS();
       const data: I.Tag[] = res.data;
       const tagsData: I.Tags = {};
       data.forEach((tag) => {

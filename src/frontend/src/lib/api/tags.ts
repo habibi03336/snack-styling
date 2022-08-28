@@ -3,4 +3,4 @@ import address from "./address";
 
 const baseURL = address["imgAPI"];
 
-export const getTags = () => client.get(baseURL + "/api/tag/");
+export const GET_TAGS = () => client.get(baseURL + "/tag/");

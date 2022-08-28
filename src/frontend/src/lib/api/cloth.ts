@@ -4,19 +4,19 @@ import address from "./address";
 
 const baseURL = address["imgAPI"];
 
-export const getCloths = (userId: number) => {
+export const GET_CLOTHS = (userId: number, page = 0) => {
   // assert(type === "other" && userId === undefined ? false : true);
 
-  return client.get(baseURL + `/api/cloth/user/${userId}/`);
+  return client.get(baseURL + `/cloth/user/${userId}/?page=${page}`);
 };
 
-export const postCloth = (userId: number, formData: FormData) =>
-  client.post(baseURL + `/api/cloth/user/${userId}/`, formData);
+export const POST_CLOTHS = (userId: number, formData: FormData) =>
+  client.post(baseURL + `/cloth/user/${userId}/`, formData);
 
 interface IClothAndTags {
   id: number;
   tags: number[];
 }
 
-export const patchClothes = (clothesData: IClothAndTags[]) =>
-  client.patch(baseURL + "/api/cloth/multi-update/", { clothes: clothesData });
+export const PATCH_CLOTHS = (clothesData: IClothAndTags[]) =>
+  client.patch(baseURL + "/cloth/multi-update/", { clothes: clothesData });

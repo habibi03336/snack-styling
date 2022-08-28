@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Observable } from "rxjs";
-import { postCodi, ICodiData } from "../lib/api/codi";
-import { postStyleAns } from "../lib/api/styleQ";
+import { POST_CODI, ICodiData } from "../lib/api/codi";
+import { POST_STYLE_ANSWER } from "../lib/api/styleQ";
 import * as I from "../interfaces";
 import { defaultTemplate } from "../assets/codiTemplates";
 import { deepcopy } from "../lib/utils/common";
@@ -19,8 +19,8 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
   );
 
   const boardConfig: I.BoardConfig = {
-    width: window.innerWidth,
-    height: window.innerWidth,
+    width: window.innerWidth - 40,
+    height: window.innerWidth - 40,
     clothWidth: window.innerWidth * 0.3,
     clothHeight: window.innerWidth * 0.3,
   };
@@ -39,16 +39,23 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
     setCodiTemplate({ ...codiTemplate });
   };
 
-  const categoryMap = new Map<"하의" | "상의", "top" | "bottom">([
+  const categoryMap = new Map<
+    "하의" | "상의" | "신발" | "모자",
+    "top" | "bottom" | "footwear" | "cap"
+  >([
     ["상의", "top"],
     ["하의", "bottom"],
+    ["신발", "footwear"],
+    ["모자", "cap"],
   ]);
 
   const uploadCodi = new Observable((subscriber) => {
     (async () => {
       const codiData: ICodiData = {
-        top: 0,
-        bottom: 0,
+        top: null,
+        bottom: null,
+        footwear: null,
+        cap: null,
       };
 
       codiTemplate.clothes.forEach((cloth) => {
@@ -61,20 +68,19 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
       });
 
       let res;
-      if (type === "own") res = await postCodi(userState.id!, codiData);
+      if (type === "own") res = await POST_CODI(userState.id!, codiData);
       else if (type === "answer" && questionId !== undefined) {
         const answerData = {
           ...codiData,
           mid: userState.id!,
           qid: questionId,
-          comments: "hello world",
+          comments: comment,
         };
-        res = await postStyleAns(answerData);
+        res = await POST_STYLE_ANSWER(answerData);
       }
       //postStyleAns({ ...codiData, qid: 3 });
       else throw "not available state: type 'answer' should have questionId";
 
-      const data = res.data;
       subscriber.complete();
     })();
   });

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useHome = () => {
   const today = new Date();
   const todayISO = today.toISOString();
-  const [codiOfTheDay, setCodiOfTheDay] = useState({});
-  const [weatherOfTheDay, setWeatherOfTheDay] = useState({});
+  // const [codiOfTheDay, setCodiOfTheDay] = useState({});
+  // const [weatherOfTheDay, setWeatherOfTheDay] = useState({});
   const [date, setDate] = useState(todayISO);
   //   useEffect(() => {
   //     (async () => {
@@ -15,7 +15,11 @@ const useHome = () => {
   //     })();
   //   }, [date]);
 
-  return { codiOfTheDay, weatherOfTheDay, date, setDate };
+  return {
+    // codiOfTheDay, weatherOfTheDay,
+    date,
+    setDate,
+  };
 };
 
 export default useHome;

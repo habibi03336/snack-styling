@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
-import { login } from "../lib/api/user";
+import { AUTH_LOGIN } from "../lib/api/user";
 import user from "../recoil/user";
 
 const useLogin = () => {
@@ -11,7 +11,7 @@ const useLogin = () => {
 
   const postLogin = new Observable((subscriber) => {
     (async () => {
-      const res = await login({ email: id, pwd: pwd });
+      const res = await AUTH_LOGIN({ email: id, pwd: pwd });
       if (res.status < 300) {
         window.localStorage.setItem("mid", res.data.id);
         setUserState({ ...userState, isLogined: true, id: res.data.id });

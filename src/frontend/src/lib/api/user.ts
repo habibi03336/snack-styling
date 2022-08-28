@@ -8,16 +8,16 @@ export interface ILoginInfo {
   pwd: string;
 }
 
-export const login = (loginInfo: ILoginInfo) =>
-  client.post(baseURL + `/oauth/login`, loginInfo);
+export const AUTH_LOGIN = (loginInfo: ILoginInfo) =>
+  client.post(baseURL + `/accounts`, loginInfo);
 
 export interface ISigninInfo {
   email: string;
   pwd: string;
 }
 
-export const signin = (signinInfo: ISigninInfo) =>
-  client.post(baseURL + `/oauth/register`, signinInfo);
+export const AUTH_SIGNIN = (signinInfo: ISigninInfo) =>
+  client.post(baseURL + `/accounts/register`, signinInfo);
 
 export interface IMemberInfo {
   age: number | null;
@@ -28,5 +28,5 @@ export interface IMemberInfo {
   weight: number | null;
 }
 
-export const registMemberDetail = (memberInfo: IMemberInfo) =>
-  client.post(baseURL + `/user/information`, memberInfo);
+export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
+  client.post(baseURL + `/users`, memberInfo);
