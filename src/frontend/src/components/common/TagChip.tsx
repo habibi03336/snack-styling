@@ -10,10 +10,11 @@ const TagChip = ({ onTagClick, tagName, isSelected }: ITagChip) => {
     <IonChip
       onClick={onTagClick}
       key={tagName}
-      color={isSelected ? "" : "primary"}
+      color={isSelected ? "primary" : "light"}
       style={{
+        border: "0.5px solid #b3b3b3",
         backgroundColor: isSelected ? "black" : "",
-        color: isSelected ? "white" : "black",
+        color: isSelected ? "white" : "#b3b3b3",
       }}
     >
       <IonLabel>{tagName}</IonLabel>

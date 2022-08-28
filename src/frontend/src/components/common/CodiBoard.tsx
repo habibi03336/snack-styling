@@ -5,12 +5,15 @@ const CodiBoard = ({
   codiClothes,
   boardConfig,
   onBoardImgClick,
+  style,
 }: {
   codiClothes: I.CodiCloth[];
   boardConfig: I.BoardConfig;
   onBoardImgClick: (clickedCategory: string) => void;
+  style?: { [key: string]: string };
 }) => {
   const ImageElems = codiClothes.map((data, idx) => {
+    if (data.image === null) return;
     return (
       <PositionDiv
         key={data.image + idx}
@@ -26,6 +29,7 @@ const CodiBoard = ({
             src={data.image}
             alt="cloth-img"
             style={{
+              objectFit: "contain",
               width: boardConfig.clothWidth,
               height: boardConfig.clothHeight,
             }}
@@ -40,6 +44,7 @@ const CodiBoard = ({
       style={{
         width: `${boardConfig.width}px`,
         height: `${boardConfig.height}px`,
+        ...style,
       }}
     >
       {ImageElems}

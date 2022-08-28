@@ -23,20 +23,20 @@ const CodiCloset = () => {
   const [modalDetail, setModalDetail] = useState<I.CodiTemplate | null>(null);
 
   return (
-    <div>
+    <>
       <CardLayout
         cardComponents={codis.map((codi) => {
           return (
             <CodiCard
               key={codi.id}
               codi={codi}
+              comment={""}
               onCodiClick={() => setModalDetail(codi)}
             />
           );
         })}
       />
       <FloatingButton routeTo="/codiShowcase/-1/-1" />
-
       <IonModal isOpen={modalDetail !== null}>
         {modalDetail && (
           <>
@@ -65,6 +65,7 @@ const CodiCloset = () => {
                   console.log("codiCard");
                 }}
                 type="big"
+                comment=""
               />
             </IonContent>
 
@@ -72,7 +73,7 @@ const CodiCloset = () => {
           </>
         )}
       </IonModal>
-    </div>
+    </>
   );
 };
 

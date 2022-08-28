@@ -1,8 +1,6 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -10,13 +8,6 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import {
-  notificationsOutline,
-  personOutline,
-  reorderThreeOutline,
-  searchOutline,
-  shirtOutline,
-} from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -39,30 +30,34 @@ import "./theme/variables.css";
 
 setupIonicReact();
 
+import "./App.css";
+import Icon from "./components/icon/Icon";
+
 import Closet from "./pages/closet/Closet";
 import ClothRegist from "./pages/closet/ClothRegist";
 import CodiShowCase from "./pages/CodiShowCase";
 import StyleQList from "./pages/styleQ/StyleQList";
 import StyleQDetail from "./pages/styleQ/StyleQDetail";
 import ApplyForm from "./pages/ApplyForm";
-import Login from "./pages/Login";
+import EmailLogin from "./pages/EmailLogin";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import MemberDetailRegist from "./pages/MemberDetail";
 import Mypage from "./pages/Mypage";
 import { useRecoilState } from "recoil";
 import user from "./recoil/user";
+import Login from "./pages/Login";
 
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
 
   if (!userState.isLogined) {
-    console.log("user is not logined");
     return (
       <IonApp>
         <IonReactRouter>
           <IonRouterOutlet>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/emailLogin" component={EmailLogin} />
             <Route exact path="/signin" component={Signin} />
             <Route
               exact
@@ -75,6 +70,7 @@ const App: React.FC = () => {
       </IonApp>
     );
   }
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -91,26 +87,21 @@ const App: React.FC = () => {
             <Route path="/apply" component={ApplyForm} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          <IonTabBar style={{ height: "60px" }} slot="bottom">
             <IonTabButton tab="home" href="/home">
-              <IonIcon icon={reorderThreeOutline} />
-              <IonLabel>홈</IonLabel>
+              <Icon iconName="home" />
             </IonTabButton>
             <IonTabButton tab="styleQ" href="/styleQ">
-              <IonIcon icon={searchOutline} />
-              <IonLabel>스타일Q</IonLabel>
+              <Icon iconName="community" />
             </IonTabButton>
             <IonTabButton tab="closet" href="/closet/cloth">
-              <IonIcon icon={shirtOutline} />
-              <IonLabel>옷장</IonLabel>
+              <Icon iconName="closet" />
             </IonTabButton>
             <IonTabButton tab="alarm" href="/alarm">
-              <IonIcon icon={notificationsOutline} />
-              <IonLabel>알람</IonLabel>
+              <Icon iconName="alarm" />
             </IonTabButton>
             <IonTabButton tab="mypage" href="/mypage">
-              <IonIcon icon={personOutline} />
-              <IonLabel>마이페이지</IonLabel>
+              <Icon iconName="mypage" />
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

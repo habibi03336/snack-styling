@@ -1,15 +1,13 @@
 import {
   IonSegment,
   IonSegmentButton,
-  IonLabel,
   IonContent,
   IonPage,
 } from "@ionic/react";
-
-import React, { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import Header from "../../components/common/Header";
-
+import Label from "../../components/common/Label";
 import ClothCloset from "./ClothCloset";
 import CodiCloset from "./CodiCloset";
 
@@ -30,17 +28,35 @@ const Closet = ({ match }: IClosetSetting) => {
 
   return (
     <IonPage>
-      <Header />
-      <IonSegment value={tabState} mode="md">
-        <IonSegmentButton value="cloth" onClick={toggleTab}>
-          <IonLabel>옷</IonLabel>
-        </IonSegmentButton>
-        <IonSegmentButton value="codi" onClick={toggleTab}>
-          <IonLabel>코디</IonLabel>
-        </IonSegmentButton>
-      </IonSegment>
-
+      <Header text="나의 옷장" type="title" />
       <IonContent>
+        <div style={{ padding: "10px 0px 10px 0px" }}>
+          <IonSegment
+            value={tabState}
+            style={{
+              height: "44px",
+              alignItems: "center",
+              marginTop: "5px",
+            }}
+            mode="ios"
+          >
+            <IonSegmentButton
+              style={{ height: "40px" }}
+              value="cloth"
+              onClick={toggleTab}
+            >
+              <Label text="옷" type="big" />
+            </IonSegmentButton>
+            <IonSegmentButton
+              style={{ height: "40px" }}
+              value="codi"
+              onClick={toggleTab}
+            >
+              <Label text="코디" type="big" />
+            </IonSegmentButton>
+          </IonSegment>
+        </div>
+
         {tabState === "cloth" && <ClothCloset />}
         {tabState === "codi" && <CodiCloset />}
       </IonContent>

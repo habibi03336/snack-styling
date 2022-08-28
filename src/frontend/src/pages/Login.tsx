@@ -1,92 +1,70 @@
-import React, { useState } from "react";
-import useLogin from "../hooks/useLogin";
-import {
-  IonContent,
-  IonHeader,
-  IonButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonInput,
-  IonItem,
-  IonList,
-  IonItemDivider,
-  IonRouterLink,
-} from "@ionic/react";
-import { validEmail, validPwd } from "../lib/utils/validation";
-import { useHistory } from "react-router";
+import Button from "../components/common/Button";
+import Logo from "../assets/logo.svg";
+import Google from "../assets/auth/google.svg";
+import Kakao from "../assets/auth/kakao.svg";
+import Naver from "../assets/auth/naver.svg";
+import Email from "../assets/auth/email.svg";
 
-const Login: React.FC = () => {
-  const { id, setId, pwd, setPwd, postLogin } = useLogin();
-  const [errorMessage, setErrorMessage] = useState("");
-  const history = useHistory();
-
+const Login = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>커피 스타일링</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
+    <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: `${window.innerHeight - 300}px`,
 
-            if (!validEmail(id)) {
-              setErrorMessage("이메일 형식이 맞지 않습니다");
-              return;
-            }
-            if (!validPwd(pwd)) {
-              setErrorMessage("비밀번호 형식이 맞지 않습니다.");
-              return;
-            }
-
-            postLogin.subscribe({
-              complete() {
-                history.push("/styleQ");
-              },
-            });
+          flexDirection: "column",
+          background:
+            "url('https://www.ikea.com/kr/en/images/products/platsa-open-clothes-hanging-unit-white__0780262_pe759915_s5.jpg')",
+          backgroundSize: "cover",
+          filter: "grayscale(20%)",
+        }}
+      >
+        <img style={{ width: "236px", height: "80px" }} src={Logo} />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "300px",
+          backgroundColor: "white",
+          padding: "10px 20px",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <Button color="light" style={{ border: "1px solid #eeeeee" }}>
+          <div style={{ position: "absolute", left: "0px" }}>
+            <img src={Google} />
+          </div>
+          구글로 시작하기
+        </Button>
+        <Button color="warning">
+          <div style={{ position: "absolute", left: "0px" }}>
+            <img src={Kakao} />
+          </div>
+          카카오로 시작하기
+        </Button>
+        <Button color="success">
+          <div style={{ position: "absolute", left: "0px" }}>
+            <img src={Naver} />
+          </div>
+          네이버로 시작하기
+        </Button>
+        <Button
+          onClick={() => {
+            window.location.href = "/emailLogin";
           }}
+          color="primary"
         >
-          <IonList>
-            <IonItemDivider>아이디</IonItemDivider>
-            <IonItem>
-              <IonInput
-                value={id}
-                placeholder="Enter Input"
-                onIonChange={(e) => setId(e.detail.value!)}
-                type="email"
-                maxlength={50}
-                clearInput
-                required
-              />
-            </IonItem>
-            <IonItemDivider>비밀번호</IonItemDivider>
-            <IonItem>
-              <IonInput
-                value={pwd}
-                type="password"
-                placeholder="Enter Input"
-                onIonChange={(e) => setPwd(e.detail.value!)}
-                maxlength={50}
-                clearInput
-                required
-              />
-            </IonItem>
-          </IonList>
-          <IonItemDivider></IonItemDivider>
-          <IonButton type="submit" expand="block">
-            로그인
-          </IonButton>
-        </form>
-        <p>{errorMessage}</p>
-        <IonItemDivider></IonItemDivider>
-        <IonRouterLink routerLink={"/signin"}>
-          <IonButton expand="block">회원가입</IonButton>
-        </IonRouterLink>
-      </IonContent>
-    </IonPage>
+          <div style={{ position: "absolute", left: "0px" }}>
+            <img src={Email} />
+          </div>
+          이메일로 시작하기
+        </Button>
+      </div>
+    </div>
   );
 };
 

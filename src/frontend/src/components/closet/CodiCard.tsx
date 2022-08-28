@@ -1,38 +1,38 @@
-import { IonCard } from "@ionic/react";
 import CodiBoard from "../common/CodiBoard";
 import * as I from "../../interfaces";
+import ClosetCard from "./ClosetCard";
 
 interface ICodiCard {
   codi: I.CodiTemplate;
+  comment: string;
   onCodiClick: () => void;
   type?: "big" | "default";
 }
 
-const CodiCard = ({ codi, onCodiClick, type = "default" }: ICodiCard) => {
+const CodiCard = ({
+  codi,
+  onCodiClick,
+  comment,
+  type = "default",
+}: ICodiCard) => {
   const width =
-    type === "default" ? window.innerWidth * 0.4 : window.innerWidth * 0.9;
-  const height =
-    type === "default" ? window.innerWidth * 0.4 : window.innerWidth * 0.9;
+    type === "default"
+      ? (window.innerWidth - 40) / 2 - 7.5
+      : window.innerWidth * 0.9;
   return (
-    <IonCard
-      style={{
-        margin: "10px auto",
-        width: width,
-        height: height,
-      }}
-    >
+    <ClosetCard id={codi.id!}>
       <CodiBoard
         boardConfig={{
           width: width,
-          height: height,
-          clothWidth: width * 0.5,
-          clothHeight: height * 0.5,
+          height: width,
+          clothWidth: width * 0.35,
+          clothHeight: width * 0.35,
         }}
         codiClothes={codi.clothes}
         onBoardImgClick={onCodiClick}
       />
-      {codi.comments}
-    </IonCard>
+      {comment}
+    </ClosetCard>
   );
 };
 

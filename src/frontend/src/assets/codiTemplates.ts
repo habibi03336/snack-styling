@@ -1,20 +1,34 @@
 import * as I from "../interfaces";
+import Bottom from "./codi/bottom.png";
+import Cap from "./codi/cap.png";
+import Footwear from "./codi/footwear.png";
+import Top from "./codi/top.png";
 
 const defaultTemplate: I.CodiTemplate = {
   clothes: [
     {
-      positionX: 0.5,
-      positionY: 0.3,
-      image:
-        "https://thumbs.dreamstime.com/z/pullover-black-line-icon-piece-woollen-clothing-covers-upper-part-body-arms-pictogram-web-page-mobile-179410803.jpg",
+      positionX: 0.75,
+      positionY: 0.25,
+      image: Top,
       category: "상의",
     },
     {
-      positionX: 0.5,
-      positionY: 0.7,
-      image:
-        "https://i.pinimg.com/474x/73/8b/ea/738beaee3af2646a707ffb397562cbe7--men-pants-fashion-flats.jpg",
+      positionX: 0.77,
+      positionY: 0.75,
+      image: Bottom,
       category: "하의",
+    },
+    {
+      positionX: 0.25,
+      positionY: 0.3,
+      image: Cap,
+      category: "모자",
+    },
+    {
+      positionX: 0.25,
+      positionY: 0.8,
+      image: Footwear,
+      category: "신발",
     },
   ],
 };

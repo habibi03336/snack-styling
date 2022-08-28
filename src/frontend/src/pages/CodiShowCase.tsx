@@ -15,6 +15,9 @@ import CodiBoard from "../components/common/CodiBoard";
 import useTags from "../hooks/useTags";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { SwiperSlide, Swiper } from "swiper/react";
+
+import useTabBarControl from "../hooks/useTabBarControl";
+import BottomButton from "../components/common/BottomButton";
 import { useRef } from "react";
 
 interface ICodiShowCase
@@ -23,8 +26,9 @@ interface ICodiShowCase
 }
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const isSelfCodi = Number(match.params.qid) === -1;
-  const { clothes } = useClothes(
+  const { clothes, loadMore, loadDone } = useClothes(
     Number(match.params.mid) === -1 ? undefined : Number(match.params.mid)
   ); //
   const { selectTag, clearSelection, useSelectedTags } = useTags();
@@ -53,6 +57,16 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     selectTag(category);
   };
 
+  const checkAndLoadMore = () => {
+    const loadMoreChecker = loadMoreRef.current as HTMLDivElement;
+    const xPosition = loadMoreChecker.getBoundingClientRect().x;
+    if (xPosition < 400 && !loadDone) {
+      loadMore();
+    }
+  };
+
+  useTabBarControl(isSelfCodi ? "useUnmount" : undefined);
+  let clothCnt = 0;
   return (
     <IonPage>
       <Header type="back" onHeaderClick={() => history.goBack()} />
@@ -63,16 +77,20 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
           onBoardImgClick={onBoardImgClick}
         />
         <Swiper
-          slidesPerView={2.5}
-          style={{ height: "calc(25vh)", padding: "10px" }}
+          onSlideChange={checkAndLoadMore}
+          slidesPerView={2.4}
+          spaceBetween={7}
+          style={{ height: "calc(30vh)", padding: "10px" }}
         >
           {
             // render cloth cards filterd by selected category.
             clothes.map((cloth) => {
               if (!cloth.tags.has(selectedTags[0])) return "";
+              clothCnt++;
               return (
                 <SwiperSlide key={cloth.id}>
                   <ClothCard
+                    type="small"
                     key={cloth.id}
                     cloth={cloth}
                     onCardClick={() => {
@@ -83,11 +101,27 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
               );
             })
           }
+          <div style={{ display: "none" }}>
+            {clothCnt < 3 && !loadDone && setTimeout(loadMore, 500)}
+          </div>
+          {selectedTags.length > 0 && (
+            <SwiperSlide key={-1}>
+              <div ref={loadMoreRef}></div>
+            </SwiperSlide>
+          )}
         </Swiper>
-        <IonButton id="open-modal" expand="block">
-          코디 완성
-        </IonButton>
-        <IonModal trigger="open-modal" initialBreakpoint={0.5}>
+
+        <BottomButton activated={true}>
+          <IonButton
+            color={"primary"}
+            style={{ width: "100%" }}
+            id="open-modal"
+            expand="full"
+          >
+            다음
+          </IonButton>
+        </BottomButton>
+        <IonModal trigger="open-modal" initialBreakpoint={0.3}>
           <IonContent className="ion-padding">
             <div className="ion-margin-top">
               <IonLabel position="stacked">코디 설명</IonLabel>
@@ -97,7 +131,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
                 onIonChange={(e) => setComment(e.detail.value!)}
               />
               <IonButton expand="block" onClick={onClickCodiSave}>
-                코디 등록하기
+                완료
               </IonButton>
             </div>
           </IonContent>

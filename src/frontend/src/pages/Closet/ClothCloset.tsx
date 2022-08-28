@@ -1,24 +1,20 @@
 import {
   IonButton,
   IonButtons,
+  IonCard,
   IonContent,
   IonFab,
   IonFabButton,
   IonHeader,
   IonIcon,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonModal,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import {
-  accessibilityOutline,
-  chevronDownOutline,
-  chevronUpOutline,
-  shirtOutline,
-  trashOutline,
-} from "ionicons/icons";
+import { shirtOutline, trashOutline } from "ionicons/icons";
 import { useState } from "react";
-
 import styled from "styled-components";
 import ClothCard from "../../components/closet/ClothCard";
 import TagChip from "../../components/common/TagChip";
@@ -28,17 +24,18 @@ import CardLayout from "../../components/closet/CardLayout";
 import { useHistory } from "react-router-dom";
 import useTags from "../../hooks/useTags";
 import useClothes from "../../hooks/useCloths";
+import DownButton from "../../components/common/DownButton";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const ClothCloset = () => {
   const [showTags, setShowTags] = useState<boolean>(false);
-  const [categorySelected, setCategory] = useState("전체");
   const [modalDetail, setModalDetail] = useState<I.Cloth | null>(null);
 
   const { tags, toggleTag, clearSelection, selectTag, useSelectedTags } =
     useTags();
   const selectedTags = useSelectedTags();
 
-  const { clothes } = useClothes();
+  const { clothes, loadMore, loadDone } = useClothes();
 
   const { uploadClothes } = useClothRegist();
   const history = useHistory();
@@ -51,61 +48,82 @@ const ClothCloset = () => {
   };
 
   return (
-    <div>
+    <>
       <CategoryTab>
-        <IconTab>
-          <IonIcon
-            style={{ color: categorySelected === "전체" ? "black" : "gray" }}
-            icon={accessibilityOutline}
-            onClick={() => {
-              clearSelection();
-              setCategory("전체");
+        <div
+          style={{ display: "flex", flexDirection: "row", flexWrap: "unset" }}
+        >
+          <DownButton onClickButton={() => setShowTags(!showTags)} />
+          <div
+            style={{
+              width: `${window.innerWidth - 40 - 32}px`,
+              marginLeft: "10px",
             }}
-          />
-        </IconTab>
-        <IconTab>
-          <IonIcon
-            style={{ color: categorySelected === "상의" ? "black" : "gray" }}
-            icon={shirtOutline}
-            onClick={() => {
-              clearSelection();
-              selectTag("상의");
-              setCategory("상의");
-            }}
-          />
-        </IconTab>
-        <IconTab>
-          <IonIcon
-            style={{ color: categorySelected === "하의" ? "black" : "gray" }}
-            icon={shirtOutline}
-            onClick={() => {
-              clearSelection();
-              selectTag("하의");
-              setCategory("하의");
-            }}
-          />
-        </IconTab>
-        <IconTab style={{ position: "absolute", right: "15px" }}>
-          <IonIcon
-            icon={showTags ? chevronUpOutline : chevronDownOutline}
-            onClick={() => {
-              setShowTags(!showTags);
-            }}
-          />
-        </IconTab>
+          >
+            <Swiper slidesPerView={4.5}>
+              <SwiperSlide key={"전체"}>
+                <IonCard
+                  onClick={() => {
+                    clearSelection();
+                  }}
+                  style={{
+                    height: "32px",
+                    width: "53px",
+                    fontSize: "16px",
+                    margin: "0px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                  }}
+                  color={selectedTags.length === 0 ? "primary" : "medium"}
+                >
+                  전체
+                </IonCard>
+              </SwiperSlide>
+              {["상의", "하의", "신발", "모자"].map((cate) => (
+                <SwiperSlide key={cate}>
+                  <IonCard
+                    onClick={() => {
+                      clearSelection();
+                      selectTag(cate);
+                    }}
+                    style={{
+                      height: "32px",
+                      width: "53px",
+                      fontSize: "16px",
+                      margin: "0px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "5px",
+                    }}
+                    color={selectedTags.includes(cate) ? "primary" : "medium"}
+                  >
+                    {cate}
+                  </IonCard>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
       </CategoryTab>
+
       {showTags && (
         <TagDiv>
-          {Object.keys(tags).map((tagName) => (
-            <TagChip
-              key={tagName}
-              onTagClick={() => {
-                toggleTag(tagName);
-              }}
-              tagName={tagName}
-              isSelected={tags[tagName].selected}
-            />
-          ))}
+          {Object.keys(tags).map((tagName) => {
+            if (["상의", "하의", "신발", "모자"].includes(tagName)) return;
+            return (
+              <TagChip
+                key={tagName}
+                onTagClick={() => {
+                  toggleTag(tagName);
+                }}
+                tagName={"#" + tagName}
+                isSelected={tags[tagName].selected}
+              />
+            );
+          })}
         </TagDiv>
       )}
       <CardLayout
@@ -120,12 +138,24 @@ const ClothCloset = () => {
                 }}
                 key={cloth.id}
               >
-                <ClothCard cloth={cloth} />
+                <ClothCard cloth={cloth} type="small" />
               </div>
             );
           })
           .filter((elem) => elem !== "")}
       />
+
+      <IonInfiniteScroll
+        onIonInfinite={loadMore}
+        threshold="100px"
+        disabled={loadDone}
+      >
+        <IonInfiniteScrollContent
+          loadingSpinner="bubbles"
+          loadingText="Loading more data..."
+        />
+      </IonInfiniteScroll>
+
       <IonFab
         vertical="bottom"
         horizontal="end"
@@ -168,7 +198,7 @@ const ClothCloset = () => {
               </IonToolbar>
             </IonHeader>
             <IonContent style={{ display: "flex", justifyContent: "center" }}>
-              <ClothCard cloth={modalDetail} />
+              <ClothCard cloth={modalDetail} type="big" />
               <div style={{ padding: "10px" }}>
                 {[...modalDetail.tags].map((tag) => (
                   <TagChip key={tag} tagName={tag} isSelected={false} />
@@ -180,15 +210,13 @@ const ClothCloset = () => {
           </>
         )}
       </IonModal>
-    </div>
+    </>
   );
 };
 
 export default ClothCloset;
 
 const TagDiv = styled.div`
-  border: solid 2px black;
-  border-width: 2px 0 2px 0;
   margin: auto;
   padding: 5px;
   text-align: center;
@@ -199,11 +227,6 @@ const CategoryTab = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 10px;
+  padding: 10px 0px;
   vertial-align: middle;
-`;
-
-const IconTab = styled.div`
-  font-size: 30px;
-  margin: 0 10px 0 10px;
 `;
