@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import useOnMount from "./useOnMount";
 
 const useTabBarControl = (type?: "useUnmount") => {
-  useEffect(() => {
+  useOnMount(() => {
     const tabbar = document.querySelector("ion-tab-bar");
     const fabButton = document.querySelector("ion-fab");
     if (tabbar !== null) tabbar.style.display = "none";
@@ -13,7 +13,7 @@ const useTabBarControl = (type?: "useUnmount") => {
         if (fabButton !== null) fabButton.style.display = "flex";
       };
     }
-  }, []);
+  });
 };
 
 export default useTabBarControl;

@@ -4,11 +4,12 @@ import { defaultTemplate } from "../assets/codiTemplates";
 import { useEffect, useState } from "react";
 import * as I from "../interfaces";
 import address from "../lib/api/address";
+import useOnMount from "./useOnMount";
 
 const useStyleQDetail = (styleQId: number) => {
   const [styleQDetailData, setStyleQDetailData] = useState<I.StyleQDetail>();
 
-  useEffect(() => {
+  useOnMount(() => {
     (async () => {
       const res = await GET_STYLEQ(styleQId);
 
@@ -33,7 +34,7 @@ const useStyleQDetail = (styleQId: number) => {
 
       setStyleQDetailData({ que: styleQ, ans: styleAns });
     })();
-  }, []);
+  });
 
   return { styleQDetailData };
 };

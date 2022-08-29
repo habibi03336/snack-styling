@@ -1,11 +1,12 @@
 import { GET_TAGS } from "../lib/api/tags";
 import { useEffect, useState } from "react";
 import * as I from "../interfaces";
+import useOnMount from "./useOnMount";
 
 const useTags = () => {
   const [tags, setTags] = useState<I.Tags>({});
 
-  useEffect(() => {
+  useOnMount(() => {
     (async () => {
       const res = await GET_TAGS();
       const data: I.Tag[] = res.data;
@@ -15,7 +16,7 @@ const useTags = () => {
       });
       setTags(tagsData);
     })();
-  }, []);
+  });
 
   const selectTag = (tagName: string) => {
     const newTags = { ...tags };
