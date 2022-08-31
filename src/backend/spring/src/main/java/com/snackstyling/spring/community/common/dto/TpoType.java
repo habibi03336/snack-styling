@@ -1,4 +1,4 @@
-package com.snackstyling.spring.dto;
+package com.snackstyling.spring.community.common.dto;
 
 public class TpoType {
     public String getTpo(int tpo){

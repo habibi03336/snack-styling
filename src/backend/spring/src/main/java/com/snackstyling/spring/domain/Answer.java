@@ -1,5 +1,6 @@
 package com.snackstyling.spring.domain;
 
+import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

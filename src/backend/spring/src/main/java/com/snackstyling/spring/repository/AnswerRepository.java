@@ -1,7 +1,7 @@
 package com.snackstyling.spring.repository;
 
 import com.snackstyling.spring.domain.Answer;
-import com.snackstyling.spring.domain.Question;
+import com.snackstyling.spring.community.question.domain.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

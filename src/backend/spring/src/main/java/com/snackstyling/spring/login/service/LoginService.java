@@ -46,9 +46,7 @@ public class LoginService {
     public Login selectLogin(Long id){
         return loginRepository.findById(id).orElse(null);
     }
-    public Member selectMember(Long id){
-        return memberRepository.findById(id).orElse(null);
-    }
+
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }
     public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
 

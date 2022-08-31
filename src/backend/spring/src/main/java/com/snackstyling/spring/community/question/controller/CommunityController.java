@@ -1,9 +1,10 @@
-package com.snackstyling.spring.controller;
+package com.snackstyling.spring.community.question.controller;
 
+import com.snackstyling.spring.community.common.dto.TpoType;
 import com.snackstyling.spring.domain.Answer;
-import com.snackstyling.spring.domain.Question;
+import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.dto.*;
-import com.snackstyling.spring.service.CommunityService;
+import com.snackstyling.spring.community.question.service.CommunityService;
 import com.snackstyling.spring.login.service.LoginService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -26,43 +27,7 @@ public class CommunityController {
     private final CommunityService communityService;
     private final LoginService loginService;
 
-    @ApiOperation(value="질문 등록",notes = "<strong>질문 정보를 받아 저장한다.</strong>")
-    @RequestMapping(value="/api/v1/board/question", method = RequestMethod.POST)
-    public CodiDto quePost(@RequestBody QuestionDto questionDto) {
-        Question question=new Question();
-        question.setMember(loginService.selectMember(questionDto.getId()));
-        question.setTpo(questionDto.getTpo());
-        question.setEndDate(questionDto.getEnd_date());
-        question.setPostDate(LocalDateTime.now());
-        question.setComments(questionDto.getComments());
-        question.setAdopt(0);
-        communityService.postQuestion(question);
-        CodiDto res=new CodiDto();
-        res.setId(question.getId());
-        return res;
-    }
-    @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
-    @ApiImplicitParam(name = "page", value = "페이지 번호", required = true, dataType = "int", defaultValue = "None")
-    @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
-    public List<QuestionListDto> loadBoard(@RequestParam("page") Integer page){
-        List<Question> list=communityService.loadQuestion(page).getContent();
-        List<QuestionListDto> listDto=new ArrayList<>();
-        for (Question temp: list){
-            QuestionListDto one_list=new QuestionListDto();
-            one_list.setQid(temp.getId());
-            one_list.setMid(temp.getMember().getId());
-            one_list.setNickname(temp.getMember().getNickname());
-            one_list.setWeight(temp.getMember().getWeight());
-            one_list.setHeight(temp.getMember().getHeight());
-            one_list.setPost_date(temp.getPostDate());
-            one_list.setEnd_date(temp.getEndDate());
-            one_list.setTpo(new TpoType().getTpo(temp.getTpo()));
-            one_list.setComments(temp.getComments());
-            one_list.setAns_count(communityService.countAnswer(temp));
-            listDto.add(one_list);
-        }
-        return listDto;
-    }
+
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
     @RequestMapping(value="api/v1/board/question/{id}", method = RequestMethod.GET)
@@ -102,21 +67,12 @@ public class CommunityController {
         questionDetail.setAns(ans);
         return questionDetail;
     }
-    @ApiOperation(value="질문 삭제",notes = "<strong>질문 삭제</strong>")
-    @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity queDelete(@PathVariable(value="id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    @ApiOperation(value="질문 수정",notes = "<strong>질문 수정</strong>")
-    @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity queUpdate(@PathVariable(value="id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
+
     @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
     @RequestMapping(value="/api/v1/board/answer", method = RequestMethod.POST)
     public ResponseEntity ansPost(@RequestBody AnswerDto answerDto){
         Answer answer= new Answer();
-        answer.setMember(loginService.selectMember(answerDto.getMid()));
+        //answer.setMember(loginService.selectMember(answerDto.getMid()));
         answer.setQuestion(communityService.selectQuestion(answerDto.getQid()));
         answer.setPostDate(LocalDateTime.now());
         answer.setComments(answerDto.getComments());
