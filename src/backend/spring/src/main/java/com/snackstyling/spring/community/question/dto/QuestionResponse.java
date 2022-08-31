@@ -17,5 +17,5 @@ public class QuestionResponse {
     private LocalDateTime postDate;
     private String tpo;
     private String comments;
-    private Long ans_count=0L;
+    private Long ansCount=0L;
 }

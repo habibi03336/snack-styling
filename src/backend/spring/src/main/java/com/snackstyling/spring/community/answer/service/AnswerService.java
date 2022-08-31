@@ -5,8 +5,6 @@ import com.snackstyling.spring.community.answer.dto.AnswerNumResponse;
 import com.snackstyling.spring.community.answer.dto.AnswerRequest;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.CoordinationDto;
-import com.snackstyling.spring.community.question.domain.Question;
-import com.snackstyling.spring.community.question.dto.QuestionRequest;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.community.question.service.QuestionService;
 import com.snackstyling.spring.community.common.dto.CodiDto;

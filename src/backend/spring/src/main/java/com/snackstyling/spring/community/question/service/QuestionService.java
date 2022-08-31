@@ -1,18 +1,21 @@
 package com.snackstyling.spring.community.question.service;
 
+import com.snackstyling.spring.community.answer.domain.Answer;
+import com.snackstyling.spring.community.answer.dto.AnswerResponse;
+import com.snackstyling.spring.community.answer.repository.AnswerRepository;
+import com.snackstyling.spring.community.common.dto.ClothDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
-import com.snackstyling.spring.community.question.dto.QuestionRequest;
-import com.snackstyling.spring.community.question.dto.QuestionNumResponse;
-import com.snackstyling.spring.community.question.dto.QuestionResponse;
-import com.snackstyling.spring.community.question.dto.QuestionsResponse;
+import com.snackstyling.spring.community.question.dto.*;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
     private final MemberService memberService;
     public QuestionNumResponse questionPost(QuestionRequest questionRequest){
         Question question=new Question();
@@ -51,7 +55,7 @@ public class QuestionService {
             questionResponse.setEndDate(temp.getEndDate());
             questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
             questionResponse.setComments(temp.getComments());
-            //one_list.setAns_count(communityService.countAnswer(temp));
+            questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
             questionResponses.add(questionResponse);
         }
         return new QuestionsResponse(questionResponses);
@@ -68,5 +72,35 @@ public class QuestionService {
     }
     public Question questionSelect(Long id){
         return questionRepository.findById(id).orElse(null);
+    }
+    public QuestionDetailResponse questionDetail(Long id){
+        Question question=questionRepository.findById(id).orElse(null);
+        QuestionResponse questionResponse=new QuestionResponse();
+        questionResponse.setQid(question.getId());
+        questionResponse.setMid(question.getMember().getId());
+        questionResponse.setNickname(question.getMember().getNickname());
+        questionResponse.setWeight(question.getMember().getWeight());
+        questionResponse.setHeight(question.getMember().getHeight());
+        questionResponse.setPostDate(question.getPostDate());
+        questionResponse.setEndDate(question.getEndDate());
+        questionResponse.setTpo(new OccasionDto().getTpo(question.getTpo()));
+        questionResponse.setComments(question.getComments());
+        questionResponse.setAnsCount(answerRepository.countByAnswer(question));
+
+        List<Answer> answer=answerRepository.findByQuestionOrderByAdoptDescPostDateAsc(question);
+        RestTemplate restTemplate=new RestTemplate();
+        List<AnswerResponse> answerResponses=new ArrayList<>();
+        for(Answer temp : answer){
+            AnswerResponse answerResponse=new AnswerResponse();
+            answerResponse.setNickname(temp.getMember().getNickname());
+            String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
+            ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
+            answerResponse.setClothDto(result.getBody());
+            answerResponse.setComments(temp.getComments());
+            answerResponse.setAdopt(temp.getAdopt());
+            answerResponses.add(answerResponse);
+        }
+
+        return new QuestionDetailResponse(questionResponse,answerResponses);
     }
 }
