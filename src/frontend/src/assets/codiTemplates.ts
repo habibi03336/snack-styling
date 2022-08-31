@@ -1,4 +1,4 @@
-import * as I from "../interfaces";
+import * as I from "../lib/types/interfaces";
 import Bottom from "./codi/bottom.png";
 import Cap from "./codi/cap.png";
 import Footwear from "./codi/footwear.png";

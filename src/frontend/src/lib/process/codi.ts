@@ -1,4 +1,4 @@
-import * as I from "../../interfaces";
+import * as I from "../types/interfaces";
 
 const categoryMap = new Map([
   ["top", "상의"],
