@@ -1,7 +1,6 @@
 package com.snackstyling.spring.service;
 
 import com.snackstyling.spring.domain.Answer;
-import com.snackstyling.spring.domain.Member;
 import com.snackstyling.spring.domain.Question;
 import com.snackstyling.spring.repository.AnswerRepository;
 import com.snackstyling.spring.repository.QuestionRepository;

@@ -1,4 +1,4 @@
-package com.snackstyling.spring.domain;
+package com.snackstyling.spring.login.domain;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,5 +18,5 @@ public class Login {
     private Long id;
     private String email;
     private String password;
-    private int used;
+    private Integer used=1;
 }
