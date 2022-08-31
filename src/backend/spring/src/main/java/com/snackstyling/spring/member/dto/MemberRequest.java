@@ -1,4 +1,4 @@
-package com.snackstyling.spring.dto;
+package com.snackstyling.spring.member.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberDto {
+public class MemberRequest {
     @ApiModelProperty(value = "고유번호", example = "34", required = true)
     private Long id;
     @ApiModelProperty(value = "별명", example = "킹명주", required = true)

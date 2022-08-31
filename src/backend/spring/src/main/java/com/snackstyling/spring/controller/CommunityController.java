@@ -1,12 +1,10 @@
 package com.snackstyling.spring.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.snackstyling.spring.domain.Answer;
 import com.snackstyling.spring.domain.Question;
 import com.snackstyling.spring.dto.*;
 import com.snackstyling.spring.service.CommunityService;
-import com.snackstyling.spring.service.LoginService;
+import com.snackstyling.spring.login.service.LoginService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.CodingErrorAction;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

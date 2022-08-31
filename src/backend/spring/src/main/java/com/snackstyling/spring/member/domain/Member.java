@@ -1,6 +1,6 @@
-package com.snackstyling.spring.domain;
+package com.snackstyling.spring.member.domain;
 
-import com.sun.istack.NotNull;
+import com.snackstyling.spring.login.domain.Login;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

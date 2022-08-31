@@ -1,4 +1,4 @@
-package com.snackstyling.spring.config;
+package com.snackstyling.spring.login.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
