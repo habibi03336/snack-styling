@@ -1,4 +1,4 @@
-package com.snackstyling.spring.dto;
+package com.snackstyling.spring.community.common.dto;
 
 import lombok.Getter;
 import lombok.Setter;

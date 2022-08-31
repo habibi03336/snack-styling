@@ -1,16 +1,14 @@
 package com.snackstyling.spring.community.question.service;
 
-import com.snackstyling.spring.community.common.dto.TpoType;
+import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.QuestionRequest;
 import com.snackstyling.spring.community.question.dto.QuestionNumResponse;
 import com.snackstyling.spring.community.question.dto.QuestionResponse;
 import com.snackstyling.spring.community.question.dto.QuestionsResponse;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
-import com.snackstyling.spring.dto.QuestionListDto;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,7 +25,7 @@ public class QuestionService {
     private final MemberService memberService;
     public QuestionNumResponse questionPost(QuestionRequest questionRequest){
         Question question=new Question();
-        question.setMember(memberService.selectMember(questionRequest.getId()));
+        question.setMember(memberService.memberSelect(questionRequest.getId()));
         question.setTpo(questionRequest.getTpo());
         question.setEndDate(questionRequest.getEndDate());
         question.setPostDate(LocalDateTime.now());
@@ -51,7 +49,7 @@ public class QuestionService {
             questionResponse.setHeight(temp.getMember().getHeight());
             questionResponse.setPostDate(temp.getPostDate());
             questionResponse.setEndDate(temp.getEndDate());
-            questionResponse.setTpo(new TpoType().getTpo(temp.getTpo()));
+            questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
             questionResponse.setComments(temp.getComments());
             //one_list.setAns_count(communityService.countAnswer(temp));
             questionResponses.add(questionResponse);
@@ -67,5 +65,8 @@ public class QuestionService {
         question.setEndDate(questionRequest.getEndDate());
         question.setComments(questionRequest.getComments());
         questionRepository.save(question);
+    }
+    public Question questionSelect(Long id){
+        return questionRepository.findById(id).orElse(null);
     }
 }

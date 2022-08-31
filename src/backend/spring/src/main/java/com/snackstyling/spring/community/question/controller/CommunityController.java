@@ -1,24 +1,21 @@
 package com.snackstyling.spring.community.question.controller;
 
-import com.snackstyling.spring.community.common.dto.TpoType;
-import com.snackstyling.spring.domain.Answer;
+import com.snackstyling.spring.community.common.dto.ClothDto;
+import com.snackstyling.spring.community.common.dto.OccasionDto;
+import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.dto.*;
-import com.snackstyling.spring.community.question.service.CommunityService;
+import com.snackstyling.spring.community.answer.service.CommunityService;
 import com.snackstyling.spring.login.service.LoginService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class CommunityController {
         que.setHeight(question.getMember().getHeight());
         que.setPost_date(question.getPostDate());
         que.setEnd_date(question.getEndDate());
-        que.setTpo(new TpoType().getTpo(question.getTpo()));
+        que.setTpo(new OccasionDto().getTpo(question.getTpo()));
         que.setComments(question.getComments());
         que.setAns_count(communityService.countAnswer(question));
         questionDetail.setQue(que);
@@ -68,45 +65,4 @@ public class CommunityController {
         return questionDetail;
     }
 
-    @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
-    @RequestMapping(value="/api/v1/board/answer", method = RequestMethod.POST)
-    public ResponseEntity ansPost(@RequestBody AnswerDto answerDto){
-        Answer answer= new Answer();
-        //answer.setMember(loginService.selectMember(answerDto.getMid()));
-        answer.setQuestion(communityService.selectQuestion(answerDto.getQid()));
-        answer.setPostDate(LocalDateTime.now());
-        answer.setComments(answerDto.getComments());
-        //codi는 django server에 있으므로 조회해야함
-        RestTemplate restTemplate=new RestTemplate();
-        Map<String, Integer> codi=new HashMap<>();
-        codi.put("top",answerDto.getTop());
-        codi.put("bottom",answerDto.getBottom());
-        codi.put("cap",answerDto.getCap());
-        codi.put("footwear",answerDto.getFootwear());
-        String url="http://backend-django:8000/api/v1/codi/";
-        ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
-        answer.setCodi(result.getBody().getId());
-        communityService.postAnswer(answer);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    @ApiOperation(value="답변 조회",notes = "<strong>답변 조회</strong>")
-    @RequestMapping(value="/api/v1/board/answer/", method = RequestMethod.GET)
-    public ResponseEntity ansSelect() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    @ApiOperation(value="답변 하나 조회",notes = "<strong>답변 하나 조회</strong>")
-    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.GET)
-    public ResponseEntity ansSelectOne(@PathVariable(value="id") String id) {
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    @ApiOperation(value="답변 삭제",notes = "<strong>답변 삭제</strong>")
-    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity ansDelete(@PathVariable(value="id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    @ApiOperation(value="답변 수정",notes = "<strong>답변 수정</strong>")
-    @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity ansUpdate(@PathVariable(value="id") String id){
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

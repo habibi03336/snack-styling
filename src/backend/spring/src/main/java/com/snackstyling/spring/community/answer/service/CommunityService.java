@@ -1,8 +1,8 @@
-package com.snackstyling.spring.community.question.service;
+package com.snackstyling.spring.community.answer.service;
 
-import com.snackstyling.spring.domain.Answer;
+import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.question.domain.Question;
-import com.snackstyling.spring.repository.AnswerRepository;
+import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

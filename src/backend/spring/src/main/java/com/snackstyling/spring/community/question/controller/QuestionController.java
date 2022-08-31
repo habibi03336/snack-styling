@@ -1,21 +1,14 @@
 package com.snackstyling.spring.community.question.controller;
 
-import com.snackstyling.spring.community.common.dto.TpoType;
-import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.QuestionRequest;
 import com.snackstyling.spring.community.question.dto.QuestionNumResponse;
 import com.snackstyling.spring.community.question.dto.QuestionsResponse;
 import com.snackstyling.spring.community.question.service.QuestionService;
-import com.snackstyling.spring.dto.QuestionListDto;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +25,12 @@ public class QuestionController {
     @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
     public ResponseEntity<QuestionsResponse> loadQuestion(@RequestParam("page") Integer page){
         return ResponseEntity.ok().body(questionService.questionList(page));
+    }
+    @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
+    @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
+    @RequestMapping(value="api/v1/board/question/{id}", method = RequestMethod.GET)
+    public ResponseEntity detailBoard(@PathVariable(value="id") String id) {
+        return ResponseEntity.ok().build();
     }
     @ApiOperation(value="질문 삭제",notes = "<strong>질문을 삭제한다.</strong>")
     @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.DELETE)

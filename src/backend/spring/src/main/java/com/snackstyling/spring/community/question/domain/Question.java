@@ -1,6 +1,6 @@
 package com.snackstyling.spring.community.question.domain;
 
-import com.snackstyling.spring.domain.Answer;
+import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
