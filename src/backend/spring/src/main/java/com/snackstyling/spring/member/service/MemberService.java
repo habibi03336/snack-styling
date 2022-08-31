@@ -28,4 +28,7 @@ public class MemberService {
         member.setHeight(memberRequest.getHeight());
         memberRepository.save(member);
     }
+    public Member memberSelect(Long id){
+        return memberRepository.findById(id).orElse(null);
+    }
 }

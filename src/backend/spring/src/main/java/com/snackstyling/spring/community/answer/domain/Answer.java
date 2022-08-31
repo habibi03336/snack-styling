@@ -1,5 +1,6 @@
-package com.snackstyling.spring.domain;
+package com.snackstyling.spring.community.answer.domain;
 
+import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,5 @@ public class Answer {
     private Long codi;
     @Column(length = 1000)
     private String comments;
+    private Integer adopt=0;
 }

@@ -1,24 +1,21 @@
-package com.snackstyling.spring.dto;
+package com.snackstyling.spring.community.question.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
-@NoArgsConstructor
-public class QuestionListDto {
+public class QuestionResponse {
     private Long qid;
     private Long mid;
     private String nickname;
     private Integer weight;
     private Integer height;
-    private LocalDate end_date;
-    private LocalDateTime post_date;
+    private LocalDate endDate;
+    private LocalDateTime postDate;
     private String tpo;
     private String comments;
-    private Long ans_count;
+    private Long ansCount=0L;
 }
