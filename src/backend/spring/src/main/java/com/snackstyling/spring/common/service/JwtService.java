@@ -1,22 +1,15 @@
 package com.snackstyling.spring.common.service;
 
-import com.snackstyling.spring.common.dto.TokenDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.snackstyling.spring.common.exception.*;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY="비밀^^~";
+    private static final String SECRET_KEY="비밀^^";
     //access token
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위
@@ -47,10 +40,19 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
-    public String resolveToken(HttpServletRequest request){
-        return request.getHeader("Authorization");
-    }
     public void validateToken(String token){
-
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+        } catch (SignatureException e){
+            throw new TokenSignatureException("Invalid token signature");
+        } catch (MalformedJwtException e){
+            throw new TokenMatchException("Invalid token");
+        } catch (UnsupportedJwtException e){
+            throw new TokenSupportException("Unsupported token");
+        } catch (IllegalArgumentException e){
+            throw new ClaimEmptyException("Token claims string is empty");
+        } catch (ExpiredJwtException e){
+            throw new TokenExpiredException("Token has expired");
+        }
     }
 }
