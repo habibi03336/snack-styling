@@ -1,5 +1,7 @@
 package com.snackstyling.spring.login.service;
 
+import com.snackstyling.spring.common.dto.AccessTokenResponse;
+import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.AuthRequest;
 import com.snackstyling.spring.login.exception.NoneEmailException;
@@ -24,8 +26,8 @@ public class LoginService {
     private final MemberRepository memberRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public MemberResponse checkUser(AuthRequest authRequest){
+    private final JwtService jwtService;
+    public AccessTokenResponse checkUser(AuthRequest authRequest){
         if(!loginRepository.existsByEmail(authRequest.getEmail())){
             throw new NoneEmailException("존재하지 않는 아이디입니다.");
         }
@@ -41,7 +43,7 @@ public class LoginService {
             throw new NoneMemberException("맴버정보를 입력하지 않았습니다.");
         }
 
-        return new MemberResponse(member.getId());
+        return new AccessTokenResponse(jwtService.createToken(authRequest.getEmail()));
     }
     public Login selectLogin(Long id){
         return loginRepository.findById(id).orElse(null);

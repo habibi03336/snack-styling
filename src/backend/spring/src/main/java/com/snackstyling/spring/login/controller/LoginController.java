@@ -1,5 +1,6 @@
 package com.snackstyling.spring.login.controller;
 
+import com.snackstyling.spring.common.dto.AccessTokenResponse;
 import com.snackstyling.spring.login.dto.AuthRequest;
 import com.snackstyling.spring.login.dto.AuthResponse;
 import com.snackstyling.spring.login.service.JoinService;
@@ -24,7 +25,7 @@ public class LoginController {
 
     @ApiOperation(value="로그인",notes = "<strong>이메일과 패스워드를 입력받아 성공 여부를 알린다.</strong>")
     @RequestMapping(value="/api/v1/accounts", method = RequestMethod.POST)
-    public ResponseEntity<MemberResponse> userLogin(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<AccessTokenResponse> userLogin(@RequestBody AuthRequest authRequest){
         return ResponseEntity.ok().body(loginService.checkUser(authRequest));
     }
 
