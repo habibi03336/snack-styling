@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY="kimmjkingwang1jjangand10zonejar";
+    private static final String SECRET_KEY="비밀^^~";
     //access token
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위
