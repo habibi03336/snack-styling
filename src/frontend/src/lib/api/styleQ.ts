@@ -1,12 +1,12 @@
 import client from "./client";
 import address from "./address";
 
-const baseURL = address["api"];
-export const getStyleQs = (page: number) =>
-  client.get(baseURL + `/board/load/?page=${page}`);
+const baseURL = address["api"] + "/board";
+export const GET_STYLEQS = (page: number) =>
+  client.get(baseURL + `/question/?page=${page}`);
 
-export const getStyleQ = (id: number) =>
-  client.get(baseURL + `/board/detail/?id=${id}`);
+export const GET_STYLEQ = (id: number) =>
+  client.get(baseURL + `/question/${id}`);
 
 interface StyleQData {
   id: number;
@@ -14,16 +14,18 @@ interface StyleQData {
   tpo: number;
   comments: string;
 }
-export const postStyleQ = (styleQData: StyleQData) =>
-  client.post(baseURL + "/board/question", styleQData);
+export const POST_STYLEQ = (styleQData: StyleQData) =>
+  client.post(baseURL + "/question", styleQData);
 
 interface StyleAnsData {
   mid: number;
   qid: number;
-  top: number;
-  bottom: number;
+  top: number | null;
+  bottom: number | null;
+  cap: number | null;
+  footwear: number | null;
   comments?: string;
 }
 
-export const postStyleAns = (styleAnsData: StyleAnsData) =>
-  client.post(baseURL + "/board/answer", styleAnsData);
+export const POST_STYLE_ANSWER = (styleAnsData: StyleAnsData) =>
+  client.post(baseURL + "/answer", styleAnsData);

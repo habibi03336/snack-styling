@@ -31,22 +31,22 @@ import "./theme/variables.css";
 setupIonicReact();
 
 import "./App.css";
-import Icon from "./components/icon/Icon";
+import Icon from "./apps/common/components/Icon";
 
-import Closet from "./pages/closet/Closet";
-import ClothRegist from "./pages/closet/ClothRegist";
-import CodiShowCase from "./pages/CodiShowCase";
-import StyleQList from "./pages/styleQ/StyleQList";
-import StyleQDetail from "./pages/styleQ/StyleQDetail";
-import ApplyForm from "./pages/ApplyForm";
-import EmailLogin from "./pages/EmailLogin";
-import Signin from "./pages/Signin";
-import Home from "./pages/Home";
-import MemberDetailRegist from "./pages/MemberDetail";
-import Mypage from "./pages/Mypage";
+import Closet from "./apps/closet/pages/Closet";
+import ClothRegist from "./apps/closet/pages/ClothRegist";
+import CodiShowCase from "./apps/codiRegist/pages/CodiShowCase";
+import StyleQList from "./apps/styleQ/pages/StyleQList";
+import StyleQDetail from "./apps/styleQ/pages/StyleQDetail";
+import ApplyForm from "./apps/styleQ/pages/ApplyForm";
+import EmailLogin from "./apps/login/pages/EmailLogin";
+import Signin from "./apps/signin/pages/Signin";
+import Home from "./apps/home/pages/Home";
+import MemberDetailRegist from "./apps/mypage/pages/MemberDetail";
+import Mypage from "./apps/mypage/pages/Mypage";
 import { useRecoilState } from "recoil";
-import user from "./recoil/user";
-import Login from "./pages/Login";
+import user from "./apps/common/state/user";
+import Login from "./apps/login/pages/Login";
 
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
