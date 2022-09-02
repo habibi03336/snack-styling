@@ -3,9 +3,9 @@ package com.snackstyling.spring.common.dto;
 import lombok.Getter;
 
 @Getter
-public class TokenDto {
+public class AcTokenResponse {
     private String accessToken;
-    public TokenDto(String accessToken){
+    public AcTokenResponse(String accessToken){
         this.accessToken=accessToken;
     }
 }
