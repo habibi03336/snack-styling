@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.Collections;
 import java.util.Map;
 
-@ControllerAdvice("com.snackstyling.spring.common.controller")
+@ControllerAdvice("com.snackstyling.spring")
 public class JwtExceptionHandler {
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<Map<String, String>> TokenExpried(Exception e){
