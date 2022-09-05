@@ -7,7 +7,7 @@ export interface userState {
 const mid = window.localStorage.getItem("mid");
 
 export const userState = atom<userState>({
-  key: "userState",
+  key: "Common/userState",
   default: {
     isLogined: mid ? true : false,
     uid: null,

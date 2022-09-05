@@ -22,8 +22,8 @@ import useClothRegist from "../hooks/useClothRegist";
 import * as I from "../../../lib/types/interfaces";
 import CardLayout from "../components/CardLayout";
 import { useHistory } from "react-router-dom";
-import useTags from "../../common/hooks/useTags";
-import useClothes from "../../common/hooks/useCloths";
+import useTags from "../hooks/useTags";
+import useClothes from "../hooks/useClothes";
 import DownButton from "../../common/components/DownButton";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -31,9 +31,8 @@ const ClothCloset = () => {
   const [showTags, setShowTags] = useState<boolean>(false);
   const [modalDetail, setModalDetail] = useState<I.Cloth | null>(null);
 
-  const { tags, toggleTag, clearSelection, selectTag, useSelectedTags } =
+  const { tags, toggleTag, clearSelection, selectTag, selectedTags } =
     useTags();
-  const selectedTags = useSelectedTags();
 
   const { clothes, loadMore, loadDone } = useClothes();
 
