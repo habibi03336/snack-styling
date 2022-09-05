@@ -1,15 +1,15 @@
 package com.snackstyling.spring.community.question.dto;
 
 import com.snackstyling.spring.community.answer.dto.AnswerResponse;
+import com.snackstyling.spring.community.answer.dto.AnswersResponse;
 import lombok.Getter;
 
-import java.util.List;
 
 @Getter
 public class QuestionDetailResponse {
     private QuestionResponse question;
-    private List<AnswerResponse> answers;
-    public QuestionDetailResponse(QuestionResponse question, List<AnswerResponse> answers){
+    private AnswersResponse answers;
+    public QuestionDetailResponse(QuestionResponse question, AnswersResponse answers){
         this.question=question;
         this.answers=answers;
     }
