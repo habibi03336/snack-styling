@@ -2,6 +2,7 @@ package com.snackstyling.spring.community.question.service;
 
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerResponse;
+import com.snackstyling.spring.community.answer.dto.AnswersResponse;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.ClothDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
@@ -101,6 +102,6 @@ public class QuestionService {
             answerResponses.add(answerResponse);
         }
 
-        return new QuestionDetailResponse(questionResponse,answerResponses);
+        return new QuestionDetailResponse(questionResponse,new AnswersResponse(answerResponses));
     }
 }
