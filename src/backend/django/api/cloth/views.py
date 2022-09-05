@@ -10,8 +10,6 @@ from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothC
 
 from model.clothmodel.models import Cloth
 
-import api.cloth.schemas as exampleSchema
-
 
 @extend_schema_view(
     create=extend_schema(
@@ -73,30 +71,6 @@ class ClothViewSet(mixins.CreateModelMixin,
         serializer.instance = instance
         serializer.save()
         return Response(serializer.data)
-
-
-class ClothUpdateAPIView(mixins.UpdateModelMixin,
-                         GenericViewSet):
-    queryset = Cloth.objects.all()
-    serializer_class = ClothTagSerializer
-
-    @extend_schema(
-        summary="여러 옷 세부정보 업데이트",
-        tags=["Cloth"],
-        request=ClothTagSerializer(many=True),
-        responses=None
-    )
-    def update(self, request, *args, **kwargs):
-        print("Cloth: Partial update RUN")
-        kwargs["partial"] = True
-        requestData = request.data["clothes"]
-        kwargs["many"] = isinstance(requestData, list)
-        instance = self.get_queryset()
-        print(instance)
-        serializer = self.get_serializer(instance, data=requestData, **kwargs)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(None)
 
 
 @extend_schema_view(
