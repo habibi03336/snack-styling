@@ -1,6 +1,11 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+
 from api.tag import views
 
+router = routers.DefaultRouter()
+router.register(r'', views.TagViewSet, basename="tag")
+
 urlpatterns = [
-    path('', views.TagViewSet.as_view({'get': 'list',})),
+    path('', include(router.urls)),
 ]
