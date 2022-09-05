@@ -13,8 +13,8 @@ const useLogin = () => {
     (async () => {
       const res = await AUTH_LOGIN({ email: id, pwd: pwd });
       if (res.status < 300) {
-        window.localStorage.setItem("mid", res.data.id);
-        setUserState({ ...userState, isLogined: true, id: res.data.id });
+        window.localStorage.setItem("mid", res.data.mid);
+        setUserState({ ...userState, isLogined: true, id: res.data.mid });
         subscriber.complete();
       }
     })();
