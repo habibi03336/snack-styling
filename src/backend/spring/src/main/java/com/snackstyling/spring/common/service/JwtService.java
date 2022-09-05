@@ -17,7 +17,7 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private static final String SECRET_KEY="비밀^^";
+    private static final String SECRET_KEY="kimmjkingwang1jjangand10zonejar";
     private static Long accessExpired= Duration.ofMinutes(30).toMillis(); //30분
     private static Long refreshExpired=Duration.ofDays(7).toMillis(); //1주
     private final TokenRepository tokenRepository;
