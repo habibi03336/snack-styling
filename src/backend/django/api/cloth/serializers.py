@@ -14,7 +14,7 @@ from rembg import remove
 
 def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     pil_img = Image.open(raw_img).convert('RGBA')
-    
+
     max_value = max(pil_img.width, pil_img.height)
     div_value = max(max_value // 1000, 1)
     resize_img = pil_img.resize((
@@ -82,13 +82,12 @@ class ClothListSerializer(serializers.ListSerializer):
         data_mapping = {item['id']: item for item in validated_data}
         for one in instance:
             self.child.update(one, data_mapping[one.id])
-            
+
         return instance
-    
+
     def get_id_list(self):
         result = {item['id'] for item in self.validated_data}
         return result
-        
 
 
 class ClothTagSerializer(serializers.ModelSerializer):
