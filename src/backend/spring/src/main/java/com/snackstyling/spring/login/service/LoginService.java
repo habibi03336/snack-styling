@@ -1,5 +1,6 @@
 package com.snackstyling.spring.login.service;
 
+import com.snackstyling.spring.common.dto.TokenDto;
 import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.AuthRequest;
@@ -40,8 +41,8 @@ public class LoginService {
         if(member==null){
             throw new NoneMemberException("맴버정보를 입력하지 않았습니다.");
         }
-
-        return jwtService.createToken(authRequest.getEmail());
+        TokenDto tokens=jwtService.createToken(authRequest.getEmail());
+        return new LoginResponse(member.getId(),tokens);
     }
     public Login selectLogin(Long id){
         return loginRepository.findById(id).orElse(null);
