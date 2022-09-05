@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'model.clothmodel.apps.ClothModelConfig',
     'model.tagmodel.apps.TagModelConfig',
     'model.codimodel.apps.CodiModelConfig',
+    'model.codiplanmodel.apps.CodiPlanModelConfig',
     
     'rest_framework',
     'corsheaders',
@@ -139,6 +140,7 @@ MIGRATION_MODULES = {
     'clothmodel': 'model.clothmodel.migrations',
     'tagmodel': 'model.tagmodel.migrations',
     'codimodel': 'model.codimodel.migrations',
+    'codiplanmodel': 'model.codiplanmodel.migrations',
 }
 
 # REST FRAMEWORK SETTINGS
