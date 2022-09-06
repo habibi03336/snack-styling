@@ -86,8 +86,12 @@ WSGI_APPLICATION = 'coffProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'src/db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'stylingapp',
+        'USER': 'user',
+        'PASSWORD': '12345678',
+        'HOST': 'db-mysql',
+        'PORT': '3306',
     }
 }
 
