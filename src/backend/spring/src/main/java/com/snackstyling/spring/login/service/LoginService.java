@@ -44,10 +44,7 @@ public class LoginService {
         TokenDto tokens=jwtService.createToken(authRequest.getEmail());
         return new LoginResponse(member.getId(),tokens);
     }
-    public Login selectLogin(Long id){
-        return loginRepository.findById(id).orElse(null);
-    }
-
+    public Login selectLogin(Long id){ return loginRepository.findById(id).orElse(null);}
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }
     public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
 

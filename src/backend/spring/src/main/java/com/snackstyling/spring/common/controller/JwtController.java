@@ -2,8 +2,6 @@ package com.snackstyling.spring.common.controller;
 
 import com.snackstyling.spring.common.dto.AcTokenResponse;
 import com.snackstyling.spring.common.service.JwtService;
-import com.snackstyling.spring.login.dto.AuthRequest;
-import com.snackstyling.spring.login.dto.AuthResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
