@@ -37,4 +37,9 @@ public class JwtExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap("message",e.getMessage()));
     }
+    @ExceptionHandler(MemberIdException.class)
+    public ResponseEntity<Map<String, String>> MemberNotSame(Exception e){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap("message",e.getMessage()));
+    }
 }
