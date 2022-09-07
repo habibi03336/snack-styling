@@ -1,13 +1,18 @@
 package com.snackstyling.spring.community.answer.service;
 
+import com.snackstyling.spring.common.domain.Notification;
+import com.snackstyling.spring.common.repository.NotificationRepository;
+import com.snackstyling.spring.common.service.NotificationService;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerNumResponse;
 import com.snackstyling.spring.community.answer.dto.AnswerRequest;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.CoordinationDto;
+import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.community.question.service.QuestionService;
 import com.snackstyling.spring.community.common.dto.CodiDto;
+import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +26,23 @@ import java.time.LocalDateTime;
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
+    private final NotificationService notificationService;
     private final MemberService memberService;
     private final QuestionService questionService;
+
     public AnswerNumResponse postAnswer(AnswerRequest answerRequest){
         Answer answer= new Answer();
-        answer.setMember(memberService.memberSelect(answerRequest.getMid()));
-        answer.setQuestion(questionService.questionSelect(answerRequest.getQid()));
+        Member member=memberService.memberSelect(answerRequest.getMid());
+        Question question=questionService.questionSelect(answerRequest.getQid());
+        // 알람 추가 코드
+        Notification notify= new Notification();
+        notify.setMember(member);
+        notify.setQuestion(question);
+        notify.setType(0); //0은 해당 질문에 답변이 달렸을 때 알람
+        notificationService.saveNotification(notify);
+        // 끝
+        answer.setMember(member);
+        answer.setQuestion(question);
         answer.setPostDate(LocalDateTime.now());
         answer.setComments(answerRequest.getComments());
         CoordinationDto codi=new CoordinationDto();
@@ -66,6 +82,12 @@ public class AnswerService {
         answer.getQuestion().setAdopt(1);
         answerRepository.save(answer);
         questionRepository.save(answer.getQuestion());
-
+        // 내 답변이 채택받았을 때 코드
+        Notification notify=new Notification();
+        notify.setMember(answer.getMember());
+        notify.setQuestion(answer.getQuestion());
+        notify.setType(1);
+        notificationService.saveNotification(notify);
+        // 끝
     }
 }
