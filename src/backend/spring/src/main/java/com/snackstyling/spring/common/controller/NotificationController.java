@@ -15,10 +15,12 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final JwtService jwtService;
     @ApiOperation(value="알람 전송",notes = "<strong>모든 알람을 출력한다.</strong>")
-    @RequestMapping(value="/api/v1/notifications/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity<NotificationsResponse> notifyLoad(@RequestHeader("Authorization") String token, @PathVariable(value = "id") Long id){
-        jwtService.validateToken(token);
-        return ResponseEntity.ok().body(notificationService.selectNotification(id));
+    @RequestMapping(value="/api/v1/notifications", method = RequestMethod.GET)
+    public ResponseEntity<NotificationsResponse> notifyLoad(@RequestHeader("Authorization") String token,
+                                                            @RequestParam("users") Long users){
+
+        jwtService.validateToken(token, users);
+        return ResponseEntity.ok().body(notificationService.selectNotification(users));
     }
 
     @ApiOperation(value="알람 읽음",notes = "<strong>답변 알람에 대한 정보</strong>")
@@ -27,10 +29,10 @@ public class NotificationController {
         notificationService.readNotification(id);
         return ResponseEntity.ok().build();
     }
-    @ApiOperation(value="알람 읽음",notes = "<strong>답변 알람에 대한 정보</strong>")
-    @RequestMapping(value="/api/v1/notifications/users/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity notifyAllRead(@PathVariable(value = "id") Long id){
-        notificationService.readAllNotification(id);
+    @ApiOperation(value="알람 모두 읽음",notes = "<strong>답변 알람에 대한 정보</strong>")
+    @RequestMapping(value="/api/v1/notifications", method = RequestMethod.PATCH)
+    public ResponseEntity notifyAllRead(@RequestParam("users") Long users){
+        notificationService.readAllNotification(users);
         return ResponseEntity.ok().build();
     }
 }
