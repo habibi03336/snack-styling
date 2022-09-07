@@ -9,6 +9,7 @@ djangorestframework = "*"
 rembg = "*"
 pillow = "*"
 onnxruntime = "*"
+mysqlclient = "*"
 
 [dev-packages]
 autopep8 = "*"
