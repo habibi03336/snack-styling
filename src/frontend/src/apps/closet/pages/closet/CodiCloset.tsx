@@ -11,15 +11,18 @@ import {
 import { trashOutline } from "ionicons/icons";
 import { useState } from "react";
 
-import CardLayout from "../components/CardLayout";
-import CodiCard from "../components/CodiCard";
-import FloatingButton from "../../common/components/FloatingButton";
-import useCodis from "../../common/hooks/useCodis";
+import CardLayout from "../../components/CardLayout";
+import CodiCard from "../../components/CodiCard";
+import FloatingButton from "../../../common/components/FloatingButton";
+import useCodis from "../../hooks/useCodis";
 
-import * as I from "../../../lib/types/interfaces";
+import * as I from "../../../../lib/types/interfaces";
+import { selectedCodiIdAtom } from "../../state/codi";
+import { useRecoilState } from "recoil";
 
 const CodiCloset = () => {
   const { codis } = useCodis();
+  const [_, setSelectedCodi] = useRecoilState(selectedCodiIdAtom);
   const [modalDetail, setModalDetail] = useState<I.CodiTemplate | null>(null);
 
   return (
@@ -69,7 +72,15 @@ const CodiCloset = () => {
               />
             </IonContent>
 
-            <IonButton>수정하기</IonButton>
+            <IonButton
+              onClick={() => {
+                setSelectedCodi(modalDetail.id!);
+                setModalDetail(null);
+              }}
+              routerLink={"/codiShowcase/update/-1/-1"}
+            >
+              수정하기
+            </IonButton>
           </>
         )}
       </IonModal>
