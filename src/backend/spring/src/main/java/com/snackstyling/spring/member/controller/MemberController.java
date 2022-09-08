@@ -25,20 +25,19 @@ public class MemberController {
     }
     @ApiOperation(value="멤버정보 확인",notes = "<strong>마이페이지로 회원 정보를 제공한다.</strong>")
     @RequestMapping(value="/api/v1/profile", method = RequestMethod.GET)
-    public ResponseEntity<MemberInfResponse> inquiryMember(@RequestHeader("Authorization") String token,
-                                                           @RequestParam("users") Long users){
-        jwtService.validateToken(token, users);
-        return ResponseEntity.ok().body(memberService.memberMyPage(users));
+    public ResponseEntity<MemberInfResponse> inquiryMember(@RequestHeader("Authorization") String token){
+        jwtService.validateToken(token);
+        return ResponseEntity.ok().body(memberService.memberMyPage(jwtService.getMemberId(token)));
     }
     @ApiOperation(value="맴버 질문 조회",notes = "<strong>내가 등록한 질문을 조회한다.</strong>")
     @RequestMapping(value="/api/v1/profile/questions", method = RequestMethod.GET)
-    public ResponseEntity<QuestionsResponse> inquiryAnswer(@RequestParam("users") Long users){
-        return ResponseEntity.ok().body(memberService.memberQuestions(users));
+    public ResponseEntity<QuestionsResponse> inquiryAnswer(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok().body(memberService.memberQuestions(jwtService.getMemberId(token)));
     }
     @ApiOperation(value="맴버 답변 조회",notes = "<strong>내가 등록한 답변을 조회한다.</strong>")
     @RequestMapping(value="/api/v1/profile/answers", method = RequestMethod.GET)
-    public ResponseEntity<AnswersResponse> inquiryQuestion(@RequestParam("users") Long users){
-        return ResponseEntity.ok().body(memberService.memberAnswers(users));
+    public ResponseEntity<AnswersResponse> inquiryQuestion(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok().body(memberService.memberAnswers(jwtService.getMemberId(token)));
     }
     /*
     @RequestMapping(value="/api/v1/users", method = RequestMethod.PATCH)

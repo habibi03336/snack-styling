@@ -6,8 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class AnswerRequest {
-    @ApiModelProperty(value = "맴버고유식별번호", example = "6", required = true)
-    private Long mid;
     @ApiModelProperty(value = "질문고유식별번호", example = "8", required = true)
     private Long qid;
     @ApiModelProperty(value = "코디 정보", example = "{top:1,bottom:2}", required = true)

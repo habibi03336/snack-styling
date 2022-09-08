@@ -41,8 +41,8 @@ public class LoginService {
         if(member==null){
             throw new NoneMemberException("맴버정보를 입력하지 않았습니다.");
         }
-        TokenDto tokens=jwtService.createToken(authRequest.getEmail());
-        return new LoginResponse(member.getId(),tokens);
+        TokenDto tokens=jwtService.createToken(authRequest.getEmail(), member);
+        return new LoginResponse(tokens);
     }
     public Login selectLogin(Long id){ return loginRepository.findById(id).orElse(null);}
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }

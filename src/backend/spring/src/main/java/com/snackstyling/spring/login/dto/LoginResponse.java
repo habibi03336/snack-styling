@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponse {
-    private Long mid;
     private TokenDto tokens;
-    public LoginResponse(Long mid, TokenDto tokens){
-        this.mid=mid;
+    public LoginResponse(TokenDto tokens){
         this.tokens=tokens;
     }
 }

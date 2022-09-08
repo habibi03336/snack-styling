@@ -8,8 +8,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class QuestionRequest {
-    @ApiModelProperty(value = "맴버번호", example = "5", required = true)
-    private Long id;
     @ApiModelProperty(value = "TPO", example = "1", required = true)
     private Integer tpo;
     @ApiModelProperty(value = "옷 입을 날짜", example = "2022-08-23", required = true)

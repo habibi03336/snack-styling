@@ -15,10 +15,9 @@ public class AnswerController {
     private final AnswerService answerService;
     @ApiOperation(value="답변 등록",notes = "<strong>답변 정보를 받아 저장한다.</strong>")
     @RequestMapping(value="/api/v1/board/answer", method = RequestMethod.POST)
-    public ResponseEntity<AnswerNumResponse> postAnswer(@RequestBody AnswerRequest answerRequest){
-        return ResponseEntity.ok().body(answerService.postAnswer(answerRequest));
+    public ResponseEntity<AnswerNumResponse> postAnswer(@RequestHeader("Authorization") String token, @RequestBody AnswerRequest answerRequest){
+        return ResponseEntity.ok().body(answerService.postAnswer(token, answerRequest));
     }
-
     @ApiOperation(value="답변 상세 조회",notes = "<strong>답변을 상세하게 봅니다.</strong>")
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.GET)
     public ResponseEntity detailAnswer(@PathVariable(value="id") String id) {
@@ -30,12 +29,14 @@ public class AnswerController {
         answerService.deleteAnswer(id);
         return ResponseEntity.ok().build();
     }
+    /*
     @ApiOperation(value="답변 수정",notes = "<strong>답변을 수정합니다.</strong>")
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.PATCH)
     public ResponseEntity updateAnswer(@PathVariable(value="id") Long id, @RequestBody AnswerRequest answerRequest){
         answerService.updateAnswer(id,answerRequest);
         return ResponseEntity.ok().build();
     }
+    */
     @ApiOperation(value="답변 채택",notes = "<strong>답변을 채택합니다.</strong>")
     @RequestMapping(value="/api/v1/board/answer/adopt/{id}", method = RequestMethod.PATCH)
     public ResponseEntity adoptAnswer(@PathVariable(value="id") Long id){
