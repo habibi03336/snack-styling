@@ -1,5 +1,6 @@
 package com.snackstyling.spring.community.question.service;
 
+import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerResponse;
 import com.snackstyling.spring.community.answer.dto.AnswersResponse;
@@ -8,6 +9,7 @@ import com.snackstyling.spring.community.common.dto.ClothDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.*;
+import com.snackstyling.spring.community.question.exception.DelQueException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +30,10 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final MemberService memberService;
-    public QuestionNumResponse questionPost(QuestionRequest questionRequest){
+    private final JwtService jwtService;
+    public QuestionNumResponse questionPost(String token, QuestionRequest questionRequest){
         Question question=new Question();
-        question.setMember(memberService.memberSelect(questionRequest.getId()));
+        question.setMember(memberService.memberSelect(jwtService.getMemberId(token)));
         question.setTpo(questionRequest.getTpo());
         question.setEndDate(questionRequest.getEndDate());
         question.setPostDate(LocalDateTime.now());
@@ -40,7 +43,7 @@ public class QuestionService {
     }
     public List<Question> loadQuestion(Integer page){
         Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
-        return questionRepository.findAll(pageable).getContent();
+        return questionRepository.findAllByUsed(1,pageable).getContent();
     }
     public QuestionsResponse questionList(Integer page){
         List<Question> list=loadQuestion(page);
@@ -62,7 +65,9 @@ public class QuestionService {
         return new QuestionsResponse(questionResponses);
     }
     public void questionDelete(Long id){
-        questionRepository.deleteById(id);
+        Question question=questionSelect(id);
+        question.setUsed(0);
+        questionRepository.save(question);
     }
     public void questionUpdate(Long id, QuestionRequest questionRequest){
         Question question=questionRepository.findById(id).orElse(null);
@@ -75,7 +80,10 @@ public class QuestionService {
         return questionRepository.findById(id).orElse(null);
     }
     public QuestionDetailResponse questionDetail(Long id){
-        Question question=questionRepository.findById(id).orElse(null);
+        Question question=questionRepository.findByIdAndUsed(id,1);
+        if(question==null){
+            throw new DelQueException("삭제된 질문입니다!");
+        }
         QuestionResponse questionResponse=new QuestionResponse();
         questionResponse.setQid(question.getId());
         questionResponse.setMid(question.getMember().getId());

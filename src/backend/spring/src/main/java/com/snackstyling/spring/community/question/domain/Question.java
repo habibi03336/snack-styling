@@ -28,6 +28,5 @@ public class Question {
     @Column(length = 1000)
     private String comments;
     private Integer adopt=0;
-    @OneToMany(mappedBy="question",cascade = CascadeType.ALL)
-    private List<Answer> answers; //=new Array~~ public void addchild(Child child) childs.add~~
+    private Integer used=1;
 }
