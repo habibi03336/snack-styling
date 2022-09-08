@@ -1,7 +1,7 @@
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
@@ -30,11 +30,7 @@ from model.clothmodel.models import Cloth
         responses=ClothDetailSerializer,
     )
 )
-class ClothViewSet(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.ListModelMixin,
-                   GenericViewSet):
+class ClothViewSet(ModelViewSet):
     queryset = Cloth.objects.all()
     pagination_class = ClothPagePagination
 
@@ -44,10 +40,12 @@ class ClothViewSet(mixins.CreateModelMixin,
 
         if self.action == 'create':
             return ClothCreateSerializer
-        if self.action == 'partial_update':
-            return ClothRetrieveUpdateSerializer
         if self.action == 'retrieve':
             return ClothDetailSerializer
+        if self.action == 'partial_update':
+            return ClothRetrieveUpdateSerializer
+        if self.action == 'destroy':
+            return ClothSerializer
         if self.action == 'list':
             return ClothDetailSerializer
         if self.action == 'multiple_tag_update':
