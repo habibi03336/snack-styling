@@ -7,8 +7,12 @@ from model.codimodel.models import Codi
 class CodiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'top', 'bottom', 'cap', 'footwear']
 
+class CodiUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Codi
+        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear']
 
 class CodiCreateSerializer(serializers.ModelSerializer):
     class Meta:
