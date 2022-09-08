@@ -1,10 +1,10 @@
 from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from api.codi.paginations import CodiListPagination
-from api.codi.serializers import CodiSerializer, CodiCreateSerializer, CodiUserCreateSerializer, CodiListSerializer
+from api.codi.serializers import CodiSerializer, CodiUserSerializer, CodiCreateSerializer, CodiUserCreateSerializer, CodiListSerializer
 
 from model.codimodel.models import Codi
 
@@ -30,12 +30,9 @@ import api.codi.schemas as exampleSchema
         examples=[exampleSchema.CODI_RETRIEVE_EXAMPLE]
     ),
 )
-class CodiViewSet(mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.ListModelMixin,
-                  GenericViewSet):
+class CodiViewSet(ModelViewSet):
     queryset = Codi.objects.all()
-    serializer_class = CodiSerializer
+    serializer_class = CodiUserSerializer
     pagination_class = CodiListPagination
 
     def get_serializer_context(self):
@@ -53,6 +50,10 @@ class CodiViewSet(mixins.CreateModelMixin,
             return CodiCreateSerializer
         if self.action == 'retrieve':
             return CodiListSerializer
+        if self.action == 'update':
+            return CodiSerializer
+        if self.action == 'destroy':
+            return CodiSerializer
         if self.action == 'list':
             return CodiListSerializer
         return self.serializer_class
