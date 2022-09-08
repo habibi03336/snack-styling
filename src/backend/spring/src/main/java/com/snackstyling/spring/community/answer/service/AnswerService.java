@@ -2,6 +2,7 @@ package com.snackstyling.spring.community.answer.service;
 
 import com.snackstyling.spring.common.domain.Notification;
 import com.snackstyling.spring.common.repository.NotificationRepository;
+import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.common.service.NotificationService;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerNumResponse;
@@ -29,10 +30,11 @@ public class AnswerService {
     private final NotificationService notificationService;
     private final MemberService memberService;
     private final QuestionService questionService;
+    private final JwtService jwtService;
 
-    public AnswerNumResponse postAnswer(AnswerRequest answerRequest){
+    public AnswerNumResponse postAnswer(String token, AnswerRequest answerRequest){
         Answer answer= new Answer();
-        Member member=memberService.memberSelect(answerRequest.getMid());
+        Member member=memberService.memberSelect(jwtService.getMemberId(token));
         Question question=questionService.questionSelect(answerRequest.getQid());
         // 알람 추가 코드
         Notification notify= new Notification();
@@ -59,7 +61,9 @@ public class AnswerService {
         return new AnswerNumResponse(answer.getId());
     }
     public void deleteAnswer(Long id){
-        answerRepository.deleteById(id);
+        Answer answer=answerRepository.findById(id).orElse(null);
+        answer.setUsed(0);
+        answerRepository.save(answer);
     }
     public void updateAnswer(Long id, AnswerRequest answerRequest){
         Answer answer=answerRepository.findById(id).orElse(null);

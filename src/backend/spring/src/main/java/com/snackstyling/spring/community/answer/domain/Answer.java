@@ -28,4 +28,5 @@ public class Answer {
     @Column(length = 1000)
     private String comments;
     private Integer adopt=0;
+    private Integer used=1;
 }
