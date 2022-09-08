@@ -5,12 +5,12 @@ import RowFiller from "../../common/components/RowFiller";
 
 interface IStyleQBlock {
   routeTo?: string;
-  styleQ: I.StyleQs;
+  styleQ: I.StyleQ;
   type: "small" | "big";
 }
 
 const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
-  const [year, month, day] = styleQ.end_date.split("-");
+  const [year, month, day] = styleQ.endDate.split("-");
   return (
     <IonRouterLink routerLink={routeTo}>
       <Block>
@@ -62,7 +62,7 @@ const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
             <span>
               {styleQ.height}cm · {styleQ.weight}kg{" "}
             </span>
-            <span>{type === "small" && `${styleQ.ans_count}개의 답변`}</span>
+            <span>{type === "small" && `${styleQ.ansCount}개의 답변`}</span>
           </div>
         </div>
 

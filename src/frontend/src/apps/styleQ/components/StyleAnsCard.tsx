@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as I from "../../../lib/types/interfaces";
 import CodiBoard from "../../common/components/CodiBoard";
 import Block from "../../common/components/Block";
-import LevelIcon from "./LevelIcon";
+import LevelIcon from "../../common/components/LevelIcon";
 
 interface IStyleAnsCard {
   styleAns: I.StyleAns;
