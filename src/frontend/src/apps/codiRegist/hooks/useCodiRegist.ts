@@ -7,15 +7,20 @@ import { defaultTemplate } from "../../../assets/codiTemplates";
 import { deepcopy } from "../../../lib/utils/common";
 import { useRecoilState } from "recoil";
 import user from "../../common/state/user";
+import produce from "immer";
 // import { assert } from "console";
 
-const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
+const useCodiRegist = (
+  type: "own" | "answer" | "update",
+  defaultCodi?: I.CodiTemplate,
+  questionId?: number
+) => {
   const [userState] = useRecoilState(user);
   // if type is answer questionId must exist
   // assert(type === "answer" && questionId === undefined ? false : true);
   const [comment, setComment] = useState("");
   const [codiTemplate, setCodiTemplate] = useState<I.CodiTemplate>(
-    deepcopy(defaultTemplate)
+    type === "update" ? defaultCodi : deepcopy(defaultTemplate)
   );
 
   const boardConfig: I.BoardConfig = {
@@ -29,14 +34,15 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
     const categoryIndex = codiTemplate.clothes.findIndex(
       (codiCloth) => codiCloth.category === cloth.category
     );
+    const newTemplate = produce(codiTemplate, (draft) => {
+      draft.clothes[categoryIndex] = {
+        ...draft.clothes[categoryIndex],
+        image: cloth.image,
+        id: cloth.id,
+      };
+    });
 
-    codiTemplate.clothes[categoryIndex] = {
-      ...codiTemplate.clothes[categoryIndex],
-      image: cloth.image,
-      id: cloth.id,
-    };
-
-    setCodiTemplate({ ...codiTemplate });
+    setCodiTemplate(newTemplate);
   };
 
   const categoryMap = new Map<
@@ -68,6 +74,7 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
       });
 
       let res;
+      // if (type === "update") res = await PATCH_CODI();
       if (type === "own") res = await POST_CODI(userState.id!, codiData);
       else if (type === "answer" && questionId !== undefined) {
         const answerData = {
@@ -95,4 +102,4 @@ const useCodiShowCase = (type: "own" | "answer", questionId?: number) => {
   };
 };
 
-export default useCodiShowCase;
+export default useCodiRegist;

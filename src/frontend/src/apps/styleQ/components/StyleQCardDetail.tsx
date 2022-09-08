@@ -1,7 +1,7 @@
 import * as I from "../../../lib/types/interfaces";
 import StyleQBlock from "./StyleQBlock";
 
-const StyleQCardDetail = ({ styleQ }: { styleQ: I.StyleQs | undefined }) => {
+const StyleQCardDetail = ({ styleQ }: { styleQ: I.StyleQ | undefined }) => {
   if (styleQ === undefined) return <div>loading</div>;
   return (
     <>

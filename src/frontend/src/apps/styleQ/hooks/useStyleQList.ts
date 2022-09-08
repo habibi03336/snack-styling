@@ -3,13 +3,13 @@ import { GET_STYLEQS } from "../../../lib/api/styleQ";
 import * as I from "../../../lib/types/interfaces";
 
 const useStyleQList = () => {
-  const [styleQs, setStyleQs] = useState<I.StyleQs[]>([]);
+  const [styleQs, setStyleQs] = useState<I.StyleQ[]>([]);
   const [page, setPage] = useState<number>(0);
   const [loadDone, setLoadDone] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
       const res = await GET_STYLEQS(page);
-      const data = res.data as I.StyleQs[];
+      const data = res.data.questionResponses as I.StyleQ[];
       setStyleQs([...styleQs, ...data]);
     })();
   }, [page]);

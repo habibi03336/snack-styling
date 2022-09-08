@@ -12,18 +12,25 @@ const useStyleQDetail = (styleQId: number) => {
   useOnMount(() => {
     (async () => {
       const res = await GET_STYLEQ(styleQId);
-
-      const styleQ = res.data.que;
-      const styleAns = res.data.ans.map((ans: I.StyleAns) => {
+      const styleQ = res.data.question;
+      const styleAns = res.data.answers.map((ans: I.StyleAns) => {
         return {
           ...ans,
           codiTemplate: makeCodiTemplate(
             [
               {
-                top: ans.top ? address.mediaAPI + ans.top : null,
-                bottom: ans.bottom ? address.mediaAPI + ans.bottom : null,
-                cap: ans.cap ? address.mediaAPI + ans.cap : null,
-                footwear: ans.footwear ? address.mediaAPI + ans.footwear : null,
+                top: ans.clothDto.top
+                  ? address.mediaAPI + ans.clothDto.top
+                  : null,
+                bottom: ans.clothDto.bottom
+                  ? address.mediaAPI + ans.clothDto.bottom
+                  : null,
+                cap: ans.clothDto.cap
+                  ? address.mediaAPI + ans.clothDto.cap
+                  : null,
+                footwear: ans.clothDto.footwear
+                  ? address.mediaAPI + ans.clothDto.footwear
+                  : null,
                 id: ans.id,
               },
             ],

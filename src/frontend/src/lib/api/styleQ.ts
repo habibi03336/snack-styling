@@ -29,3 +29,7 @@ interface StyleAnsData {
 
 export const POST_STYLE_ANSWER = (styleAnsData: StyleAnsData) =>
   client.post(baseURL + "/answer", styleAnsData);
+
+export const ADOPT_ANSWER = (answerId: number) => {
+  client.patch(baseURL + `/answer/adopt/${answerId}`);
+};

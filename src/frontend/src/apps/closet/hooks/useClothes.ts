@@ -1,27 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GET_CLOTHS } from "../../../lib/api/cloth";
 import * as I from "../../../lib/types/interfaces";
 import { useRecoilState, useRecoilValue } from "recoil";
 import user from "../../common/state/user";
-import { clothesState } from "../state/clothes";
+import {
+  closetClothInfiniteScrollParamAtom,
+  clothesAtom,
+} from "../state/clothes";
 
 const useCloths = (userId?: number) => {
-  const [clothes, setClothes] = useRecoilState(clothesState);
+  const [clothes, setClothes] = useRecoilState(clothesAtom);
   const userState = useRecoilValue(user);
-  const [page, setPage] = useState<number>(1);
-  const [loadDone, setLoadDone] = useState<boolean>(false);
+  const [infiniteParam, setInfiniteParam] = useRecoilState(
+    closetClothInfiniteScrollParamAtom
+  );
 
   const loadMore = () => {
-    if (loadDone) return;
-    setPage(page + 1);
+    if (infiniteParam.loadDone) return;
+    setInfiniteParam({
+      ...infiniteParam,
+      page: infiniteParam.page + 1,
+    });
   };
   useEffect(() => {
+    if (infiniteParam.prev === infiniteParam.page) return;
     (async () => {
-      const res = await GET_CLOTHS(userId ? userId : userState.id!, page);
+      const res = await GET_CLOTHS(
+        userId ? userId : userState.id!,
+        infiniteParam.page
+      );
       const data = res.data;
       const clothArray: I.Cloth[] = [];
 
-      if (data.pageCnt === data.curPage) setLoadDone(true);
+      setInfiniteParam({
+        ...infiniteParam,
+        prev: infiniteParam.page,
+        loadDone: data.pageCnt === data.curPage,
+      });
+
       data.clothList.forEach((clothData: any) => {
         const cloth: I.Cloth = {
           ...clothData,
@@ -29,14 +45,15 @@ const useCloths = (userId?: number) => {
         };
         clothArray.push(cloth);
       });
+
       setClothes(clothes.concat(clothArray));
     })();
-  }, [page]);
+  });
 
   return {
     clothes,
     loadMore,
-    loadDone,
+    loadDone: infiniteParam.loadDone,
   };
 };
 

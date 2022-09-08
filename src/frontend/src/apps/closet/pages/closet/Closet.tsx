@@ -6,8 +6,8 @@ import {
 } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import Header from "../../common/components/Header";
-import Label from "../../common/components/Label";
+import Header from "../../../common/components/Header";
+import Label from "../../../common/components/Label";
 import ClothCloset from "./ClothCloset";
 import CodiCloset from "./CodiCloset";
 

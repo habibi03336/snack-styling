@@ -16,23 +16,27 @@ import {
 import { shirtOutline, trashOutline } from "ionicons/icons";
 import { useState } from "react";
 import styled from "styled-components";
-import ClothCard from "../components/ClothCard";
-import TagChip from "../../common/components/TagChip";
-import useClothRegist from "../hooks/useClothRegist";
-import * as I from "../../../lib/types/interfaces";
-import CardLayout from "../components/CardLayout";
+import ClothCard from "../../components/ClothCard";
+import TagChip from "../../../common/components/TagChip";
+import useClothRegist from "../../hooks/useClothRegist";
+import * as I from "../../../../lib/types/interfaces";
+import CardLayout from "../../components/CardLayout";
 import { useHistory } from "react-router-dom";
-import useTags from "../hooks/useTags";
-import useClothes from "../hooks/useClothes";
-import DownButton from "../../common/components/DownButton";
+import useClosetClothTags from "../../hooks/useClosetClothTags";
+import useClothes from "../../hooks/useClothes";
+import DownButton from "../../../common/components/DownButton";
 import { Swiper, SwiperSlide } from "swiper/react";
+import ClothDetail from "../../containers/ClothDetail";
+import { selectedClothIdAtom } from "../../state/clothes";
+import { useRecoilState } from "recoil";
 
 const ClothCloset = () => {
   const [showTags, setShowTags] = useState<boolean>(false);
-  const [modalDetail, setModalDetail] = useState<I.Cloth | null>(null);
+  const [selectedClothId, setSelectedClothId] =
+    useRecoilState(selectedClothIdAtom);
 
   const { tags, toggleTag, clearSelection, selectTag, selectedTags } =
-    useTags();
+    useClosetClothTags();
 
   const { clothes, loadMore, loadDone } = useClothes();
 
@@ -133,7 +137,7 @@ const ClothCloset = () => {
             return (
               <div
                 onClick={() => {
-                  setModalDetail(cloth);
+                  setSelectedClothId(cloth.id);
                 }}
                 key={cloth.id}
               >
@@ -175,39 +179,32 @@ const ClothCloset = () => {
         </IonFabButton>
       </IonFab>
 
-      <IonModal isOpen={modalDetail !== null}>
-        {modalDetail && (
-          <>
-            <IonHeader>
-              <IonToolbar>
-                <IonTitle>상세정보</IonTitle>
-                <IonButtons slot="end">
-                  <IonButton onClick={() => setModalDetail(null)}>
-                    Close
-                  </IonButton>
-                </IonButtons>
-                <IonButtons slot="start">
-                  <IonButton onClick={() => setModalDetail(null)}>
-                    <IonIcon
-                      icon={trashOutline}
-                      style={{ color: "tomato" }}
-                    ></IonIcon>
-                  </IonButton>
-                </IonButtons>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent style={{ display: "flex", justifyContent: "center" }}>
-              <ClothCard cloth={modalDetail} type="big" />
-              <div style={{ padding: "10px" }}>
-                {[...modalDetail.tags].map((tag) => (
-                  <TagChip key={tag} tagName={tag} isSelected={false} />
-                ))}
-              </div>
-            </IonContent>
-
-            <IonButton>수정하기</IonButton>
-          </>
-        )}
+      <IonModal isOpen={selectedClothId !== -1}>
+        {/* {selectedClothId && ( */}
+        <>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>상세정보</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setSelectedClothId(-1)}>
+                  Close
+                </IonButton>
+              </IonButtons>
+              <IonButtons slot="start">
+                <IonButton onClick={() => setSelectedClothId(-1)}>
+                  <IonIcon
+                    icon={trashOutline}
+                    style={{ color: "tomato" }}
+                  ></IonIcon>
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent style={{ display: "flex", justifyContent: "center" }}>
+            <ClothDetail />
+          </IonContent>
+        </>
+        {/* )} */}
       </IonModal>
     </>
   );

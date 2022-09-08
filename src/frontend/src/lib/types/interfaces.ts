@@ -45,16 +45,16 @@ export interface CodiCloth {
   positionY: number;
 }
 
-export interface StyleQs {
+export interface StyleQ {
   mid: number;
   qid: number;
   weight: number;
   height: number;
   nickname: string;
-  ans_count: number;
+  ansCount: number;
   body_type: number;
   post_date: string;
-  end_date: string;
+  endDate: string;
   tpo: string;
   comments: string;
 }
@@ -63,15 +63,18 @@ export interface StyleAns {
   id: number;
   nickname: string;
   rank: string;
-  top: string | null;
-  bottom: string | null;
-  cap: string | null;
-  footwear: string | null;
+  adopt: boolean;
+  clothDto: {
+    top: string | null;
+    bottom: string | null;
+    cap: string | null;
+    footwear: string | null;
+  };
   comments: string;
   codiTemplate: CodiTemplate;
 }
 
 export interface StyleQDetail {
-  que: StyleQs;
+  que: StyleQ;
   ans: StyleAns[];
 }

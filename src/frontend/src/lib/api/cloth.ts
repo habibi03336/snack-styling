@@ -10,6 +10,14 @@ export const GET_CLOTHS = (userId: number, page = 0) => {
   return client.get(baseURL + `/cloth/user/${userId}/?page=${page}`);
 };
 
+export const GET_CLOTH = (clothId: number) => {
+  return client.get(baseURL + `/cloth/${clothId}/`);
+};
+
+// export const DELETE_CLOTH = (clothId: number) => {
+//   return client.get(baseURL + )
+// }
+
 export const POST_CLOTHS = (userId: number, formData: FormData) =>
   client.post(baseURL + `/cloth/user/${userId}/`, formData);
 
@@ -20,3 +28,9 @@ interface IClothAndTags {
 
 export const PATCH_CLOTHS = (clothesData: IClothAndTags[]) =>
   client.patch(baseURL + "/cloth/multi-update/", { clothes: clothesData });
+
+interface IClothData {
+  tags: number[];
+}
+export const PATCH_CLOTH = (clothId: number, clothData: IClothData) =>
+  client.patch(baseURL + `/cloth/${clothId}/`, clothData);

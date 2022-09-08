@@ -33,7 +33,7 @@ setupIonicReact();
 import "./App.css";
 import Icon from "./apps/common/components/Icon";
 
-import Closet from "./apps/closet/pages/Closet";
+import Closet from "./apps/closet/pages/closet/Closet";
 import ClothRegist from "./apps/closet/pages/ClothRegist";
 import CodiShowCase from "./apps/codiRegist/pages/CodiShowCase";
 import StyleQList from "./apps/styleQ/pages/StyleQList";
@@ -47,6 +47,8 @@ import Mypage from "./apps/mypage/pages/Mypage";
 import { useRecoilState } from "recoil";
 import user from "./apps/common/state/user";
 import Login from "./apps/login/pages/Login";
+import MyAnswers from "./apps/mypage/pages/MyAnswers";
+import MyQuestions from "./apps/mypage/pages/MyQuestions";
 
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
@@ -80,11 +82,16 @@ const App: React.FC = () => {
             <Route exact path="/styleQ" component={StyleQList} />
             <Route exact path="/closet/:defaultTab" component={Closet} />
             <Route path="/alarm" component={Mypage} />
-            <Route path="/mypage" component={Mypage} />
+            <Route exact path="/mypage" component={Mypage} />
             <Route path="/styleQ/:id" component={StyleQDetail} />
             <Route path="/clothRegist" component={ClothRegist} />
-            <Route path="/codiShowcase/:mid/:qid" component={CodiShowCase} />
+            <Route
+              path="/codiShowcase/:type/:mid/:qid"
+              component={CodiShowCase}
+            />
             <Route path="/apply" component={ApplyForm} />
+            <Route path="/mypage/myanswers" component={MyAnswers} />
+            <Route path="/mypage/myquestions" component={MyQuestions} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
           <IonTabBar style={{ height: "60px" }} slot="bottom">

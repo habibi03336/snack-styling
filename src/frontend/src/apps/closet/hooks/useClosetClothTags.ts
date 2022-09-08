@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedTagsState, tagState } from "../state/tag";
 import produce from "immer";
 
-const useTags = () => {
+const useClosetClothTags = () => {
   const [tags, setTags] = useRecoilState<I.Tags>(tagState);
   const selectedTags = useRecoilValue(selectedTagsState);
 
@@ -48,4 +48,4 @@ const useTags = () => {
   };
 };
 
-export default useTags;
+export default useClosetClothTags;
