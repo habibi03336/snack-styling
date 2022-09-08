@@ -9,12 +9,15 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# env
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -30,16 +33,16 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [    
+INSTALLED_APPS = [
     'model.clothmodel.apps.ClothModelConfig',
     'model.tagmodel.apps.TagModelConfig',
     'model.codimodel.apps.CodiModelConfig',
     'model.codiplanmodel.apps.CodiPlanModelConfig',
-    
+
     'rest_framework',
     'corsheaders',
     'drf_spectacular',
-    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -87,11 +90,14 @@ WSGI_APPLICATION = 'coffProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stylingapp',
-        'USER': 'user',
-        'PASSWORD': '12345678',
-        'HOST': 'db-mysql',
+        'NAME': env('DATEBASE_NAME'),
+        'USER': env('DATEBASE_USER'),
+        'PASSWORD': env('DATEBASE_PWD'),
+        'HOST': env('DATEBASE_HOST'),
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -158,8 +164,8 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Coffee Styling Django Server API docs',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    
-    
+
+
 }
 
 
@@ -177,7 +183,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://*:*',   
+    'http://*:*',
 ]
 
 CORS_ORIGIN_WHITELIST = [
