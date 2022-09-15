@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'model.codiplanmodel.apps.CodiPlanModelConfig',
 
     'rest_framework',
+    'storages',
     'corsheaders',
     'drf_spectacular',
 
@@ -143,9 +144,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# MEDIA SETTINGS
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'src/media'
 
+# if use S3
+if env('USE_S3') == 'True':
+    AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_REGION = 'ap-northeast-2'
+
+    # S3 Storages
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
+        AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# MIGRATION SETTINGS
 MIGRATION_MODULES = {
     'clothmodel': 'model.clothmodel.migrations',
     'tagmodel': 'model.tagmodel.migrations',

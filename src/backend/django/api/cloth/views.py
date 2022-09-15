@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from api.cloth.paginations import ClothPagePagination
 from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
+from api.permissions import UserAccessPermission
 
 from model.clothmodel.models import Cloth
 
@@ -88,6 +89,7 @@ class ClothUserViewSet(mixins.ListModelMixin,
     queryset = Cloth.objects.all()
     serializer_class = ClothSerializer
     pagination_class = ClothPagePagination
+    permission_classes = [UserAccessPermission]
 
     def get_queryset(self):
         user = self.kwargs['userId']
