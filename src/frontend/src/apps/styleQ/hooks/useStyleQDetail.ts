@@ -13,31 +13,33 @@ const useStyleQDetail = (styleQId: number) => {
     (async () => {
       const res = await GET_STYLEQ(styleQId);
       const styleQ = res.data.question;
-      const styleAns = res.data.answers.map((ans: I.StyleAns) => {
-        return {
-          ...ans,
-          codiTemplate: makeCodiTemplate(
-            [
-              {
-                top: ans.clothDto.top
-                  ? address.mediaAPI + ans.clothDto.top
-                  : null,
-                bottom: ans.clothDto.bottom
-                  ? address.mediaAPI + ans.clothDto.bottom
-                  : null,
-                cap: ans.clothDto.cap
-                  ? address.mediaAPI + ans.clothDto.cap
-                  : null,
-                footwear: ans.clothDto.footwear
-                  ? address.mediaAPI + ans.clothDto.footwear
-                  : null,
-                id: ans.id,
-              },
-            ],
-            defaultTemplate
-          )[0],
-        };
-      });
+      const styleAns = res.data.answers.answerResponses.map(
+        (ans: I.StyleAns) => {
+          return {
+            ...ans,
+            codiTemplate: makeCodiTemplate(
+              [
+                {
+                  top: ans.clothDto.top
+                    ? address.mediaAPI + ans.clothDto.top
+                    : null,
+                  bottom: ans.clothDto.bottom
+                    ? address.mediaAPI + ans.clothDto.bottom
+                    : null,
+                  cap: ans.clothDto.cap
+                    ? address.mediaAPI + ans.clothDto.cap
+                    : null,
+                  footwear: ans.clothDto.footwear
+                    ? address.mediaAPI + ans.clothDto.footwear
+                    : null,
+                  id: ans.id,
+                },
+              ],
+              defaultTemplate
+            )[0],
+          };
+        }
+      );
 
       setStyleQDetailData({ que: styleQ, ans: styleAns });
     })();

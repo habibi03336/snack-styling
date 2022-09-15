@@ -8,7 +8,7 @@ module.exports = function override(config, env) {
     ...config.plugins,
     new ForkTsCheckerWebpackPlugin({
       typescript: {
-        memoryLimit: 4096,
+        memoryLimit: 4096 * 2,
       },
     }),
   ];

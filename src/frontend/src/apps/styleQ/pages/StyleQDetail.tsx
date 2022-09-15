@@ -35,7 +35,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
         <RowFiller px={70} />
         <BottomButton>
           <IonRouterLink
-            routerLink={`/codiShowcase/${styleQDetailData?.que.mid}/${styleQDetailData?.que.qid}`}
+            routerLink={`/codiShowcase/answer/${styleQDetailData?.que.mid}/${styleQDetailData?.que.qid}`}
           >
             <div style={{ color: "white" }}>
               <img
