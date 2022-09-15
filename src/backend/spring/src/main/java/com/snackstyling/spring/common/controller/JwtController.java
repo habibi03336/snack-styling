@@ -17,4 +17,10 @@ public class JwtController {
     public ResponseEntity<AcTokenResponse> createAccessToken(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok().body(jwtService.refreshCompare(token));
     }
+    @ApiOperation(value="Access Token 확인",notes = "<strong>accesstoken 토큰이 유효한지 테스트</strong>")
+    @RequestMapping(value="/api/v1/accounts/token", method = RequestMethod.GET)
+    public ResponseEntity checkAccessToken(@RequestHeader("Authorization") String token){
+        jwtService.validateToken(token);
+        return ResponseEntity.ok().build();
+    }
 }

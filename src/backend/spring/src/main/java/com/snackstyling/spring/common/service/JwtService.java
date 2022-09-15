@@ -22,8 +22,10 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    @Value("${jwt.token.secret}")
-    private String secret_key;
+    @Value("${jwt.token.secret.access}")
+    private String ac_secret_key;
+    @Value("${jwt.token.secret.refresh}")
+    private String re_secret_key;
     private Long accessExpired= Duration.ofMinutes(30).toMillis(); //30분
     private Long refreshExpired=Duration.ofDays(7).toMillis(); //1주
     private final TokenRepository tokenRepository;
@@ -44,38 +46,34 @@ public class JwtService {
                 .setClaims(payloads)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime()+refreshExpired))
-                .signWith(SignatureAlgorithm.HS256,secret_key)
+                .signWith(SignatureAlgorithm.HS256,re_secret_key)
                 .compact();
         String access= Jwts.builder()
                 .setHeader(headers)
                 .setClaims(payloads)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime()+accessExpired))
-                .signWith(SignatureAlgorithm.HS256,secret_key)
+                .signWith(SignatureAlgorithm.HS256,ac_secret_key)
                 .compact();
-        System.out.println(Jwts.parser().setSigningKey(secret_key)
-                .parseClaimsJws(access)
-                .getBody()
-                .get("Key"));
 
         tokenRepository.save(new Token(email,refresh));
         return new TokenDto(refresh,access);
     }
     public String getUser(String token){
-        return Jwts.parser().setSigningKey(secret_key)
+        return Jwts.parser().setSigningKey(ac_secret_key)
                 .parseClaimsJws(token)
                 .getBody()
                 .get("Email").toString();
     }
     public Long getMemberId(String token){
-        return Long.parseLong(Jwts.parser().setSigningKey(secret_key)
+        return Long.parseLong(Jwts.parser().setSigningKey(ac_secret_key)
                 .parseClaimsJws(token)
                 .getBody()
                 .get("Key").toString());
     }
     public void validateToken(String token){
         try {
-            Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(ac_secret_key).parseClaimsJws(token);
         } catch (SignatureException e){
             throw new TokenSignatureException("Invalid token signature");
         } catch (MalformedJwtException e){
@@ -89,9 +87,11 @@ public class JwtService {
         }
     }
     public AcTokenResponse refreshCompare(String token){
-        String email=getUser(token);
+        String email=Jwts.parser().setSigningKey(re_secret_key)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("Email").toString();
         Token temp=tokenRepository.findById(email).orElse(null);
-
         if(temp.getRefreshToken()==null){
             throw new TokenExpiredException("Token has expired");
         }
@@ -114,7 +114,7 @@ public class JwtService {
                 .setClaims(payloads)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime()+accessExpired))
-                .signWith(SignatureAlgorithm.HS256,secret_key)
+                .signWith(SignatureAlgorithm.HS256,ac_secret_key)
                 .compact());
     }
 }
