@@ -8,7 +8,7 @@ router.register(r'', views.ClothViewSet, basename="cloth")
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('user/<int:userId>/', views.ClothUserViewSet.as_view({
+    path('user/', views.ClothUserViewSet.as_view({
         'get': 'list',
         'post': 'create',
     }))
