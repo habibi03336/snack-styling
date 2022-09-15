@@ -29,4 +29,7 @@ export interface IMemberInfo {
 }
 
 export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
-  client.post(baseURL + `/users`, memberInfo);
+  client.post(baseURL + `/profile`, memberInfo);
+
+export const GET_USER_QUESTIONS = () =>
+  client.get(baseURL + `/profile/questions`);

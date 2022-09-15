@@ -17,7 +17,7 @@ const MyQuestions = () => {
   useTabBarControl("useUnmount");
   return (
     <IonPage>
-      <Header routeTo="/mypage" text="나의 질문" type="back" />
+      <Header text="나의 질문" type="back" />
       <IonContent>
         <ListDiv>
           {

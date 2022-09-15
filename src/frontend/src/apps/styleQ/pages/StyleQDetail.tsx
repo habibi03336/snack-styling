@@ -4,7 +4,7 @@ import useStyleQDetail from "../hooks/useStyleQDetail";
 import StyleQCardDetail from "../components/StyleQCardDetail";
 import StyleAnsCard from "../components/StyleAnsCard";
 import ListDiv from "../../common/components/ListDiv";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import useTabBarControl from "../../common/hooks/useTabBarControl";
 import BottomButton from "../../common/components/BottomButton";
 import Plus from "../../../assets/common/plus.svg";
@@ -15,10 +15,11 @@ type IStyleQDetail = RouteComponentProps<{ id: string }>;
 const StyleQDetail = ({ match }: IStyleQDetail) => {
   const { styleQDetailData } = useStyleQDetail(Number(match.params.id));
   useTabBarControl("useUnmount");
+
   return (
     <IonPage>
       <IonContent>
-        <Header type="back" routeTo={"/styleQ"} />
+        <Header type="back" />
         <StyleQCardDetail styleQ={styleQDetailData?.que} />
 
         <ListDiv>

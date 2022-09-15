@@ -7,7 +7,7 @@ const baseURL = address["imgAPI"];
 export const GET_CLOTHS = (userId: number, page = 0) => {
   // assert(type === "other" && userId === undefined ? false : true);
 
-  return client.get(baseURL + `/cloth/user/${userId}/?page=${page}`);
+  return client.get(baseURL + `/cloth/user/?page=${page}`);
 };
 
 export const GET_CLOTH = (clothId: number) => {
@@ -18,8 +18,8 @@ export const GET_CLOTH = (clothId: number) => {
 //   return client.get(baseURL + )
 // }
 
-export const POST_CLOTHS = (userId: number, formData: FormData) =>
-  client.post(baseURL + `/cloth/user/${userId}/`, formData);
+export const POST_CLOTHS = (formData: FormData) =>
+  client.post(baseURL + `/cloth/user/`, formData);
 
 interface IClothAndTags {
   id: number;

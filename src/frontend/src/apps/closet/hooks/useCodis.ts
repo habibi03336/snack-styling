@@ -13,7 +13,7 @@ const useCodis = () => {
   const [codis, setCodis] = useRecoilState<I.CodiTemplate[]>(codisAtom);
   useEffect(() => {
     (async () => {
-      const res = await GET_CODIS(userState.id!);
+      const res = await GET_CODIS();
       const data = res.data;
 
       const codiList = data.codiList.map((codi: I.Codi) => {
@@ -35,7 +35,7 @@ const useCodis = () => {
             key === "cap"
           ) {
             if (codi[key] !== null) {
-              codi_full_url[key] = address.mediaAPI + codi[key];
+              codi_full_url[key] = codi[key];
             }
           }
         }

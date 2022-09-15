@@ -29,7 +29,7 @@ const useClothRegist = () => {
     for (let i = 0; i < newProcessRegist.length; i++) {
       const frm = new FormData();
       frm.append("image", newProcessRegist[i].imageFile);
-      POST_CLOTHS(userState.id!, frm)
+      POST_CLOTHS(frm)
         .then((res) => res.data)
         .then((data) => {
           processRegist[i] = {

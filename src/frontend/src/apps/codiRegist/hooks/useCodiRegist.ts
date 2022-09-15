@@ -75,11 +75,10 @@ const useCodiRegist = (
 
       let res;
       // if (type === "update") res = await PATCH_CODI();
-      if (type === "own") res = await POST_CODI(userState.id!, codiData);
+      if (type === "own") res = await POST_CODI(codiData);
       else if (type === "answer" && questionId !== undefined) {
         const answerData = {
-          ...codiData,
-          mid: userState.id!,
+          codi: codiData,
           qid: questionId,
           comments: comment,
         };

@@ -18,12 +18,13 @@ export const POST_STYLEQ = (styleQData: StyleQData) =>
   client.post(baseURL + "/question", styleQData);
 
 interface StyleAnsData {
-  mid: number;
   qid: number;
-  top: number | null;
-  bottom: number | null;
-  cap: number | null;
-  footwear: number | null;
+  codi: {
+    top: number | null;
+    bottom: number | null;
+    cap: number | null;
+    footwear: number | null;
+  };
   comments?: string;
 }
 
