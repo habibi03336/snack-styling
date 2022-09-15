@@ -6,6 +6,7 @@ import com.snackstyling.spring.community.answer.dto.AnswerResponse;
 import com.snackstyling.spring.community.answer.dto.AnswersResponse;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.ClothDto;
+import com.snackstyling.spring.community.common.dto.CodiDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.*;
@@ -16,9 +17,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -102,14 +105,17 @@ public class QuestionService {
         for(Answer temp : answer){
             AnswerResponse answerResponse=new AnswerResponse();
             answerResponse.setNickname(temp.getMember().getNickname());
-            String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
-            ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
-            answerResponse.setClothDto(result.getBody());
-            answerResponse.setComments(temp.getComments());
-            answerResponse.setAdopt(temp.getAdopt());
-            answerResponses.add(answerResponse);
+            try {
+                String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
+                ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
+                answerResponse.setClothDto(result.getBody());
+                answerResponse.setComments(temp.getComments());
+                answerResponse.setAdopt(temp.getAdopt());
+                answerResponses.add(answerResponse);
+            }catch(Exception e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+            }
         }
-
         return new QuestionDetailResponse(questionResponse,new AnswersResponse(answerResponses));
     }
 }
