@@ -16,11 +16,14 @@ import com.snackstyling.spring.community.common.dto.CodiDto;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +58,12 @@ public class AnswerService {
 
         RestTemplate restTemplate=new RestTemplate();
         String url="http://backend-django:8000/api/v1/codi/";
-        ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
-        answer.setCodi(result.getBody().getId());
+        try {
+            ResponseEntity<CodiDto> result = restTemplate.postForEntity(url, codi, CodiDto.class);
+            answer.setCodi(result.getBody().getId());
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+        }
         answerRepository.save(answer);
         return new AnswerNumResponse(answer.getId());
     }
@@ -76,8 +83,12 @@ public class AnswerService {
 
         RestTemplate restTemplate=new RestTemplate();
         String url="http://backend-django:8000/api/v1/codi/";
-        ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
-        answer.setCodi(result.getBody().getId());
+        try {
+            ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,codi, CodiDto.class);
+            answer.setCodi(result.getBody().getId());
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+        }
         answerRepository.save(answer);
     }
     public void adoptAnswer(Long id){
