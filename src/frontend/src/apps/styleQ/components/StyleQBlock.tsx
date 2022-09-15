@@ -10,7 +10,10 @@ interface IStyleQBlock {
 }
 
 const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
-  const [year, month, day] = styleQ.endDate.split("-");
+  console.log(styleQ);
+  const [year, month, day] = styleQ.endDate
+    ? styleQ.endDate.split("-")
+    : [0, 0, 0];
   return (
     <IonRouterLink routerLink={routeTo}>
       <Block>
