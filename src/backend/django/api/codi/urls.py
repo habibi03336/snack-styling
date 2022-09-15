@@ -8,7 +8,7 @@ router.register(r'', views.CodiViewSet, basename="codi")
 
 urlpatterns = [
     path('',  include(router.urls)),
-    path('user/<int:userId>/', views.CodiUserViewSet.as_view({
+    path('user/', views.CodiUserViewSet.as_view({
         'get':'list',
         'post':'create',
     }))

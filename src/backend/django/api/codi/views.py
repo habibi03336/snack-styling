@@ -2,6 +2,7 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from api.cloth.libs import decodeJWTPayload
 
 from api.codi.paginations import CodiListPagination
 from api.codi.serializers import CodiSerializer, CodiUserSerializer, CodiCreateSerializer, CodiUserCreateSerializer, CodiListSerializer
@@ -87,8 +88,8 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         }
 
     def get_queryset(self):
-        user = self.kwargs['userId']
-        return Codi.objects.filter(userId=user)
+        pk = decodeJWTPayload(self.request.META.get('HTTP_AUTHORIZATION'))
+        return Codi.objects.filter(userId=pk)
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
@@ -102,5 +103,5 @@ class CodiUserViewSet(mixins.CreateModelMixin,
 
     def create(self, request, *args, **kwargs):
         setattr(request, '_mutable', True)
-        request.data['userId'] = self.kwargs['userId']
+        request.data['userId'] = decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
         return super().create(request, *args, **kwargs)
