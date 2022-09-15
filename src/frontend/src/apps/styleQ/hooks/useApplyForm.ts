@@ -60,7 +60,7 @@ const useApplyForm = () => {
       // body.tpo = selectedTpo;
       const res_ = await POST_STYLEQ(body);
       const data = res_.data;
-      subscriber.next(data.id);
+      subscriber.next(data.qid);
       subscriber.complete();
     })();
   });

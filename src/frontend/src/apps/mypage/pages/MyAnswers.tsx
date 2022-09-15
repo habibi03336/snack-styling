@@ -18,7 +18,7 @@ const MyAnswers = () => {
 
   return (
     <IonPage>
-      <Header routeTo="/mypage" text="나의 답변" type="back" />
+      <Header text="나의 답변" type="back" />
       <IonContent>
         <ListDiv>
           {

@@ -21,7 +21,7 @@ const useSignin = () => {
   const postSignin = new Observable((subscriber) => {
     (async () => {
       const res = await AUTH_SIGNIN({ email: id, pwd: pwd });
-      setUserState({ ...userState, uid: res.data.id });
+      setUserState({ ...userState, uid: res.data.uid });
       subscriber.complete();
     })();
   });

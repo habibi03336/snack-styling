@@ -35,7 +35,7 @@ const ClothCloset = () => {
   const [selectedClothId, setSelectedClothId] =
     useRecoilState(selectedClothIdAtom);
 
-  const { tags, toggleTag, clearSelection, selectTag, selectedTags } =
+  const { tags, toggleTag, clearAndSelect, selectTag, selectedTags } =
     useClosetClothTags();
 
   const { clothes, loadMore, loadDone } = useClothes();
@@ -67,7 +67,7 @@ const ClothCloset = () => {
               <SwiperSlide key={"전체"}>
                 <IonCard
                   onClick={() => {
-                    clearSelection();
+                    clearAndSelect("");
                   }}
                   style={{
                     height: "32px",
@@ -88,8 +88,7 @@ const ClothCloset = () => {
                 <SwiperSlide key={cate}>
                   <IonCard
                     onClick={() => {
-                      clearSelection();
-                      selectTag(cate);
+                      clearAndSelect(cate);
                     }}
                     style={{
                       height: "32px",

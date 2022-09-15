@@ -20,17 +20,11 @@ const useStyleQDetail = (styleQId: number) => {
             codiTemplate: makeCodiTemplate(
               [
                 {
-                  top: ans.clothDto.top
-                    ? address.mediaAPI + ans.clothDto.top
-                    : null,
-                  bottom: ans.clothDto.bottom
-                    ? address.mediaAPI + ans.clothDto.bottom
-                    : null,
-                  cap: ans.clothDto.cap
-                    ? address.mediaAPI + ans.clothDto.cap
-                    : null,
+                  top: ans.clothDto.top ? ans.clothDto.top : null,
+                  bottom: ans.clothDto.bottom ? ans.clothDto.bottom : null,
+                  cap: ans.clothDto.cap ? ans.clothDto.cap : null,
                   footwear: ans.clothDto.footwear
-                    ? address.mediaAPI + ans.clothDto.footwear
+                    ? ans.clothDto.footwear
                     : null,
                   id: ans.id,
                 },

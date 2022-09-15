@@ -29,11 +29,12 @@ const useClosetClothTags = () => {
     setTags(newTagState);
   };
 
-  const clearSelection = () => {
+  const clearAndSelect = (selectedTagName: string) => {
     const newTagState = produce(tags, (draft) => {
-      Object.keys(draft).forEach(
-        (tagName) => (draft[tagName].selected = false)
-      );
+      Object.keys(draft).forEach((tagName) => {
+        draft[tagName].selected = false;
+        if (selectedTagName === tagName) draft[tagName].selected = true;
+      });
     });
     setTags(newTagState);
   };
@@ -43,7 +44,7 @@ const useClosetClothTags = () => {
     selectTag,
     unselectTag,
     toggleTag,
-    clearSelection,
+    clearAndSelect,
     selectedTags,
   };
 };

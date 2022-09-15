@@ -12,8 +12,7 @@ export interface ICodiData {
   comments?: string;
 }
 
-export const GET_CODIS = (userId: number) =>
-  client.get(baseURL + `/codi/user/${userId}/`);
+export const GET_CODIS = () => client.get(baseURL + `/codi/user/`);
 
-export const POST_CODI = (userId: number, codiData: ICodiData) =>
-  client.post(baseURL + `/codi/user/${userId}/`, codiData);
+export const POST_CODI = (codiData: ICodiData) =>
+  client.post(baseURL + `/codi/user/`, codiData);

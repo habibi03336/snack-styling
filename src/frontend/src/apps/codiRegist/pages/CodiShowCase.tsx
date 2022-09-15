@@ -29,6 +29,7 @@ type ICodiShowCase = RouteComponentProps<{
 }>;
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
+  console.log("heoolo");
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isSelfCodi = Number(match.params.qid) === -1;
   const { clothes, loadMore, loadDone } = useClothes(
@@ -50,7 +51,6 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     match.params.type === "update" ? codi : undefined,
     Number(match.params.qid)
   );
-  const history = useHistory();
 
   const onClickCodiSave = () => {
     uploadCodi.subscribe({
@@ -78,7 +78,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
   let clothCnt = 0;
   return (
     <IonPage>
-      <Header type="back" onHeaderClick={() => history.goBack()} />
+      <Header type="back" />
       <IonContent>
         <CodiBoard
           boardConfig={boardConfig}

@@ -16,7 +16,6 @@ import { useHistory } from "react-router";
 
 const MemberDetailRegist = () => {
   const { features, setFeatures, postSignin } = useMemberRegist();
-  const history = useHistory();
   return (
     <IonPage>
       <IonContent>
@@ -25,7 +24,7 @@ const MemberDetailRegist = () => {
             e.preventDefault();
             postSignin.subscribe({
               complete() {
-                history.push("/login");
+                window.location.href = "/login";
               },
             });
           }}
