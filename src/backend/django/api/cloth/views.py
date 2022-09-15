@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from api.cloth.libs import decodeJWTPayload
 
 from api.cloth.paginations import ClothPagePagination
 from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
@@ -92,8 +93,9 @@ class ClothUserViewSet(mixins.ListModelMixin,
     permission_classes = [UserAccessPermission]
 
     def get_queryset(self):
-        user = self.kwargs['userId']
-        return Cloth.objects.filter(userId=user)
+        # user = self.kwargs['userId']
+        pk = decodeJWTPayload(self.request.META.get('HTTP_AUTHORIZATION'))
+        return Cloth.objects.filter(userId=pk)
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
@@ -106,5 +108,6 @@ class ClothUserViewSet(mixins.ListModelMixin,
         return self.serializer_class
 
     def create(self, request, *args, **kwargs):
-        request.data['userId'] = self.kwargs['userId']
+        request.data['userId'] = decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
         return super().create(request, *args, **kwargs)
+    
