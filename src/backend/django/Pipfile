@@ -13,6 +13,7 @@ mysqlclient = "*"
 django-environ = "*"
 boto3 = "*"
 django-storages = "*"
+pyjwt = "*"
 
 [dev-packages]
 autopep8 = "*"

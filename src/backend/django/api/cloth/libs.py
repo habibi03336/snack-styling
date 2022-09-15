@@ -1,3 +1,5 @@
+import jwt
+
 from PIL import Image
 from io import BytesIO
 from rembg import remove
@@ -23,3 +25,8 @@ def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
         new_img_io, 'ImageField', raw_img.name, 'image/png', new_img_io.getbuffer().nbytes, raw_img.charset
     )
     return result
+
+def decodeJWTPayload(token):
+    decoded = jwt.decode(token, options={"verify_signature": False})
+    # print(decoded['Key'])
+    return decoded['Key']
