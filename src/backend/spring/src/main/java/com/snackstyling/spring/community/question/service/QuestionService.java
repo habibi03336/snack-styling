@@ -46,12 +46,32 @@ public class QuestionService {
         questionRepository.save(question);
         return new QuestionNumResponse(question.getId());
     }
-    public List<Question> loadQuestion(Integer page){
+    public List<Question> allQuestion(Integer page){
         Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
         return questionRepository.findAllByUsed(1,pageable).getContent();
     }
-    public QuestionsResponse questionList(Integer page){
-        List<Question> list=loadQuestion(page);
+    public List<Question> adoptQuestion(Integer page, Integer mode){
+        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
+        return questionRepository.findAllByUsedAndAdopt(1,mode,pageable).getContent();
+    }
+    public List<Question> tpoQuestion(Integer page, Integer mode){
+        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
+        return questionRepository.findAllByUsedAndTpo(1,mode,pageable).getContent();
+    }
+    public QuestionsResponse questionList(Integer page, Integer mode){
+        List<Question> list= new ArrayList<>();
+        //전체 보기
+        if(mode==0) {
+            list = allQuestion(page);
+        }
+        //채택 안 된 것만
+        else if(mode==1 || mode==2){
+            list=adoptQuestion(page, mode-1);
+        }
+        //채택 된 것만
+        else{
+            list=tpoQuestion(page, mode-3);
+        }
         List<QuestionResponse> questionResponses= new ArrayList<>();
         for (Question temp: list){
             QuestionResponse questionResponse=new QuestionResponse();
