@@ -43,12 +43,13 @@ public class QuestionController {
         questionService.questionDelete(id);
         return ResponseEntity.ok().build();
     }
-    /*
+
     @ApiOperation(value="질문 수정",notes = "<strong>질문을 수정한다.</strong>")
     @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity updateQuestion(@PathVariable(value="id") Long id, @RequestBody QuestionRequest questionRequest){
+    public ResponseEntity updateQuestion(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody QuestionRequest questionRequest){
+        jwtService.validateToken(token);
         questionService.questionUpdate(id, questionRequest);
         return ResponseEntity.ok().build();
     }
-    */
+
 }
