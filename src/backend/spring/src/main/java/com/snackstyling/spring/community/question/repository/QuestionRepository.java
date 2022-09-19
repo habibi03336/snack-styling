@@ -13,5 +13,7 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByMember(Member member);
     Page<Question> findAllByUsed(Integer used, Pageable pageable);
+    Page<Question> findAllByUsedAndAdopt(Integer used, Integer Adopt, Pageable pageable);
+    Page<Question> findAllByUsedAndTpo(Integer used, Integer Tpo, Pageable pageable);
     Question findByIdAndUsed(Long id, Integer used);
 }

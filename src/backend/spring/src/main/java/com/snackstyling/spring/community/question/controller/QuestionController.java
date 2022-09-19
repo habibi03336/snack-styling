@@ -26,9 +26,10 @@ public class QuestionController {
     @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
     @ApiImplicitParam(name = "page", value = "페이지 번호", required = true, dataType = "int", defaultValue = "None")
     @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
-    public ResponseEntity<QuestionsResponse> loadQuestion(@RequestHeader("Authorization") String token, @RequestParam("page") Integer page){
+    public ResponseEntity<QuestionsResponse> loadQuestion(@RequestHeader("Authorization") String token, @RequestParam("page") Integer page,
+                                                          @RequestParam("kind") Integer kind){
         jwtService.validateToken(token);
-        return ResponseEntity.ok().body(questionService.questionList(page));
+        return ResponseEntity.ok().body(questionService.questionList(page, kind));
     }
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
