@@ -26,7 +26,15 @@ def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     )
     return result
 
+
 def decodeJWTPayload(token):
     decoded = jwt.decode(token, options={"verify_signature": False})
     # print(decoded['Key'])
     return decoded['Key']
+
+
+def isSelfRequest(request):
+    if 'id' in request.query_params:
+        return request.query_params['id']
+
+    return decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
