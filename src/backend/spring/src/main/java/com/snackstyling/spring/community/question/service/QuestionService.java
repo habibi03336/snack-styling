@@ -10,7 +10,9 @@ import com.snackstyling.spring.community.common.dto.CodiDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.*;
+import com.snackstyling.spring.community.question.exception.AdoptQueException;
 import com.snackstyling.spring.community.question.exception.DelQueException;
+import com.snackstyling.spring.community.question.exception.ExistAnsException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -69,11 +71,23 @@ public class QuestionService {
     }
     public void questionDelete(Long id){
         Question question=questionSelect(id);
+        if(question.getAdopt()==1){
+            throw new AdoptQueException("채택된 질문으로 삭제할 수 없습니다.");
+        }
+        if(answerRepository.countByAnswer(question)!=0){
+            throw new ExistAnsException("답변이 존재하는 질문으로 삭제할 수 없습니다.");
+        }
         question.setUsed(0);
         questionRepository.save(question);
     }
     public void questionUpdate(Long id, QuestionRequest questionRequest){
         Question question=questionRepository.findById(id).orElse(null);
+        if(question.getAdopt()==1){
+            throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
+        }
+        if(answerRepository.countByAnswer(question)!=0){
+            throw new ExistAnsException("답변이 존재하는 질문으로 수정할 수 없습니다.");
+        }
         question.setTpo(questionRequest.getTpo());
         question.setEndDate(questionRequest.getEndDate());
         question.setComments(questionRequest.getComments());
