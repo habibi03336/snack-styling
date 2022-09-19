@@ -36,16 +36,9 @@ public class MemberController {
     }
     @ApiOperation(value="맴버 답변 조회",notes = "<strong>내가 등록한 답변을 조회한다.</strong>")
     @RequestMapping(value="/api/v1/profile/answers", method = RequestMethod.GET)
-    public ResponseEntity<AnswersResponse> inquiryQuestion(@RequestHeader("Authorization") String token){
+    public ResponseEntity<QuestionsResponse> inquiryQuestion(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok().body(memberService.memberAnswers(jwtService.getMemberId(token)));
     }
-    /*
-    @RequestMapping(value="/api/v1/users", method = RequestMethod.PATCH)
-    public ResponseEntity updateMember(@RequestBody MemberRequest memberRequest){
-        memberService.memberUpdate(memberRequest);
-        return ResponseEntity.ok().build();
-    }
-    */
     /*
     @ApiOperation(value="맴버정보 수정",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장한다.</strong>")
     @RequestMapping(value="/api/v1/users/{id}", method = RequestMethod.PATCH)
