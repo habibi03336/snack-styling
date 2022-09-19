@@ -71,22 +71,26 @@ public class MemberService {
         }
         return new QuestionsResponse(questionResponses);
     }
-    public AnswersResponse memberAnswers(Long id){
+    public QuestionsResponse memberAnswers(Long id){
         Member member=memberSelect(id);
         List<Answer> answers=answerRepository.findByMember(member);
-        List<AnswerResponse> answerResponses=new ArrayList<>();
-        RestTemplate restTemplate=new RestTemplate();
-        for(Answer temp :answers){
-            AnswerResponse answerResponse=new AnswerResponse();
-            answerResponse.setNickname(temp.getMember().getNickname());
-            String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
-            ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
-            answerResponse.setClothDto(result.getBody());
-            answerResponse.setComments(temp.getComments());
-            answerResponse.setAdopt(temp.getAdopt());
-            answerResponses.add(answerResponse);
+        List<QuestionResponse> questionResponses=new ArrayList<>();
+        for(Answer ans :answers){
+            QuestionResponse questionResponse=new QuestionResponse();
+            Question temp=ans.getQuestion();
+            questionResponse.setQid(temp.getId());
+            questionResponse.setMid(temp.getMember().getId());
+            questionResponse.setNickname(temp.getMember().getNickname());
+            questionResponse.setWeight(temp.getMember().getWeight());
+            questionResponse.setHeight(temp.getMember().getHeight());
+            questionResponse.setPostDate(temp.getPostDate());
+            questionResponse.setEndDate(temp.getEndDate());
+            questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
+            questionResponse.setComments(temp.getComments());
+            questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
+            questionResponses.add(questionResponse);
         }
-        return new AnswersResponse(answerResponses);
+        return new QuestionsResponse(questionResponses);
     }
 
 }
