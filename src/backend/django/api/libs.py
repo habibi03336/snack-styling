@@ -1,5 +1,5 @@
 import jwt
-
+import environ
 from PIL import Image
 from io import BytesIO
 from rembg import remove
@@ -26,6 +26,9 @@ def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     )
     return result
 
+def readEnvValue(value):
+    env = environ.Env()
+    return env(value)
 
 def decodeJWTPayload(token):
     decoded = jwt.decode(token, options={"verify_signature": False})
