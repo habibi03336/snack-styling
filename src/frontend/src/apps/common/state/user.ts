@@ -4,14 +4,14 @@ export interface userState {
   uid: number | null;
   id: number | null;
 }
-const mid = window.localStorage.getItem("mid");
+const id = window.localStorage.getItem("id");
 
 export const userAtom = atom<userState>({
   key: "Common/userState",
   default: {
-    isLogined: mid ? true : false,
+    isLogined: id ? true : false,
     uid: null,
-    id: mid ? Number(mid) : null,
+    id: id ? Number(id) : null,
   },
 });
 
