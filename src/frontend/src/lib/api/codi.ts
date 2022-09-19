@@ -16,3 +16,6 @@ export const GET_CODIS = () => client.get(baseURL + `/codi/user/`);
 
 export const POST_CODI = (codiData: ICodiData) =>
   client.post(baseURL + `/codi/user/`, codiData);
+
+export const DELETE_CODI = (codiId: number) =>
+  client.delete(baseURL + `/codi/${codiId}/`);
