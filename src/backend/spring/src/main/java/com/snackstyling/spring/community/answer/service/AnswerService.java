@@ -10,6 +10,7 @@ import com.snackstyling.spring.community.answer.dto.AnswerRequest;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.CoordinationDto;
 import com.snackstyling.spring.community.question.domain.Question;
+import com.snackstyling.spring.community.question.exception.AdoptQueException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.community.question.service.QuestionService;
 import com.snackstyling.spring.community.common.dto.CodiDto;
@@ -69,11 +70,19 @@ public class AnswerService {
     }
     public void deleteAnswer(Long id){
         Answer answer=answerRepository.findById(id).orElse(null);
+        Question question=answer.getQuestion();
+        if(question.getAdopt()==1){
+            throw new AdoptQueException("채택된 질문으로 삭제할 수 없습니다.");
+        }
         answer.setUsed(0);
         answerRepository.save(answer);
     }
     public void updateAnswer(Long id, AnswerRequest answerRequest){
         Answer answer=answerRepository.findById(id).orElse(null);
+        Question question=answer.getQuestion();
+        if(question.getAdopt()==1){
+            throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
+        }
         answer.setComments(answerRequest.getComments());
         CoordinationDto codi=new CoordinationDto();
         codi.setTop(answerRequest.getCodi().getTop());
