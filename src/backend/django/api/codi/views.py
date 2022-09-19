@@ -1,4 +1,8 @@
+
 from rest_framework import mixins
+from django.forms import model_to_dict
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -59,7 +63,20 @@ class CodiViewSet(ModelViewSet):
             return CodiSerializer
         if self.action == 'list':
             return CodiListSerializer
+        if self.action == 'dup_create':
+            return CodiUserSerializer
         return self.serializer_class
+
+    @action(detail=True, methods=['post'], url_path='dup_create')
+    def dup_create(self, request, *args, **kwargs):
+        instance = self.get_object()
+        raw_data = model_to_dict(instance, exclude=['id', 'userId'])
+        
+        request.data._mutable = True
+        request.data.update(raw_data)
+        request.data._mutable = False
+        
+        return super().create(request, *args, **kwargs)
 
 
 @extend_schema_view(
@@ -105,6 +122,6 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         return self.serializer_class
 
     def create(self, request, *args, **kwargs):
-        setattr(request, '_mutable', True)
+        setattr(request.data, '_mutable', True)
         request.data['userId'] = isSelfRequest(request)
         return super().create(request, *args, **kwargs)
