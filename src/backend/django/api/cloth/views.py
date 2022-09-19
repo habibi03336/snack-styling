@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from api.cloth.libs import decodeJWTPayload
+from api.libs import isSelfRequest
 
 from api.cloth.paginations import ClothPagePagination
 from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
@@ -35,6 +35,7 @@ from model.clothmodel.models import Cloth
 class ClothViewSet(ModelViewSet):
     queryset = Cloth.objects.all()
     pagination_class = ClothPagePagination
+    permission_classes = [UserAccessPermission]
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
@@ -94,7 +95,8 @@ class ClothUserViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         # user = self.kwargs['userId']
-        pk = decodeJWTPayload(self.request.META.get('HTTP_AUTHORIZATION'))
+
+        pk = isSelfRequest(self.request)
         return Cloth.objects.filter(userId=pk)
 
     def get_serializer_class(self):
@@ -108,6 +110,5 @@ class ClothUserViewSet(mixins.ListModelMixin,
         return self.serializer_class
 
     def create(self, request, *args, **kwargs):
-        request.data['userId'] = decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
+        request.data['userId'] = isSelfRequest(request)
         return super().create(request, *args, **kwargs)
-    

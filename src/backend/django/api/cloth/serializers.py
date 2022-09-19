@@ -4,13 +4,13 @@ from model.clothmodel.models import Cloth
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 
-from api.cloth.libs import removeBackground
+from api.libs import removeBackground
 
 
 class ClothSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cloth
-        fields = ['id', 'image', 'create_dt', 'userId']
+        fields = ['id', 'userId', 'image', 'create_dt', 'tags']
 
 
 class ClothCreateSerializer(serializers.ModelSerializer):
