@@ -2,10 +2,11 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from api.cloth.libs import decodeJWTPayload
+from api.libs import isSelfRequest
 
 from api.codi.paginations import CodiListPagination
 from api.codi.serializers import CodiSerializer, CodiUserSerializer, CodiCreateSerializer, CodiUserCreateSerializer, CodiListSerializer
+from api.permissions import UserAccessPermission
 
 from model.codimodel.models import Codi
 
@@ -35,6 +36,7 @@ class CodiViewSet(ModelViewSet):
     queryset = Codi.objects.all()
     serializer_class = CodiUserSerializer
     pagination_class = CodiListPagination
+    permission_classes = [UserAccessPermission]
 
     def get_serializer_context(self):
         return {
@@ -79,6 +81,7 @@ class CodiUserViewSet(mixins.CreateModelMixin,
                       GenericViewSet):
     serializer_class = CodiSerializer
     pagination_class = CodiListPagination
+    permission_classes = [UserAccessPermission]
 
     def get_serializer_context(self):
         return {
@@ -88,7 +91,7 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         }
 
     def get_queryset(self):
-        pk = decodeJWTPayload(self.request.META.get('HTTP_AUTHORIZATION'))
+        pk = isSelfRequest(self.request)
         return Codi.objects.filter(userId=pk)
 
     def get_serializer_class(self):
@@ -103,5 +106,5 @@ class CodiUserViewSet(mixins.CreateModelMixin,
 
     def create(self, request, *args, **kwargs):
         setattr(request, '_mutable', True)
-        request.data['userId'] = decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
+        request.data['userId'] = isSelfRequest(request)
         return super().create(request, *args, **kwargs)
