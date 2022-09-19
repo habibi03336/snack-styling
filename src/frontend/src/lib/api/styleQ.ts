@@ -3,14 +3,13 @@ import address from "./address";
 
 const baseURL = address["api"] + "/board";
 export const GET_STYLEQS = (page: number) =>
-  client.get(baseURL + `/question/?page=${page}`);
+  client.get(baseURL + `/question/?page=${page}&kind=1`);
 
 export const GET_STYLEQ = (id: number) =>
   client.get(baseURL + `/question/${id}`);
 
 interface StyleQData {
-  id: number;
-  end_date: string;
+  endDate: string;
   tpo: number;
   comments: string;
 }
@@ -34,3 +33,6 @@ export const POST_STYLE_ANSWER = (styleAnsData: StyleAnsData) =>
 export const ADOPT_ANSWER = (answerId: number) => {
   client.patch(baseURL + `/answer/adopt/${answerId}`);
 };
+
+export const DELETE_QUESTION = (qid: number) =>
+  client.delete(baseURL + `/question/${qid}`);

@@ -4,10 +4,12 @@ import address from "./address";
 
 const baseURL = address["imgAPI"];
 
-export const GET_CLOTHS = (userId: number, page = 0) => {
+export const GET_CLOTHS = (userId?: number, page = 0) => {
   // assert(type === "other" && userId === undefined ? false : true);
 
-  return client.get(baseURL + `/cloth/user/?page=${page}`);
+  return client.get(
+    baseURL + `/cloth/user/?page=${page}` + (userId ? `&id=${userId}` : "")
+  );
 };
 
 export const GET_CLOTH = (clothId: number) => {
@@ -34,3 +36,6 @@ interface IClothData {
 }
 export const PATCH_CLOTH = (clothId: number, clothData: IClothData) =>
   client.patch(baseURL + `/cloth/${clothId}/`, clothData);
+
+export const DELETE_CLOTH = (clothId: number) =>
+  client.delete(baseURL + `/cloth/${clothId}/`);
