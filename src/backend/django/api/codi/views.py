@@ -28,12 +28,12 @@ class CodiViewSet(ModelViewSet):
     pagination_class = CodiListPagination
     permission_classes = [UserAccessPermission]
 
-    def get_serializer_context(self):
-        return {
-            'request': None,
-            'format': self.format_kwarg,
-            'view': self
-        }
+    # def get_serializer_context(self):
+    #     return {
+    #         'request': None,
+    #         'format': self.format_kwarg,
+    #         'view': self
+    #     }
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
