@@ -23,20 +23,20 @@ public class QuestionController {
     public ResponseEntity<QuestionNumResponse> postQuestion(@RequestHeader("Authorization") String token, @RequestBody QuestionRequest questionRequest) {
         return ResponseEntity.ok().body(questionService.questionPost(token, questionRequest));
     }
-    @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
-    @ApiImplicitParam(name = "page", value = "페이지 번호", required = true, dataType = "int", defaultValue = "None")
+    @ApiOperation(value="채택 여부에 따른 질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
     @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
-    public ResponseEntity<QuestionsResponse> loadQuestion(@RequestHeader("Authorization") String token, @RequestParam("page") Integer page,
-                                                          @RequestParam("kind") Integer kind){
+    public ResponseEntity<QuestionsResponse> loadAdoptQuestion(@RequestHeader("Authorization") String token, @RequestParam("page") Integer page,
+                                                               @RequestParam(value="adopt", required = false, defaultValue = "-1") Integer adopt,
+                                                               @RequestParam(value="tpo", required = false, defaultValue = "-1") Integer tpo){
         jwtService.validateToken(token);
-        return ResponseEntity.ok().body(questionService.questionList(page, kind));
+        return ResponseEntity.ok().body(questionService.questionList(page, adopt, tpo));
     }
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
     @RequestMapping(value="api/v1/board/question/{id}", method = RequestMethod.GET)
     public ResponseEntity<QuestionDetailResponse> detailQuestion(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id) {
         jwtService.validateToken(token);
-        return ResponseEntity.ok().body(questionService.questionDetail(id));
+        return ResponseEntity.ok().body(questionService.questionDetail(id, token));
     }
     @ApiOperation(value="질문 삭제",notes = "<strong>질문을 삭제한다.</strong>")
     @RequestMapping(value="/api/v1/board/question/{id}", method = RequestMethod.DELETE)

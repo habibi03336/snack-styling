@@ -33,13 +33,14 @@ public class AnswerController {
     @RequestMapping(value="/api/v1/board/answer/{id}", method = RequestMethod.PATCH)
     public ResponseEntity updateAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody AnswerRequest answerRequest){
         jwtService.validateToken(token);
-        answerService.updateAnswer(id,answerRequest);
+        answerService.updateAnswer(id,answerRequest,token);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="답변 채택",notes = "<strong>답변을 채택합니다.</strong>")
     @RequestMapping(value="/api/v1/board/answer/adopt/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity adoptAnswer(@PathVariable(value="id") Long id){
-        answerService.adoptAnswer(id);
+    public ResponseEntity adoptAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id){
+        jwtService.validateToken(token);
+        answerService.adoptAnswer(id, token);
         return ResponseEntity.ok().build();
     }
 }
