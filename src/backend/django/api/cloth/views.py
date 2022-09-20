@@ -12,25 +12,16 @@ from api.permissions import UserAccessPermission
 
 from model.clothmodel.models import Cloth
 
+import api.cloth.schemas as ClothSchema
+
 
 @extend_schema_view(
-    create=extend_schema(
-        summary="옷 이미지 등록",
-        tags=["Cloth"],
-    ),
-    retrieve=extend_schema(
-        summary="옷 상세정보 출력",
-        tags=["Cloth"],
-    ),
-    partial_update=extend_schema(
-        summary="개별 옷 정보 업데이트",
-        tags=["Cloth"],
-    ),
-    list=extend_schema(
-        summary="모든 옷 리스트를 출력",
-        tags=["Cloth"],
-        responses=ClothDetailSerializer,
-    )
+    create=ClothSchema.CLOTH_SCHEMA_CREATE,
+    retrieve=ClothSchema.CLOTH_SCHEMA_RETRIEVE,
+    partial_update=ClothSchema.CLOTH_SCHEMA_PARTIAL_UPDATE,
+    list=ClothSchema.CLOTH_SCHEMA_LIST,
+    destroy=ClothSchema.CLOTH_SCHEMA_DESTROY,
+    multiple_tag_update=ClothSchema.CLOTH_SCHEMA_MULTI_UPDATE,
 )
 class ClothViewSet(ModelViewSet):
     queryset = Cloth.objects.all()
@@ -55,12 +46,6 @@ class ClothViewSet(ModelViewSet):
             return ClothTagSerializer
         return ClothSerializer
 
-    @extend_schema(
-        summary="여러 옷 세부정보 업데이트",
-        tags=["Cloth"],
-        request=ClothTagSerializer(many=True),
-        responses=None
-    )
     @action(detail=False, methods=['patch'], url_path="multi-update")
     def multiple_tag_update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
@@ -75,15 +60,8 @@ class ClothViewSet(ModelViewSet):
 
 
 @extend_schema_view(
-    create=extend_schema(
-        summary="userId 기반 옷 이미지 등록",
-        tags=["Cloth"],
-        request=ClothCreateSerializer,
-    ),
-    list=extend_schema(
-        summary="userId 기반 옷 리스트 출력",
-        tags=["Cloth"],
-    )
+    create=ClothSchema.CLOTHUSER_SCHEMA_CREATE,
+    list=ClothSchema.CLOTHUSER_SCHEMA_LIST,
 )
 class ClothUserViewSet(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
@@ -95,7 +73,6 @@ class ClothUserViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         # user = self.kwargs['userId']
-
         pk = isSelfRequest(self.request)
         return Cloth.objects.filter(userId=pk)
 
