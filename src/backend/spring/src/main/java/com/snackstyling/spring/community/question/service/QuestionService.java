@@ -19,8 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -46,32 +45,26 @@ public class QuestionService {
         questionRepository.save(question);
         return new QuestionNumResponse(question.getId());
     }
-    public List<Question> allQuestion(Integer page){
-        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
-        return questionRepository.findAllByUsed(1,pageable).getContent();
-    }
-    public List<Question> adoptQuestion(Integer page, Integer mode){
-        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
-        return questionRepository.findAllByUsedAndAdopt(1,mode,pageable).getContent();
-    }
-    public List<Question> tpoQuestion(Integer page, Integer mode){
-        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
-        return questionRepository.findAllByUsedAndTpo(1,mode,pageable).getContent();
-    }
-    public QuestionsResponse questionList(Integer page, Integer mode){
+    public QuestionsResponse questionList(Integer page, Integer adopt, Integer tpo){
         List<Question> list= new ArrayList<>();
-        //전체 보기
-        if(mode==0) {
-            list = allQuestion(page);
+        Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
+        //adopt=-1, tpo=-1
+        //adopt=-1, tpo 만 존재
+        //adopt 만 존재 top=-1
+        //둘 다 존재
+        if(adopt==-1 && tpo==-1){
+            list=questionRepository.findAllByUsed(1,pageable).getContent();
         }
-        //채택 안 된 것만
-        else if(mode==1 || mode==2){
-            list=adoptQuestion(page, mode-1);
+        else if(adopt==-1){
+            list=questionRepository.findAllByUsedAndTpo(1,tpo,pageable).getContent();
         }
-        //채택 된 것만
+        else if (tpo==-1){
+            list = questionRepository.findAllByUsedAndAdopt(1, adopt,pageable).getContent();
+        }
         else{
-            list=tpoQuestion(page, mode-3);
+            list=questionRepository.findAllByUsedAndAdoptAndTpo(1,adopt,tpo,pageable).getContent();
         }
+
         List<QuestionResponse> questionResponses= new ArrayList<>();
         for (Question temp: list){
             QuestionResponse questionResponse=new QuestionResponse();
@@ -116,7 +109,7 @@ public class QuestionService {
     public Question questionSelect(Long id){
         return questionRepository.findById(id).orElse(null);
     }
-    public QuestionDetailResponse questionDetail(Long id){
+    public QuestionDetailResponse questionDetail(Long id, String token){
         Question question=questionRepository.findByIdAndUsed(id,1);
         if(question==null){
             throw new DelQueException("삭제된 질문입니다!");
@@ -136,12 +129,16 @@ public class QuestionService {
         List<Answer> answer=answerRepository.findByQuestionOrderByAdoptDescPostDateAsc(question);
         RestTemplate restTemplate=new RestTemplate();
         List<AnswerResponse> answerResponses=new ArrayList<>();
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.set("Authorization",token);
+        HttpEntity request=new HttpEntity(headers);
         for(Answer temp : answer){
             AnswerResponse answerResponse=new AnswerResponse();
             answerResponse.setNickname(temp.getMember().getNickname());
             try {
                 String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
-                ResponseEntity<ClothDto> result=restTemplate.getForEntity(url, ClothDto.class);
+                ResponseEntity<ClothDto> result=restTemplate.exchange(url, HttpMethod.GET, request, ClothDto.class);
                 answerResponse.setClothDto(result.getBody());
                 answerResponse.setComments(temp.getComments());
                 answerResponse.setAdopt(temp.getAdopt());
