@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from django.forms import model_to_dict
 from rest_framework import serializers
 
 from model.codimodel.models import Codi
@@ -43,3 +44,16 @@ class CodiListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
         fields = ['id', 'top', 'bottom', 'cap', 'footwear']
+
+class CodiDuplicateSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    userId = serializers.IntegerField()
+    
+    def create(self, validated_data):
+        instance = Codi.objects.get(pk=validated_data['id'])
+        
+        instance.pk = None
+        instance.userId = validated_data['userId']
+        
+        instance.save()
+        return instance
