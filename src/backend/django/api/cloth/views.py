@@ -3,34 +3,25 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from api.libs import isSelfRequest
+from drf_spectacular.utils import extend_schema_view
+from api.libs import getUserIdFromJWT, isSelfRequest
 
 from api.cloth.paginations import ClothPagePagination
-from api.cloth.serializers import ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
+from api.cloth.serializers import ClothDestroySerializer, ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
 from api.permissions import UserAccessPermission
 
 from model.clothmodel.models import Cloth
 
+import api.cloth.schemas as ClothSchema
+
 
 @extend_schema_view(
-    create=extend_schema(
-        summary="옷 이미지 등록",
-        tags=["Cloth"],
-    ),
-    retrieve=extend_schema(
-        summary="옷 상세정보 출력",
-        tags=["Cloth"],
-    ),
-    partial_update=extend_schema(
-        summary="개별 옷 정보 업데이트",
-        tags=["Cloth"],
-    ),
-    list=extend_schema(
-        summary="모든 옷 리스트를 출력",
-        tags=["Cloth"],
-        responses=ClothDetailSerializer,
-    )
+    create=ClothSchema.CLOTH_SCHEMA_CREATE,
+    retrieve=ClothSchema.CLOTH_SCHEMA_RETRIEVE,
+    partial_update=ClothSchema.CLOTH_SCHEMA_PARTIAL_UPDATE,
+    list=ClothSchema.CLOTH_SCHEMA_LIST,
+    destroy=ClothSchema.CLOTH_SCHEMA_DESTROY,
+    multiple_tag_update=ClothSchema.CLOTH_SCHEMA_MULTI_UPDATE,
 )
 class ClothViewSet(ModelViewSet):
     queryset = Cloth.objects.all()
@@ -48,19 +39,18 @@ class ClothViewSet(ModelViewSet):
         if self.action == 'partial_update':
             return ClothRetrieveUpdateSerializer
         if self.action == 'destroy':
-            return ClothSerializer
+            return ClothDestroySerializer
         if self.action == 'list':
             return ClothDetailSerializer
         if self.action == 'multiple_tag_update':
             return ClothTagSerializer
         return ClothSerializer
 
-    @extend_schema(
-        summary="여러 옷 세부정보 업데이트",
-        tags=["Cloth"],
-        request=ClothTagSerializer(many=True),
-        responses=None
-    )
+    def destroy(self, request, *args, **kwargs):
+        pk = getUserIdFromJWT(request)
+        request.data['id'] = pk
+        return super().update(request, *args, **kwargs)
+
     @action(detail=False, methods=['patch'], url_path="multi-update")
     def multiple_tag_update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
@@ -75,15 +65,8 @@ class ClothViewSet(ModelViewSet):
 
 
 @extend_schema_view(
-    create=extend_schema(
-        summary="userId 기반 옷 이미지 등록",
-        tags=["Cloth"],
-        request=ClothCreateSerializer,
-    ),
-    list=extend_schema(
-        summary="userId 기반 옷 리스트 출력",
-        tags=["Cloth"],
-    )
+    create=ClothSchema.CLOTHUSER_SCHEMA_CREATE,
+    list=ClothSchema.CLOTHUSER_SCHEMA_LIST,
 )
 class ClothUserViewSet(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
@@ -95,7 +78,6 @@ class ClothUserViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         # user = self.kwargs['userId']
-
         pk = isSelfRequest(self.request)
         return Cloth.objects.filter(userId=pk)
 

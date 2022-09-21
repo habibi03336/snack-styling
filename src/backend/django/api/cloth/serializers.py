@@ -4,7 +4,8 @@ from model.clothmodel.models import Cloth
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 
-from api.libs import removeBackground
+from api.exceptions import AlreadyTerminated
+from api.cloth.libs import removeBackground
 
 
 class ClothSerializer(serializers.ModelSerializer):
@@ -51,6 +52,16 @@ class ClothDetailSerializer(serializers.ModelSerializer):
             return category[0].name
         return "없음"
 
+class ClothDestroySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    
+    def update(self, instance, validated_data):
+        if instance.isdeleted == True:
+            raise AlreadyTerminated
+        instance.isdeleted = True
+        instance.save()
+        return instance
+        
 
 class ClothListSerializer(serializers.ListSerializer):
     def update(self, instance, validated_data):
