@@ -1,6 +1,5 @@
 import { IonContent, IonIcon, IonPage, IonRouterLink } from "@ionic/react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import user from "../../common/state/user";
+import { useRecoilValue } from "recoil";
 import IDCard from "../components/IDCard";
 import userDetailAtom from "../state/userDetail";
 import { helpCircle, chatbubbles, heart } from "ionicons/icons";
@@ -8,11 +7,11 @@ import Header from "../../common/components/Header";
 import RowFiller from "../../common/components/RowFiller";
 
 const Mypage = () => {
-  const [userState, setUserState] = useRecoilState(user);
   const userDetail = useRecoilValue(userDetailAtom);
   const onClickLogOut = () => {
-    window.localStorage.removeItem("mid");
-    setUserState({ ...userState, isLogined: false });
+    window.localStorage.removeItem("id");
+    window.localStorage.removeItem("accessToken");
+    window.localStorage.removeItem("refreshToken");
     window.location.href = "/";
   };
   return (

@@ -22,7 +22,6 @@ export const makeCodiTemplate = (codis: I.Codi[], template: I.CodiTemplate) => {
         (codiCloth) => codiCloth.category === cate
       );
       if (categoryIdx === -1) return;
-
       const clothData: I.CodiCloth = {
         ...template.clothes[categoryIdx],
         category: cate,

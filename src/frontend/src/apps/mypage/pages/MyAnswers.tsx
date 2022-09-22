@@ -24,7 +24,7 @@ const MyAnswers = () => {
           {
             //render styleQs
             elems.map((elem: I.StyleAns) => (
-              <StyleAnsCard key={elem.id} styleAns={elem} />
+              <StyleAnsCard key={elem.id} styleAns={elem} owner={true} />
             ))
           }
         </ListDiv>
