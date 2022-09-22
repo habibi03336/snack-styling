@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AnswerResponse {
+    private Long mid;
     private String nickname;
-    private ClothDto clothDto;
+    private ClothDto codi;
     private String comments;
     private Integer adopt;
 }
