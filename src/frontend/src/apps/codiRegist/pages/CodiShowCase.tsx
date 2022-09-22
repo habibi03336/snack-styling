@@ -13,7 +13,7 @@ import useClothes from "../../common/hooks/useCloths";
 import useCodiRegist from "../hooks/useCodiRegist";
 import CodiBoard from "../../common/components/CodiBoard";
 import useTags from "../../common/hooks/useTags";
-import { RouteComponentProps, useHistory } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { SwiperSlide, Swiper } from "swiper/react";
 
 import useTabBarControl from "../../common/hooks/useTabBarControl";
@@ -29,11 +29,10 @@ type ICodiShowCase = RouteComponentProps<{
 }>;
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
-  console.log("heoolo");
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isSelfCodi = Number(match.params.qid) === -1;
   const { clothes, loadMore, loadDone } = useClothes(
-    Number(match.params.mid) === -1 ? undefined : Number(match.params.mid)
+    isSelfCodi ? undefined : Number(match.params.mid)
   ); //
 
   const codi = useRecoilValue(codiDetailState);
@@ -111,7 +110,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
             })
           }
           <div style={{ display: "none" }}>
-            {clothCnt < 3 && !loadDone && setTimeout(loadMore, 500)}
+            {clothCnt < 3 && !loadDone && setTimeout(loadMore, 3000)}
           </div>
           {selectedTags.length > 0 && (
             <SwiperSlide key={-1}>
