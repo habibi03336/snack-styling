@@ -4,6 +4,7 @@ import com.snackstyling.spring.common.domain.Notification;
 import com.snackstyling.spring.common.dto.NotificationResponse;
 import com.snackstyling.spring.common.dto.NotificationsResponse;
 import com.snackstyling.spring.common.repository.NotificationRepository;
+import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,21 @@ public class NotificationService {
         List<Notification> notifications=notifyRepository.findByMemberAndUsedOrderByIdDesc(member,0);
         List<NotificationResponse> notificationResponses=new ArrayList<>();
         for(Notification notification : notifications){
+            String other;
+            String tpo=new OccasionDto().getTpo(notification.getQuestion().getTpo());
+            //질문에 답글 올린사람 0, 내답변이 채택 1
+            if(notification.getType()==0){
+                other=notification.getAnswer().getMember().getNickname();
+            }
+            else{
+                other=notification.getQuestion().getMember().getNickname();
+            }
             notificationResponses.add(new NotificationResponse(notification.getId(),
                     notification.getQuestion().getId(),
-                    notification.getType()));
+                    notification.getType(),
+                    tpo,
+                    member.getNickname(),
+                    other));
         }
         return new NotificationsResponse(notificationResponses);
     }

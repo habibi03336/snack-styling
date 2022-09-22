@@ -1,5 +1,6 @@
 package com.snackstyling.spring.common.domain;
 
+import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.member.domain.Member;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name="queId")
     private Question question;
+    @ManyToOne
+    @JoinColumn(name="ansId")
+    private Answer answer;
     private Integer type;
     private Integer used=0;
 }
