@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { GET_CLOTHS } from "../../../lib/api/cloth";
+import { DELETE_CLOTH, GET_CLOTHS } from "../../../lib/api/cloth";
 import * as I from "../../../lib/types/interfaces";
 import { useRecoilState, useRecoilValue } from "recoil";
 import user from "../../common/state/user";
@@ -50,7 +50,14 @@ const useCloths = (userId?: number) => {
     })();
   });
 
+  const deleteCloth = async (clothId: number) => {
+    const res = await DELETE_CLOTH(clothId);
+    if (res.status >= 300) return;
+    setClothes(clothes.filter((elem) => elem.id != clothId));
+  };
+
   return {
+    deleteCloth,
     clothes,
     loadMore,
     loadDone: infiniteParam.loadDone,

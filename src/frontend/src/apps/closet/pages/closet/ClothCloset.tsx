@@ -29,6 +29,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ClothDetail from "../../containers/ClothDetail";
 import { selectedClothIdAtom } from "../../state/clothes";
 import { useRecoilState } from "recoil";
+import { DELETE_CLOTH } from "../../../../lib/api/cloth";
 
 const ClothCloset = () => {
   const [showTags, setShowTags] = useState<boolean>(false);
@@ -38,7 +39,7 @@ const ClothCloset = () => {
   const { tags, toggleTag, clearAndSelect, selectTag, selectedTags } =
     useClosetClothTags();
 
-  const { clothes, loadMore, loadDone } = useClothes();
+  const { clothes, deleteCloth, loadMore, loadDone } = useClothes();
 
   const { uploadClothes } = useClothRegist();
   const history = useHistory();
@@ -190,7 +191,12 @@ const ClothCloset = () => {
                 </IonButton>
               </IonButtons>
               <IonButtons slot="start">
-                <IonButton onClick={() => setSelectedClothId(-1)}>
+                <IonButton
+                  onClick={() => {
+                    deleteCloth(selectedClothId);
+                    setSelectedClothId(-1);
+                  }}
+                >
                   <IonIcon
                     icon={trashOutline}
                     style={{ color: "tomato" }}

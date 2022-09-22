@@ -1,15 +1,12 @@
-import { GET_CODIS } from "../../../lib/api/codi";
+import { DELETE_CODI, GET_CODIS } from "../../../lib/api/codi";
 import { useEffect } from "react";
 import * as I from "../../../lib/types/interfaces";
 import { defaultTemplate } from "../../../assets/codiTemplates";
 import { makeCodiTemplate } from "../../../lib/process/codi";
-import address from "../../../lib/api/address";
 import { useRecoilState } from "recoil";
-import user from "../../common/state/user";
 import { codisAtom } from "../state/codi";
 
 const useCodis = () => {
-  const [userState] = useRecoilState(user);
   const [codis, setCodis] = useRecoilState<I.CodiTemplate[]>(codisAtom);
   useEffect(() => {
     (async () => {
@@ -52,7 +49,14 @@ const useCodis = () => {
     })();
   }, []);
 
+  const deleteCodi = async (codiId: number) => {
+    const res = await DELETE_CODI(codiId);
+    if (res.status >= 300) return;
+    setCodis(codis.filter((elem) => elem.id !== codiId));
+  };
+
   return {
+    deleteCodi,
     codis,
   };
 };
