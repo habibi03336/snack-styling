@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Observable } from "rxjs";
-import { POST_CODI, ICodiData } from "../../../lib/api/codi";
+import { POST_CODI, ICodiData, PATCH_CODI } from "../../../lib/api/codi";
 import { POST_STYLE_ANSWER } from "../../../lib/api/styleQ";
 import * as I from "../../../lib/types/interfaces";
 import { defaultTemplate } from "../../../assets/codiTemplates";
 import { deepcopy } from "../../../lib/utils/common";
-import { useRecoilState } from "recoil";
-import user from "../../common/state/user";
+import useOnMount from "../../common/hooks/useOnMount";
 import produce from "immer";
 // import { assert } from "console";
 
@@ -15,13 +14,22 @@ const useCodiRegist = (
   defaultCodi?: I.CodiTemplate,
   questionId?: number
 ) => {
-  const [userState] = useRecoilState(user);
   // if type is answer questionId must exist
   // assert(type === "answer" && questionId === undefined ? false : true);
   const [comment, setComment] = useState("");
   const [codiTemplate, setCodiTemplate] = useState<I.CodiTemplate>(
-    type === "update" ? defaultCodi : deepcopy(defaultTemplate)
+    deepcopy(defaultTemplate)
   );
+
+  useOnMount(() => {
+    if (type === "update" && defaultCodi) {
+      const codiTemp = defaultCodi.clothes.map((elem, idx) => {
+        if (elem.image === null) return codiTemplate.clothes[idx];
+        else return elem;
+      });
+      setCodiTemplate({ ...defaultCodi, clothes: codiTemp });
+    }
+  });
 
   const boardConfig: I.BoardConfig = {
     width: window.innerWidth - 40,
@@ -57,16 +65,10 @@ const useCodiRegist = (
 
   const uploadCodi = new Observable((subscriber) => {
     (async () => {
-      const codiData: ICodiData = {
-        top: null,
-        bottom: null,
-        footwear: null,
-        cap: null,
-      };
-
+      const codiData: ICodiData = {};
+      codiTemplate.clothes.forEach((elem) => console.log(elem));
       codiTemplate.clothes.forEach((cloth) => {
         const categoryName = categoryMap.get(cloth.category);
-
         if (cloth.id === undefined) return;
         if (categoryName === undefined) return;
 
@@ -74,11 +76,18 @@ const useCodiRegist = (
       });
 
       let res;
-      // if (type === "update") res = await PATCH_CODI();
-      if (type === "own") res = await POST_CODI(codiData);
+      if (type === "update" && defaultCodi?.id) {
+        res = await PATCH_CODI(defaultCodi.id, codiData);
+      } else if (type === "own") res = await POST_CODI(codiData);
       else if (type === "answer" && questionId !== undefined) {
         const answerData = {
-          codi: codiData,
+          codi: {
+            top: null,
+            bottom: null,
+            footwear: null,
+            cap: null,
+            ...codiData,
+          },
           qid: questionId,
           comments: comment,
         };

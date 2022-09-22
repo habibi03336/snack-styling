@@ -3,14 +3,19 @@ import useApplyForm from "../hooks/useApplyForm";
 
 import Header from "../../common/components/Header";
 import React, { ChangeEventHandler } from "react";
-import { useHistory } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import Label from "../../common/components/Label";
 import RowFiller from "../../common/components/RowFiller";
 import TPOButton from "../components/TPOButton";
 import Button from "../../common/components/Button";
 import useTabBarControl from "../../common/hooks/useTabBarControl";
 
-const ApplyForm: React.FC = () => {
+type IApplyForm = RouteComponentProps<{
+  type: "create" | "update";
+  qid: string;
+}>;
+
+const ApplyForm = ({ match }: IApplyForm) => {
   const {
     date,
     setDate,
@@ -20,12 +25,15 @@ const ApplyForm: React.FC = () => {
     setDescription,
     uploadStyleQ,
     clearTpoSelection,
-  } = useApplyForm();
+  } = useApplyForm(
+    match.params.type === "update" ? Number(match.params.qid) : undefined
+  );
 
   const changeDate: ChangeEventHandler = (e) => {
     const target = e.target as HTMLInputElement;
     setDate(target.value);
   };
+
   const history = useHistory();
   useTabBarControl("useUnmount");
 
