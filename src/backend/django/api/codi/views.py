@@ -93,6 +93,5 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         return self.serializer_class
 
     def create(self, request, *args, **kwargs):
-        setattr(request.data, '_mutable', True)
         request.data['userId'] = isSelfRequest(request)
         return super().create(request, *args, **kwargs)
