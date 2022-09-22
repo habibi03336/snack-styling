@@ -21,7 +21,7 @@ import { selectedCodiIdAtom } from "../../state/codi";
 import { useRecoilState } from "recoil";
 
 const CodiCloset = () => {
-  const { codis } = useCodis();
+  const { codis, deleteCodi } = useCodis();
   const [_, setSelectedCodi] = useRecoilState(selectedCodiIdAtom);
   const [modalDetail, setModalDetail] = useState<I.CodiTemplate | null>(null);
 
@@ -52,7 +52,12 @@ const CodiCloset = () => {
                   </IonButton>
                 </IonButtons>
                 <IonButtons slot="start">
-                  <IonButton onClick={() => setModalDetail(null)}>
+                  <IonButton
+                    onClick={() => {
+                      deleteCodi(modalDetail.id!);
+                      setModalDetail(null);
+                    }}
+                  >
                     <IonIcon
                       icon={trashOutline}
                       style={{ color: "tomato" }}
@@ -65,7 +70,8 @@ const CodiCloset = () => {
               <CodiCard
                 codi={modalDetail}
                 onCodiClick={() => {
-                  console.log("codiCard");
+                  setSelectedCodi(modalDetail.id!);
+                  setModalDetail(null);
                 }}
                 type="big"
                 comment=""
