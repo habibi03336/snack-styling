@@ -19,3 +19,6 @@ export const POST_CODI = (codiData: ICodiData) =>
 
 export const DELETE_CODI = (codiId: number) =>
   client.delete(baseURL + `/codi/${codiId}/`);
+
+export const PATCH_CODI = (codiId: number, codiData: ICodiData) =>
+  client.patch(baseURL + `/codi/${codiId}`, codiData);
