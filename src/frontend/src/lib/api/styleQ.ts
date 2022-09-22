@@ -27,6 +27,9 @@ interface StyleAnsData {
   comments?: string;
 }
 
+export const PATCH_STYLEQ = (qid: number, styleQData: StyleQData) =>
+  client.patch(baseURL + `/question/${qid}`, styleQData);
+
 export const POST_STYLE_ANSWER = (styleAnsData: StyleAnsData) =>
   client.post(baseURL + "/answer", styleAnsData);
 
