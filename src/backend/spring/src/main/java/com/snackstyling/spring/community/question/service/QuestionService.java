@@ -139,7 +139,8 @@ public class QuestionService {
             try {
                 String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
                 ResponseEntity<ClothDto> result=restTemplate.exchange(url, HttpMethod.GET, request, ClothDto.class);
-                answerResponse.setClothDto(result.getBody());
+                answerResponse.setMid(temp.getMember().getId());
+                answerResponse.setCodi(result.getBody());
                 answerResponse.setComments(temp.getComments());
                 answerResponse.setAdopt(temp.getAdopt());
                 answerResponses.add(answerResponse);

@@ -45,12 +45,7 @@ public class AnswerService {
         Member member=memberService.memberSelect(jwtService.getMemberId(token));
         Question question=questionService.questionSelect(answerRequest.getQid());
         // 알람 추가 코드
-        Notification notify= new Notification();
-        notify.setMember(member);
-        notify.setQuestion(question);
-        notify.setType(0); //0은 해당 질문에 답변이 달렸을 때 알람
 
-        notificationService.saveNotification(notify);
         // 끝
         answer.setMember(member);
         answer.setQuestion(question);
@@ -75,6 +70,13 @@ public class AnswerService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
         }
         answerRepository.save(answer);
+        Notification notify= new Notification();
+        notify.setMember(member);
+        notify.setQuestion(question);
+        notify.setAnswer(answer);
+        notify.setType(0); //0은 해당 질문에 답변이 달렸을 때 알람
+
+        notificationService.saveNotification(notify);
         return new AnswerNumResponse(answer.getId());
     }
     public void deleteAnswer(Long id){
@@ -139,6 +141,7 @@ public class AnswerService {
         Notification notify=new Notification();
         notify.setMember(answer.getMember());
         notify.setQuestion(answer.getQuestion());
+        notify.setAnswer(answer);
         notify.setType(1);
         notificationService.saveNotification(notify);
         // 끝
