@@ -20,15 +20,15 @@ const defaultTemplate: I.CodiTemplate = {
     },
     {
       positionX: 0.25,
-      positionY: 0.3,
-      image: Cap,
-      category: "모자",
-    },
-    {
-      positionX: 0.25,
       positionY: 0.8,
       image: Footwear,
       category: "신발",
+    },
+    {
+      positionX: 0.25,
+      positionY: 0.3,
+      image: Cap,
+      category: "모자",
     },
   ],
 };

@@ -21,7 +21,7 @@ const useLogin = () => {
         const token = res.data.tokens.accessToken.split(".");
         const { Key } = JSON.parse(atob(token[1]));
         window.localStorage.setItem("id", Key);
-        setUser({ ...user, id: Key });
+        setUser({ ...user, isLogined: true, id: Key });
         subscriber.complete();
       }
     })();
