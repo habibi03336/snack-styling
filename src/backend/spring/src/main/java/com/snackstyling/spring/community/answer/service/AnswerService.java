@@ -119,24 +119,24 @@ public class AnswerService {
         Answer answer=answerRepository.findById(id).orElse(null);
         answer.setAdopt(1);
         answer.getQuestion().setAdopt(1);
-        answerRepository.save(answer);
-        questionRepository.save(answer.getQuestion());
+
         //장고한테 채택한 코디 알려줌
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization", token);
 
         RestTemplate restTemplate=new RestTemplate();
-        String url="http://backend-django:8000api/v1/codi/"+answer.getCodi().toString()+"/dup_create/";
+        String url="http://backend-django:8000/api/v1/codi/"+answer.getCodi().toString()+"/dup/";
         Map<String, Object> map=new HashMap<>();
-        map.put("userId",answer.getQuestion().getMember().getId());
+        map.put("userId",answer.getMember().getId());
+        map.put("date",answer.getQuestion().getPostDate());
         HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
         try {
-            ResponseEntity result=restTemplate.postForEntity(url,entity, CodiDto.class);
-            System.out.println(result.getStatusCode());
+            restTemplate.postForEntity(url,entity,String.class);
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
         }
-
+        answerRepository.save(answer);
+        questionRepository.save(answer.getQuestion());
         // 내 답변이 채택받았을 때 코드
         Notification notify=new Notification();
         notify.setMember(answer.getMember());
