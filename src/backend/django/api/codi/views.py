@@ -55,7 +55,7 @@ class CodiViewSet(ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='dup')
     def dup_create(self, request, *args, **kwargs):
-        setattr(request.data, '_mutable', True)
+        # setattr(request.data, '_mutable', True)
         request.data['id'] = self.kwargs['pk']
         return super().create(request, *args, **kwargs)
 
