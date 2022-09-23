@@ -1,10 +1,7 @@
 package com.snackstyling.spring.member.service;
 
 import com.snackstyling.spring.community.answer.domain.Answer;
-import com.snackstyling.spring.community.answer.dto.AnswerResponse;
-import com.snackstyling.spring.community.answer.dto.AnswersResponse;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
-import com.snackstyling.spring.community.common.dto.ClothDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.QuestionResponse;
@@ -17,9 +14,7 @@ import com.snackstyling.spring.member.dto.MemberInfResponse;
 import com.snackstyling.spring.member.exception.DuplicateNameException;
 import com.snackstyling.spring.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;

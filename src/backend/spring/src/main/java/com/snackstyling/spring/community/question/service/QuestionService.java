@@ -140,9 +140,11 @@ public class QuestionService {
                 String url="http://backend-django:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
                 ResponseEntity<ClothDto> result=restTemplate.exchange(url, HttpMethod.GET, request, ClothDto.class);
                 answerResponse.setMid(temp.getMember().getId());
+                answerResponse.setAid(temp.getId());
                 answerResponse.setCodi(result.getBody());
                 answerResponse.setComments(temp.getComments());
                 answerResponse.setAdopt(temp.getAdopt());
+                answerResponse.setPostDate(temp.getPostDate());
                 answerResponses.add(answerResponse);
             }catch(Exception e){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
