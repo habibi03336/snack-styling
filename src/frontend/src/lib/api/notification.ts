@@ -14,4 +14,4 @@ export const GET_NOTIFICATIONS = () => client.get(baseURL);
 export const PATCH_NOTIFICATION = (id: number) =>
   client.patch(baseURL + `/${id}`);
 
-export const PATCH_ALL_NOTIFICATIONS = () => client.post(baseURL);
+export const PATCH_ALL_NOTIFICATIONS = () => client.patch(baseURL);
