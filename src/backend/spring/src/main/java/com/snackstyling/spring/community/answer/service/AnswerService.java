@@ -15,6 +15,7 @@ import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.community.question.service.QuestionService;
 import com.snackstyling.spring.community.common.dto.CodiDto;
 import com.snackstyling.spring.member.domain.Member;
+import com.snackstyling.spring.member.repository.MemberRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -34,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
+    private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final NotificationService notificationService;
     private final MemberService memberService;
@@ -135,8 +137,10 @@ public class AnswerService {
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
         }
+        answer.getMember().setAdoptCnt(answer.getMember().getAdoptCnt()+1);
         answerRepository.save(answer);
         questionRepository.save(answer.getQuestion());
+        memberRepository.save(answer.getMember());
         // 내 답변이 채택받았을 때 코드
         Notification notify=new Notification();
         notify.setMember(answer.getMember());

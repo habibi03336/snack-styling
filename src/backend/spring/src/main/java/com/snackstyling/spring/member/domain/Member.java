@@ -25,4 +25,5 @@ public class Member {
     private Integer age;
     private Integer weight;
     private Integer height;
+    private Integer adoptCnt=0;
 }
