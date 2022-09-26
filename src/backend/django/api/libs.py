@@ -22,3 +22,12 @@ def isSelfRequest(request):
         return request.query_params['id']
 
     return decodeJWTPayload(request.META.get('HTTP_AUTHORIZATION'))
+
+
+def mutableCheck(request):
+    try:
+        setattr(request.data, '_mutable', True)
+        request.data['userId'] = isSelfRequest(request)
+        setattr(request.data, '_mutable', False)
+    except AttributeError:
+        request.data['userId'] = isSelfRequest(request)

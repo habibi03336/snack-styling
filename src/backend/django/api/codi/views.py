@@ -79,7 +79,7 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         }
 
     def get_queryset(self):
-        pk = isSelfRequest(self.request)
+        pk = self.request.data['userId']
         return Codi.objects.filter(userId=pk)
 
     def get_serializer_class(self):
@@ -91,7 +91,3 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         if self.action == 'list':
             return CodiListSerializer
         return self.serializer_class
-
-    def create(self, request, *args, **kwargs):
-        request.data['userId'] = isSelfRequest(request)
-        return super().create(request, *args, **kwargs)

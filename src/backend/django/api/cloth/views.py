@@ -47,8 +47,6 @@ class ClothViewSet(ModelViewSet):
         return ClothSerializer
 
     def destroy(self, request, *args, **kwargs):
-        pk = getUserIdFromJWT(request)
-        request.data['id'] = pk
         return super().update(request, *args, **kwargs)
 
     @action(detail=False, methods=['patch'], url_path="multi-update")
@@ -77,8 +75,7 @@ class ClothUserViewSet(mixins.ListModelMixin,
     permission_classes = [UserAccessPermission]
 
     def get_queryset(self):
-        # user = self.kwargs['userId']
-        pk = isSelfRequest(self.request)
+        pk = self.request.data['userId']
         return Cloth.objects.filter(userId=pk)
 
     def get_serializer_class(self):
@@ -90,7 +87,3 @@ class ClothUserViewSet(mixins.ListModelMixin,
         if self.action == 'list':
             return ClothDetailSerializer
         return self.serializer_class
-
-    def create(self, request, *args, **kwargs):
-        request.data['userId'] = isSelfRequest(request)
-        return super().create(request, *args, **kwargs)
