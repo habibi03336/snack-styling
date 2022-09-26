@@ -16,7 +16,6 @@ const ClosetCard = ({
       style={{
         margin: "8px 0px",
         backgroundColor: "#fafafa",
-        border: "1px solid #eeeeee",
       }}
     >
       {children}
