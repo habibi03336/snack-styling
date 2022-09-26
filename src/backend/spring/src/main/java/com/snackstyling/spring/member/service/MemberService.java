@@ -9,10 +9,14 @@ import com.snackstyling.spring.community.question.dto.QuestionsResponse;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.login.service.LoginService;
 import com.snackstyling.spring.member.domain.Member;
+import com.snackstyling.spring.member.domain.Suggestion;
 import com.snackstyling.spring.member.dto.MemberRequest;
 import com.snackstyling.spring.member.dto.MemberInfResponse;
+import com.snackstyling.spring.member.dto.RankResponse;
+import com.snackstyling.spring.member.dto.RanksResponse;
 import com.snackstyling.spring.member.exception.DuplicateNameException;
 import com.snackstyling.spring.member.repository.MemberRepository;
+import com.snackstyling.spring.member.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final SuggestionRepository suggestionRepository;
     public void memberInsert(MemberRequest memberRequest){
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
@@ -70,9 +75,12 @@ public class MemberService {
         Member member=memberSelect(id);
         List<Answer> answers=answerRepository.findByMember(member);
         List<QuestionResponse> questionResponses=new ArrayList<>();
+        List<Long> duplicate=new ArrayList<>();
         for(Answer ans :answers){
             QuestionResponse questionResponse=new QuestionResponse();
             Question temp=ans.getQuestion();
+            if(duplicate.contains(temp.getId()))continue;
+            duplicate.add(temp.getId());
             questionResponse.setQid(temp.getId());
             questionResponse.setMid(temp.getMember().getId());
             questionResponse.setNickname(temp.getMember().getNickname());
@@ -87,5 +95,18 @@ public class MemberService {
         }
         return new QuestionsResponse(questionResponses);
     }
-
+    public void memberSuggestion(Long id, String contents){
+        Suggestion suggestion=new Suggestion();
+        suggestion.setMember(memberSelect(id));
+        suggestion.setContents(contents);
+        suggestionRepository.save(suggestion);
+    }
+    public RanksResponse memberRank(){
+        List<Member> members=memberRepository.findTop10ByOrderByAdoptCntDescNicknameAsc();
+        List<RankResponse> rankResponses=new ArrayList<>();
+        for(Member member : members){
+            rankResponses.add(new RankResponse(member.getNickname(),member.getAdoptCnt()));
+        }
+        return new RanksResponse(rankResponses);
+    }
 }
