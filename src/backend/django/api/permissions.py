@@ -1,5 +1,6 @@
 import requests
-from rest_framework import permissions
+from rest_framework import permissions, status
+from api.exceptions import AccessTokenExpired, AuthServerConnectionError
 
 from api.libs import decodeJWTPayload, mutableCheck, readEnvValue
 
@@ -16,8 +17,11 @@ class UserAccessPermission(permissions.BasePermission):
             if res.status_code == requests.codes.ok:
                 mutableCheck(request)
                 return True
+            elif res.status_code == status.HTTP_426_UPGRADE_REQUIRED:
+                raise AccessTokenExpired
         except requests.exceptions.ConnectionError as e:
             print("ConnectionError:", e)
+            raise AuthServerConnectionError
         
         
         return False
