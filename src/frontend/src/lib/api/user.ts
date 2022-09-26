@@ -33,3 +33,5 @@ export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
 
 export const GET_USER_QUESTIONS = () =>
   client.get(baseURL + `/profile/questions`);
+
+export const GET_USER_ANSWERS = () => client.get(baseURL + `/profile/answers`);

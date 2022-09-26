@@ -34,17 +34,12 @@ const ApplyForm = ({ match }: IApplyForm) => {
     setDate(target.value);
   };
 
-  const history = useHistory();
   useTabBarControl("useUnmount");
 
   return (
     <IonPage>
       <IonContent>
-        <Header
-          type="back"
-          onHeaderClick={() => history.goBack()}
-          text={"스타일링 요청하기"}
-        />
+        <Header type="back" text={"스타일링 요청하기"} />
         <RowFiller px={10} />
         <Label type="big" text="날짜를 선택해주세요" />
         <RowFiller px={16} />

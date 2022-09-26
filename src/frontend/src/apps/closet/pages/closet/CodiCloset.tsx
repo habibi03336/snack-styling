@@ -83,7 +83,7 @@ const CodiCloset = () => {
                 setSelectedCodi(modalDetail.id!);
                 setModalDetail(null);
               }}
-              routerLink={"/codiShowcase/update/-1/-1"}
+              routerLink={`/codiShowcase/update/-1/-1/${modalDetail.id}`}
             >
               수정하기
             </IonButton>

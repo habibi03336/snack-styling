@@ -49,6 +49,7 @@ import user from "./apps/common/state/user";
 import Login from "./apps/login/pages/Login";
 import MyAnswers from "./apps/mypage/pages/MyAnswers";
 import MyQuestions from "./apps/mypage/pages/MyQuestions";
+import Alarms from "./apps/alarms/pages/Alarms";
 
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
@@ -81,15 +82,15 @@ const App: React.FC = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/styleQ" component={StyleQList} />
             <Route exact path="/closet/:defaultTab" component={Closet} />
-            <Route path="/alarm" component={Mypage} />
+            <Route path="/alarm" component={Alarms} />
             <Route exact path="/mypage" component={Mypage} />
             <Route path="/styleQ/:id" component={StyleQDetail} />
             <Route path="/clothRegist" component={ClothRegist} />
             <Route
-              path="/codiShowcase/:type/:mid/:qid"
+              path="/codiShowcase/:type/:mid/:qid/:id"
               component={CodiShowCase}
             />
-            <Route path="/apply" component={ApplyForm} />
+            <Route path="/apply/:type/:qid" component={ApplyForm} />
             <Route path="/mypage/myanswers" component={MyAnswers} />
             <Route path="/mypage/myquestions" component={MyQuestions} />
             <Redirect exact from="/" to="/home" />

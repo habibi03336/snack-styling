@@ -52,7 +52,7 @@ const Mypage = () => {
               <div style={{ fontSize: 16 }}>답변내역</div>
             </div>
           </IonRouterLink>
-          <IonRouterLink routerLink={""}>
+          {/* <IonRouterLink routerLink={""}>
             <div
               style={{
                 display: "flex",
@@ -63,7 +63,7 @@ const Mypage = () => {
               <IonIcon src={heart} />
               <div style={{ fontSize: 16 }}>관심목록</div>
             </div>
-          </IonRouterLink>
+          </IonRouterLink> */}
         </div>
 
         <div style={{ position: "absolute", right: 10, bottom: 50 }}>

@@ -19,13 +19,12 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import useTabBarControl from "../../common/hooks/useTabBarControl";
 import BottomButton from "../../common/components/BottomButton";
 import { useRef } from "react";
-import { useRecoilValue } from "recoil";
-import { codiDetailState } from "../../closet/state/codi";
 
 type ICodiShowCase = RouteComponentProps<{
   type: "create" | "update";
   mid: string;
   qid: string;
+  id: string;
 }>;
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
@@ -35,7 +34,6 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     isSelfCodi ? undefined : Number(match.params.mid)
   ); //
 
-  const codi = useRecoilValue(codiDetailState);
   const { selectTag, clearSelection, useSelectedTags } = useTags();
   const selectedTags = useSelectedTags();
   const {
@@ -47,7 +45,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     uploadCodi,
   } = useCodiRegist(
     match.params.type === "update" ? "update" : isSelfCodi ? "own" : "answer",
-    match.params.type === "update" ? codi : undefined,
+    Number(match.params.id),
     Number(match.params.qid)
   );
 

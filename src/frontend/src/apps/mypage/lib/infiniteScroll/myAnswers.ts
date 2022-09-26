@@ -1,8 +1,11 @@
-async function myAnswers() {
-  //   const res = await GET_STYLEQS(page);
-  //   const data = res.data as I.StyleQs[];
+import { GET_USER_ANSWERS } from "../../../../lib/api/user";
+import * as I from "../../../../lib/types/interfaces";
 
-  return [[], true] as [[], boolean];
+async function myAnswers() {
+  const res = await GET_USER_ANSWERS();
+  const data = res.data.questionResponses as I.StyleQ[];
+
+  return [data, true] as [[], boolean];
 }
 
 export default myAnswers;

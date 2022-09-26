@@ -14,6 +14,9 @@ export interface ICodiData {
 
 export const GET_CODIS = () => client.get(baseURL + `/codi/user/`);
 
+export const GET_CODI = (codiId: number) =>
+  client.get(baseURL + `/codi/${codiId}/`);
+
 export const POST_CODI = (codiData: ICodiData) =>
   client.post(baseURL + `/codi/user/`, codiData);
 

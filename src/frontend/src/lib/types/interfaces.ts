@@ -46,6 +46,7 @@ export interface CodiCloth {
 }
 
 export interface StyleQ {
+  adopt: number;
   mid: number;
   qid: number;
   weight: number;
@@ -60,11 +61,13 @@ export interface StyleQ {
 }
 
 export interface StyleAns {
-  id: number;
+  aid: number;
+  mid: number;
   nickname: string;
   rank: string;
-  adopt: boolean;
-  clothDto: {
+  adopt: 0 | 1;
+  codi: {
+    id: number;
     top: string | null;
     bottom: string | null;
     cap: string | null;
@@ -77,4 +80,18 @@ export interface StyleAns {
 export interface StyleQDetail {
   que: StyleQ;
   ans: StyleAns[];
+}
+
+export interface Alarm {
+  nid: number;
+  other: string;
+  qid: number;
+  tpo: string;
+  type: number;
+  user: string;
+}
+
+export interface Codiplan {
+  codi: number;
+  plan_date: string;
 }

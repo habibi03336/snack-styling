@@ -1,17 +1,23 @@
 import { useState } from "react";
 import { Observable } from "rxjs";
-import { POST_CODI, ICodiData, PATCH_CODI } from "../../../lib/api/codi";
+import {
+  POST_CODI,
+  ICodiData,
+  PATCH_CODI,
+  GET_CODI,
+} from "../../../lib/api/codi";
 import { POST_STYLE_ANSWER } from "../../../lib/api/styleQ";
 import * as I from "../../../lib/types/interfaces";
 import { defaultTemplate } from "../../../assets/codiTemplates";
 import { deepcopy } from "../../../lib/utils/common";
 import useOnMount from "../../common/hooks/useOnMount";
 import produce from "immer";
+import { makeCodiTemplate } from "../../../lib/process/codi";
 // import { assert } from "console";
 
 const useCodiRegist = (
   type: "own" | "answer" | "update",
-  defaultCodi?: I.CodiTemplate,
+  id?: number,
   questionId?: number
 ) => {
   // if type is answer questionId must exist
@@ -21,8 +27,11 @@ const useCodiRegist = (
     deepcopy(defaultTemplate)
   );
 
-  useOnMount(() => {
-    if (type === "update" && defaultCodi) {
+  useOnMount(async () => {
+    if (type === "update" && id) {
+      const { data } = await GET_CODI(id);
+      const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
+      console.log(defaultCodi);
       const codiTemp = defaultCodi.clothes.map((elem, idx) => {
         if (elem.image === null) return codiTemplate.clothes[idx];
         else return elem;
@@ -76,8 +85,8 @@ const useCodiRegist = (
       });
 
       let res;
-      if (type === "update" && defaultCodi?.id) {
-        res = await PATCH_CODI(defaultCodi.id, codiData);
+      if (type === "update" && id) {
+        res = await PATCH_CODI(id, codiData);
       } else if (type === "own") res = await POST_CODI(codiData);
       else if (type === "answer" && questionId !== undefined) {
         const answerData = {

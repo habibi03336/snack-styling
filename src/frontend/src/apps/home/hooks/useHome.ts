@@ -1,24 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { defaultTemplate } from "../../../assets/codiTemplates";
+import { GET_CODI } from "../../../lib/api/codi";
+import { GET_CODIPLANS } from "../../../lib/api/codiplan";
+import { makeCodiTemplate } from "../../../lib/process/codi";
+import * as I from "../../../lib/types/interfaces";
 
 const useHome = () => {
   const today = new Date();
-  const todayISO = today.toISOString();
-  // const [codiOfTheDay, setCodiOfTheDay] = useState({});
-  // const [weatherOfTheDay, setWeatherOfTheDay] = useState({});
-  const [date, setDate] = useState(todayISO);
-  //   useEffect(() => {
-  //     (async () => {
-  //       const res = await new Promise.all([axios({}), axios({})]);
+  const [date, setDate] = useState<Date>(new Date());
+  const [codiplan, setCodiplan] = useState<{ [key: string]: number }>({});
+  const [codiSelected, setCodiSelected] = useState<I.CodiTemplate>();
+  useEffect(() => {
+    (async () => {
+      const { data } = await GET_CODIPLANS(
+        date.getFullYear(),
+        date.getMonth() + 1
+      );
+      const newCodiplan: { [key: string]: number } = {};
+      data.forEach((elem: I.Codiplan) => {
+        const day = elem["plan_date"].split("-")[2] as string;
+        newCodiplan[day] = elem.codi;
+      });
+      setCodiplan(newCodiplan);
+    })();
+  }, [date.getFullYear(), date.getMonth()]);
 
-  //       setCodiOfTheDay(res.data.codi);
-  //       setWeatherOfTheDay(res.data.weather);
-  //     })();
-  //   }, [date]);
+  useEffect(() => {
+    (async () => {
+      const codiId = codiplan[date.getDate()];
+      if (!codiId) {
+        setCodiSelected(undefined);
+        return;
+      }
+      const { data } = await GET_CODI(codiId);
+      const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
+      setCodiSelected(defaultCodi);
+    })();
+  }, [date, codiplan]);
 
   return {
-    // codiOfTheDay, weatherOfTheDay,
+    today,
     date,
     setDate,
+    codiplan,
+    setCodiplan,
+    codiSelected,
   };
 };
 
