@@ -35,3 +35,6 @@ export const GET_USER_QUESTIONS = () =>
   client.get(baseURL + `/profile/questions`);
 
 export const GET_USER_ANSWERS = () => client.get(baseURL + `/profile/answers`);
+
+export const POST_SUGGESTION = (text: string) =>
+  client.post(baseURL + "/profile/suggestions", { contents: text });
