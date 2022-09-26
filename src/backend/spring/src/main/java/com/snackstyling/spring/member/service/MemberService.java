@@ -49,7 +49,7 @@ public class MemberService {
     }
     public MemberInfResponse memberMyPage(Long id){
         Member member=memberSelect(id);
-        return new MemberInfResponse(member.getNickname(),0);
+        return new MemberInfResponse(member.getNickname(),member.getAdoptCnt());
     }
     public QuestionsResponse memberQuestions(Long id){
         Member member=memberSelect(id);
