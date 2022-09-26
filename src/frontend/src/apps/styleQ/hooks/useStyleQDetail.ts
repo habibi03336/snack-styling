@@ -1,9 +1,8 @@
-import { GET_STYLEQ } from "../../../lib/api/styleQ";
+import { DELETE_ANSWER, GET_STYLEQ } from "../../../lib/api/styleQ";
 import { makeCodiTemplate } from "../../../lib/process/codi";
 import { defaultTemplate } from "../../../assets/codiTemplates";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as I from "../../../lib/types/interfaces";
-import address from "../../../lib/api/address";
 import useOnMount from "../../common/hooks/useOnMount";
 
 const useStyleQDetail = (styleQId: number) => {
@@ -20,13 +19,11 @@ const useStyleQDetail = (styleQId: number) => {
             codiTemplate: makeCodiTemplate(
               [
                 {
-                  top: ans.clothDto.top ? ans.clothDto.top : null,
-                  bottom: ans.clothDto.bottom ? ans.clothDto.bottom : null,
-                  cap: ans.clothDto.cap ? ans.clothDto.cap : null,
-                  footwear: ans.clothDto.footwear
-                    ? ans.clothDto.footwear
-                    : null,
-                  id: ans.id,
+                  top: ans.codi.top ? ans.codi.top : null,
+                  bottom: ans.codi.bottom ? ans.codi.bottom : null,
+                  cap: ans.codi.cap ? ans.codi.cap : null,
+                  footwear: ans.codi.footwear ? ans.codi.footwear : null,
+                  id: ans.mid,
                 },
               ],
               defaultTemplate
@@ -39,7 +36,16 @@ const useStyleQDetail = (styleQId: number) => {
     })();
   });
 
-  return { styleQDetailData };
+  const removeAnswer = async (answerId: number) => {
+    const res = await DELETE_ANSWER(answerId);
+    if (res.status !== 200) return;
+    setStyleQDetailData({
+      que: styleQDetailData!.que,
+      ans: styleQDetailData!.ans.filter((elem) => elem.aid !== answerId),
+    });
+  };
+
+  return { styleQDetailData, removeAnswer };
 };
 
 export default useStyleQDetail;
