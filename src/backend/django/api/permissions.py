@@ -14,6 +14,7 @@ class UserAccessPermission(permissions.BasePermission):
             res = requests.get(url, headers={'Authorization': token})
             
             if res.status_code == requests.codes.ok:
+                mutableCheck(request)
                 return True
         except requests.exceptions.ConnectionError as e:
             print("ConnectionError:", e)
