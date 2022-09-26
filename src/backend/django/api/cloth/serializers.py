@@ -53,7 +53,6 @@ class ClothDetailSerializer(serializers.ModelSerializer):
         return "없음"
 
 class ClothDestroySerializer(serializers.Serializer):
-    id = serializers.IntegerField()
     
     def update(self, instance, validated_data):
         if instance.isdeleted == True:

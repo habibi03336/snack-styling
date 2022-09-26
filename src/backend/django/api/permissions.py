@@ -1,11 +1,12 @@
 import requests
 from rest_framework import permissions
 
-from api.libs import decodeJWTPayload, readEnvValue
+from api.libs import decodeJWTPayload, mutableCheck, readEnvValue
 
 class UserAccessPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if readEnvValue('DEBUG') == 'True':
+            mutableCheck(request)
             return True
         token = request.META.get('HTTP_AUTHORIZATION')
         url = 'http://backend-spring:8080/api/v1/accounts/token'
