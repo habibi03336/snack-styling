@@ -6,8 +6,10 @@ import lombok.Setter;
 import java.util.List;
 @Getter
 public class QuestionsResponse {
-    List<QuestionResponse> questionResponses;
-    public QuestionsResponse(List<QuestionResponse> questionResponses){
+    private List<QuestionResponse> questionResponses;
+    private Integer totalPage;
+    public QuestionsResponse(List<QuestionResponse> questionResponses, Integer totalPage){
         this.questionResponses=questionResponses;
+        this.totalPage=totalPage;
     }
 }

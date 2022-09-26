@@ -69,7 +69,7 @@ public class MemberService {
             questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
             questionResponses.add(questionResponse);
         }
-        return new QuestionsResponse(questionResponses);
+        return new QuestionsResponse(questionResponses,0);
     }
     public QuestionsResponse memberAnswers(Long id){
         Member member=memberSelect(id);
@@ -93,7 +93,7 @@ public class MemberService {
             questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
             questionResponses.add(questionResponse);
         }
-        return new QuestionsResponse(questionResponses);
+        return new QuestionsResponse(questionResponses,0);
     }
     public void memberSuggestion(Long id, String contents){
         Suggestion suggestion=new Suggestion();

@@ -23,13 +23,13 @@ public class QuestionController {
     public ResponseEntity<QuestionNumResponse> postQuestion(@RequestHeader("Authorization") String token, @RequestBody QuestionRequest questionRequest) {
         return ResponseEntity.ok().body(questionService.questionPost(token, questionRequest));
     }
-    @ApiOperation(value="채택 여부에 따른 질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
+    @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
     @RequestMapping(value="/api/v1/board/question", method = RequestMethod.GET)
     public ResponseEntity<QuestionsResponse> loadAdoptQuestion(@RequestHeader("Authorization") String token, @RequestParam("page") Integer page,
                                                                @RequestParam(value="adopt", required = false, defaultValue = "-1") Integer adopt,
                                                                @RequestParam(value="tpo", required = false, defaultValue = "-1") Integer tpo){
         jwtService.validateToken(token);
-        return ResponseEntity.ok().body(questionService.questionList(page, adopt, tpo));
+        return ResponseEntity.ok().body(questionService.questionList(page-1, adopt, tpo));
     }
     @ApiOperation(value="질문 상세 내용 보기",notes = "<strong>질문을 클릭하면 상세 내용 및 답변을 볼 수 있다.</strong>")
     @ApiImplicitParam(name = "id", value = "질문 번호", required = true, dataType = "int", defaultValue = "None")
