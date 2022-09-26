@@ -2,7 +2,7 @@ import { IonContent, IonIcon, IonPage, IonRouterLink } from "@ionic/react";
 import { useRecoilValue } from "recoil";
 import IDCard from "../components/IDCard";
 import userDetailAtom from "../state/userDetail";
-import { helpCircle, chatbubbles, heart } from "ionicons/icons";
+import { helpCircle, chatbubbles, heart, cube } from "ionicons/icons";
 import Header from "../../common/components/Header";
 import RowFiller from "../../common/components/RowFiller";
 
@@ -50,6 +50,18 @@ const Mypage = () => {
             >
               <IonIcon src={chatbubbles} />
               <div style={{ fontSize: 16 }}>답변내역</div>
+            </div>
+          </IonRouterLink>
+          <IonRouterLink routerLink={"/mypage/customerLetter"}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <IonIcon src={cube} />
+              <div style={{ fontSize: 16 }}>건의하기</div>
             </div>
           </IonRouterLink>
           {/* <IonRouterLink routerLink={""}>

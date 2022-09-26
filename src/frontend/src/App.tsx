@@ -50,6 +50,7 @@ import Login from "./apps/login/pages/Login";
 import MyAnswers from "./apps/mypage/pages/MyAnswers";
 import MyQuestions from "./apps/mypage/pages/MyQuestions";
 import Alarms from "./apps/alarms/pages/Alarms";
+import CustomerLetter from "./apps/mypage/pages/CustomerLetter";
 
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
@@ -93,6 +94,7 @@ const App: React.FC = () => {
             <Route path="/apply/:type/:qid" component={ApplyForm} />
             <Route path="/mypage/myanswers" component={MyAnswers} />
             <Route path="/mypage/myquestions" component={MyQuestions} />
+            <Route path="/mypage/customerLetter" component={CustomerLetter} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
           <IonTabBar style={{ height: "60px" }} slot="bottom">
