@@ -8,7 +8,6 @@ import * as I from "../../../lib/types/interfaces";
 import Header from "../../common/components/Header";
 import ListDiv from "../../common/components/ListDiv";
 import useInfiniteScroll from "../../common/hooks/useInfiniteScroll";
-import StyleAnsCard from "../../styleQ/components/StyleAnsCard";
 import myAnswers from "../lib/infiniteScroll/myAnswers";
 import useTabBarControl from "../../common/hooks/useTabBarControl";
 import StyleQBlock from "../../styleQ/components/StyleQBlock";
@@ -16,7 +15,6 @@ import StyleQBlock from "../../styleQ/components/StyleQBlock";
 const MyAnswers = () => {
   const { elems, loadDone, loadMore } = useInfiniteScroll(myAnswers);
   useTabBarControl("useUnmount");
-  console.log(elems);
   return (
     <IonPage>
       <Header text="나의 답변" type="back" />
