@@ -11,11 +11,12 @@ import useInfiniteScroll from "../../common/hooks/useInfiniteScroll";
 import StyleAnsCard from "../../styleQ/components/StyleAnsCard";
 import myAnswers from "../lib/infiniteScroll/myAnswers";
 import useTabBarControl from "../../common/hooks/useTabBarControl";
+import StyleQBlock from "../../styleQ/components/StyleQBlock";
 
 const MyAnswers = () => {
   const { elems, loadDone, loadMore } = useInfiniteScroll(myAnswers);
   useTabBarControl("useUnmount");
-
+  console.log(elems);
   return (
     <IonPage>
       <Header text="나의 답변" type="back" />
@@ -23,8 +24,13 @@ const MyAnswers = () => {
         <ListDiv>
           {
             //render styleQs
-            elems.map((elem: I.StyleAns) => (
-              <StyleAnsCard key={elem.id} styleAns={elem} owner={true} />
+            elems.map((elem: I.StyleQ) => (
+              <StyleQBlock
+                key={elem.qid}
+                routeTo={`/styleQ/${elem.qid}`}
+                styleQ={elem}
+                type="small"
+              />
             ))
           }
         </ListDiv>
