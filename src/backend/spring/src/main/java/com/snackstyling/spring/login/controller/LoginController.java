@@ -43,6 +43,12 @@ public class LoginController {
         joinService.updateUser(authRequest);
         return ResponseEntity.ok().build();
     }
+    @ApiOperation(value="이메일 중복 확인",notes = "<strong>이메일 중복은 가입 앙대영~</strong>")
+    @RequestMapping(value="/api/v1/accounts/duplication", method = RequestMethod.GET)
+    public ResponseEntity dupUser(@RequestParam("email") String email){
+        joinService.dupUser(email);
+        return ResponseEntity.ok().build();
+    }
     @ApiOperation(value="인증 메일 전송",notes = "<strong>인증메일전송</strong>")
     @RequestMapping(value="/api/v1/accounts/confirm", method = RequestMethod.POST)
     public ResponseEntity checkUser(@RequestBody ConfirmRequest confirmRequest){

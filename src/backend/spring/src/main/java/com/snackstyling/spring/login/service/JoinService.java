@@ -18,14 +18,16 @@ public class JoinService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     public AuthResponse joinUser(AuthRequest authRequest){
-        if(loginRepository.existsByEmail(authRequest.getEmail())){
-            throw new DuplicateEmailException("아이디가 중복되었습니다.");
-        }
         Login user=new Login();
         user.setEmail(authRequest.getEmail());
         user.setPassword(passwordEncoder.encode(authRequest.getPwd()));
         loginRepository.save(user);
         return new AuthResponse(user.getId());
+    }
+    public void dupUser(String email){
+        if(loginRepository.existsByEmail(email)){
+            throw new DuplicateEmailException("아이디가 중복되었습니다.");
+        }
     }
     public void outUser(AuthRequest authRequest){
         Login user=loginRepository.findByEmail(authRequest.getEmail());
