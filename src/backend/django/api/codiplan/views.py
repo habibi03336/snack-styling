@@ -37,12 +37,14 @@ class CodiPlanUserViewSet(mixins.CreateModelMixin,
     permission_classes = [UserAccessPermission]
 
     def get_queryset(self):
-        pk = isSelfRequest(self.request)
+        pk = self.request.data['userId']
         queryset = CodiPlan.objects.filter(userId=pk)
+        year = self.request.query_params.get('year', None)
         month = self.request.query_params.get('month', None)
-        if month is not None:
-            queryset = queryset.filter(plan_date__month=month)
-        return queryset
+        if year == None or month == None:
+            return queryset
+
+        return queryset.filter(plan_date__year=year, plan_date__month=month)
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
@@ -53,8 +55,3 @@ class CodiPlanUserViewSet(mixins.CreateModelMixin,
         if self.action == 'list':
             return CodiPlanRetrieveSerializer
         return self.serializer_class
-
-    def create(self, request, *args, **kwargs):
-        setattr(request.data, '_mutable', True)
-        request.data['userId'] = isSelfRequest(request)
-        return super().create(request, *args, **kwargs)
