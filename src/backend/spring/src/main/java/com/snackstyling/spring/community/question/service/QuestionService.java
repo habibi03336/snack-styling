@@ -16,6 +16,7 @@ import com.snackstyling.spring.community.question.exception.ExistAnsException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -46,25 +47,29 @@ public class QuestionService {
         return new QuestionNumResponse(question.getId());
     }
     public QuestionsResponse questionList(Integer page, Integer adopt, Integer tpo){
-        List<Question> list= new ArrayList<>();
         Pageable pageable = PageRequest.of(page,7, Sort.by("postDate").descending());
+        Page<Question> pages;
         //adopt=-1, tpo=-1
         //adopt=-1, tpo 만 존재
         //adopt 만 존재 top=-1
         //둘 다 존재
         if(adopt==-1 && tpo==-1){
-            list=questionRepository.findAllByUsed(1,pageable).getContent();
+            pages=questionRepository.findAllByUsed(1,pageable);
         }
         else if(adopt==-1){
-            list=questionRepository.findAllByUsedAndTpo(1,tpo,pageable).getContent();
+            pages=questionRepository.findAllByUsedAndTpo(1,tpo,pageable);
         }
         else if (tpo==-1){
-            list = questionRepository.findAllByUsedAndAdopt(1, adopt,pageable).getContent();
+            pages=questionRepository.findAllByUsedAndAdopt(1, adopt,pageable);
+
         }
         else{
-            list=questionRepository.findAllByUsedAndAdoptAndTpo(1,adopt,tpo,pageable).getContent();
+            pages=questionRepository.findAllByUsedAndAdoptAndTpo(1,adopt,tpo,pageable);
         }
-
+        List<Question> list=pages.getContent();
+        Long total=pages.getTotalElements();
+        int totalPage=total.intValue()/7;
+        if(total.intValue()%7!=0)totalPage+=1;
         List<QuestionResponse> questionResponses= new ArrayList<>();
         for (Question temp: list){
             QuestionResponse questionResponse=new QuestionResponse();
@@ -80,7 +85,9 @@ public class QuestionService {
             questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
             questionResponses.add(questionResponse);
         }
-        return new QuestionsResponse(questionResponses);
+
+
+        return new QuestionsResponse(questionResponses, totalPage);
     }
     public void questionDelete(Long id){
         Question question=questionSelect(id);
