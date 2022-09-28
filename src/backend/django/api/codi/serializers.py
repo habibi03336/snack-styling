@@ -1,5 +1,7 @@
 from collections import OrderedDict
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 from model.codimodel.models import Codi
 
@@ -46,15 +48,19 @@ class CodiListSerializer(serializers.ModelSerializer):
         model = Codi
         fields = ['id', 'top', 'bottom', 'cap', 'footwear']
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_top(self, obj):
         return isNoneCloth(obj.top)
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_bottom(self, obj):
         return isNoneCloth(obj.bottom)
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_cap(self, obj):
         return isNoneCloth(obj.cap)
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_footwear(self, obj):
         return isNoneCloth(obj.footwear)
 

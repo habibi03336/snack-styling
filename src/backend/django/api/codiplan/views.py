@@ -18,7 +18,6 @@ import api.codiplan.schemas as CodiplanSchema
     partial_update=CodiplanSchema.CODIPLAN_SCHEMA_DEFAULT,
     destroy=CodiplanSchema.CODIPLAN_SCHEMA_DEFAULT,
     list=CodiplanSchema.CODIPLAN_SCHEMA_DEFAULT,
-    dup_create=CodiplanSchema.CODIPLAN_SCHEMA_DEFAULT,
 )
 class CodiPlanViewSet(ModelViewSet):
     queryset = CodiPlan.objects.all()
