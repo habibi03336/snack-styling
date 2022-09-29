@@ -115,3 +115,8 @@ input {
 	background-image: url("./assets/tabbar/activate/mypage.svg");
 }
 
+
+textarea {
+	font-size: 20px;
+	font-weight: 200;
+}
