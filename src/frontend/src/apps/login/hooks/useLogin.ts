@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
-import { AUTH_LOGIN } from "../../../lib/api/user";
+import { AUTH_LOGIN } from "../../../lib/api/auth";
 import { userAtom } from "../../common/state/user";
 
 const useLogin = () => {
