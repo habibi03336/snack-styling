@@ -50,13 +50,13 @@ public class LoginController {
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 전송",notes = "<strong>인증메일전송</strong>")
-    @RequestMapping(value="/api/v1/accounts/confirm", method = RequestMethod.POST)
+    @RequestMapping(value="/api/v1/accounts/mail/send", method = RequestMethod.POST)
     public ResponseEntity checkUser(@RequestBody ConfirmRequest confirmRequest){
         mailService.sendMail(confirmRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 확인",notes = "<strong>인증메일확인</strong>")
-    @RequestMapping(value="/api/v1/accounts/confirm", method = RequestMethod.GET)
+    @RequestMapping(value="/api/v1/accounts/mail/confirm", method = RequestMethod.POST)
     public ResponseEntity confirmUser(@RequestBody CompareRequest compareRequest){
         mailService.checkMail(compareRequest);
         return ResponseEntity.ok().build();
