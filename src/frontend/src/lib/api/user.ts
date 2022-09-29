@@ -1,23 +1,7 @@
 import client from "./client";
 import address from "./address";
 
-const baseURL = address["api"];
-
-export interface ILoginInfo {
-  email: string;
-  pwd: string;
-}
-
-export const AUTH_LOGIN = (loginInfo: ILoginInfo) =>
-  client.post(baseURL + `/accounts`, loginInfo);
-
-export interface ISigninInfo {
-  email: string;
-  pwd: string;
-}
-
-export const AUTH_SIGNIN = (signinInfo: ISigninInfo) =>
-  client.post(baseURL + `/accounts/register`, signinInfo);
+const baseURL = address["api"] + "/profile";
 
 export interface IMemberInfo {
   age: number | null;
@@ -29,12 +13,11 @@ export interface IMemberInfo {
 }
 
 export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
-  client.post(baseURL + `/profile`, memberInfo);
+  client.post(baseURL, memberInfo);
 
-export const GET_USER_QUESTIONS = () =>
-  client.get(baseURL + `/profile/questions`);
+export const GET_USER_QUESTIONS = () => client.get(baseURL + "/questions");
 
-export const GET_USER_ANSWERS = () => client.get(baseURL + `/profile/answers`);
+export const GET_USER_ANSWERS = () => client.get(baseURL + "/answers");
 
 export const POST_SUGGESTION = (text: string) =>
-  client.post(baseURL + "/profile/suggestions", { contents: text });
+  client.post(baseURL + "/suggestions", { contents: text });
