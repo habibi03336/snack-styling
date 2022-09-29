@@ -9,7 +9,7 @@ export const GET_STYLEQS = (
   let url = baseURL + `/question/?page=${page}`;
   if (query)
     Object.entries(query).forEach(([filter, value]) => {
-      if (!value) return;
+      if (value === undefined) return;
       url += `&${filter}=${value}`;
     });
   return client.get(url);
