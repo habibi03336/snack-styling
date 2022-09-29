@@ -18,6 +18,7 @@ import { useRef } from "react";
 import useCodis from "../hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
 import { POST_CODIPLAN } from "../../../lib/api/codiplan";
+import Header from "../../common/components/Header";
 
 const Home = () => {
   const { setDate, date, codiSelected, setCodiplan, codiplan } = useHome();
@@ -42,6 +43,7 @@ const Home = () => {
   };
   return (
     <IonPage>
+      <Header type="title" text="스낵 스타일링" />
       <IonContent>
         <div
           style={{

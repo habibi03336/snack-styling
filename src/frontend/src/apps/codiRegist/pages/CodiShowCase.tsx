@@ -127,19 +127,20 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
             다음
           </IonButton>
         </BottomButton>
-        <IonModal trigger="open-modal" initialBreakpoint={0.3}>
+        <IonModal trigger="open-modal" initialBreakpoint={0.8}>
           <IonContent className="ion-padding">
-            <div className="ion-margin-top">
-              <IonLabel position="stacked">코디 설명</IonLabel>
-              <IonTextarea
-                rows={5}
-                value={comment}
-                onIonChange={(e) => setComment(e.detail.value!)}
-              />
-              <IonButton expand="block" onClick={onClickCodiSave}>
-                완료
-              </IonButton>
-            </div>
+            <IonLabel position="stacked">코디 설명</IonLabel>
+            <IonTextarea
+              style={{ fontSize: "20px" }}
+              rows={8}
+              value={comment}
+              onIonChange={(e) => setComment(e.detail.value!)}
+              autofocus
+              placeholder="코디 설명을 입력해주세요"
+            />
+            <IonButton expand="block" onClick={onClickCodiSave}>
+              완료
+            </IonButton>
           </IonContent>
         </IonModal>
       </IonContent>
