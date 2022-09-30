@@ -24,10 +24,11 @@ COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
 COPY . .
-RUN mv u2net.onnx ~/.u2net
+RUN ls -al
+# RUN mv u2net.onnx ~/.u2net
 
 VOLUME [ "./src" ]
 
 EXPOSE 8000
 
-ENTRYPOINT ["sh","entrypoint.sh"]
+CMD ["sh","entrypoint.sh"]
