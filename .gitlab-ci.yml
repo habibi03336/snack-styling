@@ -1,0 +1,51 @@
+stages:
+  - build
+
+build-test:
+  stage: build
+  image: python:3.9
+  script:
+    - echo $DEBUG
+    - apt-get update
+    - apt-get install -y --no-install-recommends gcc
+    - apt-get -qqy install ffmpeg libsm6 libxext6
+    - pip install pipenv
+
+    - cd src/backend/django
+    - pipenv install --dev --system --deploy
+
+    - python manage.py test
+  tags:
+    - styling-runner
+
+# stages:
+#   - build-django
+#   - build-frontend
+
+# build-django:
+#   stage: build-django
+#   image: python:3.9
+#   script:
+#     - apt-get update
+#     - apt-get install --no-install-recommends gcc -y
+#     - apt-get install ffmpeg libsm6 libxext6 -y
+#     - pip install pipenv gdown
+#     - mkdir -p ~/.u2net
+#     - gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
+#     - cd ./src/backend/django
+#     - pipenv install --dev --system --deploy
+
+# test-django:
+#   stage: build-django
+#   image: python:3.9
+#   script:
+#     - python manage.py test
+
+
+# build-frontend-job:
+#   stage: build-frontend
+#   image: node:latest
+#   script:
+#     - cd ./src/frontend
+#     - npm install
+#     - CI=false npm run build
