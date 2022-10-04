@@ -15,6 +15,9 @@ build-test:
     - pipenv install --dev --system --deploy
 
     - python manage.py test
+  only:
+    refs:
+      - feature/pipelines
   tags:
     - styling-runner
 
