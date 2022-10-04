@@ -1,10 +1,4 @@
 import jwt
-import environ
-
-
-def readEnvValue(value):
-    env = environ.Env()
-    return env(value)
 
 
 def decodeJWTPayload(token):

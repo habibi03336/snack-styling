@@ -1,8 +1,8 @@
 from PIL import Image
 from io import BytesIO
 import time
-# from rembg import remove
 
+from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 #############
@@ -109,6 +109,9 @@ def remove(
 
 
 def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
+    if settings.DEBUG == True:
+        return raw_img
+    
     pil_img = Image.open(raw_img).convert('RGBA')
 
     max_value = max(pil_img.width, pil_img.height)

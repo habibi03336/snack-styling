@@ -26,7 +26,9 @@ environ.Env.read_env()
 SECRET_KEY = 'django-insecure-n!2yy0+e46#zw3^(o6sb8rsp^e_v2=b48t114$52!7um*d!d)m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+if env('DEBUG') == 'True':
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -161,7 +163,7 @@ if env('USE_S3') == 'True':
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
-    
+
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
 
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -185,8 +187,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Coffee Styling Django Server API docs',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-
-
 }
 
 

@@ -24,6 +24,7 @@ COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
 COPY . .
+RUN ls -al
 RUN mv u2net.onnx ~/.u2net
 
 VOLUME [ "./src" ]
