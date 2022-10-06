@@ -16,6 +16,7 @@ WORKDIR /home/appuser
 
 # Download deeplearning model
 RUN mkdir -p ~/.u2net
+RUN mkdir -p ./src/media/cloth
 # RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
 
 # Copy data
@@ -24,7 +25,7 @@ COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
 COPY . .
-RUN mkdir -p ./src/media/cloth
+
 # RUN mv u2net.onnx ~/.u2net
 
 VOLUME [ "./src" ]
