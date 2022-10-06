@@ -5,11 +5,11 @@ build-test:
   stage: build
   image: python:3.9
   script:
-    - echo $DEBUG
-    - apt-get update
-    - apt-get install -y --no-install-recommends gcc
-    - apt-get -qqy install ffmpeg libsm6 libxext6
-    - pip install pipenv
+    # - echo $DEBUG
+    # - apt-get update
+    # - apt-get install -y --no-install-recommends gcc
+    # - apt-get -qqy install ffmpeg libsm6 libxext6
+    # - pip install pipenv
 
     - cd src/backend/django
     - pipenv install --dev --system --deploy
