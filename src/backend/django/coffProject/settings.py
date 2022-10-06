@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'coffProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DATEBASE_NAME'),
-        'USER': env('DATEBASE_USER'),
-        'PASSWORD': env('DATEBASE_PWD'),
-        'HOST': env('DATEBASE_HOST'),
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PWD'),
+        'HOST': env('DATABASE_HOST'),
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
