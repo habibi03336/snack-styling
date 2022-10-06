@@ -23,7 +23,7 @@ django-buildtest:
     - styling-runner
 
 django-package:
-  state: package
+  stage: package
   script:
     - docker save -o django-server.tar django-server
     - echo ${DATABASE_PWD} | sudo -S scp -i /home/ubuntu/rcdd-server-key.pem spring.tar ec2-user@3.34.30.156:/tmp
