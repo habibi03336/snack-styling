@@ -13,7 +13,7 @@ django-buildtest:
 
     - cd src/backend/django
     - docker build -t django-server .
-    - docker run --name django-server-test django-server python manager.py test
+    - docker run --name django-server-test django-server python manage.py test
     # - pipenv install --dev --system --deploy
     # - python manage.py test
   only:
