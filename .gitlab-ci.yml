@@ -1,45 +1,46 @@
 stages:
-  # - build
-  # - package
-  - trans
+  - build
+  - package
+  # - trans
 
-# django-buildtest:
-#   stage: build
-#   script:
-#     # - echo $DEBUG
-#     # - apt-get update
-#     # - apt-get install -y --no-install-recommends gcc
-#     # - apt-get -qqy install ffmpeg libsm6 libxext6
-#     # - pip install pipenv
-
-#     - cd src/backend/django
-#     - docker build -t django-server .
-#     # - docker rm django-server-test
-#     - docker run --name django-server-test 
-#       --env DEBUG=${DEBUG}
-#       --env DATABASE_NAME=${DATABASE_NAME}
-#       --env DATABASE_USER=${DATABASE_USER}
-#       --env DATABASE_PWD=${DATABASE_PWD}
-#       --env DATABASE_HOST=${DATABASE_HOST}
-#       --env USE_S3='False'
-#       django-server python manage.py test
-#     # - pipenv install --dev --system --deploy
-#     # - python manage.py test\
-#   after_script:
-#     - docker rm django-server-test
-#   only:
-#     refs:
-#       - feature/pipelines
-#   tags:
-#     - styling-runner
-
-# django-package:
-#   stage: package
-#   script:
-#     - docker save -o django-server.tar django-server
-
-transfer:
-  stage: trans
+django-buildtest:
+  stage: build
   script:
-    - cd src/backend/django/src/media
-    - scp -i /home/temp/rcdd-server-key.pem test.png ec2-user@3.34.30.156:/tmp
+    # - echo $DEBUG
+    # - apt-get update
+    # - apt-get install -y --no-install-recommends gcc
+    # - apt-get -qqy install ffmpeg libsm6 libxext6
+    # - pip install pipenv
+
+    - cd src/backend/django
+    - docker build -t django-server .
+    # - docker rm django-server-test
+    - docker run --name django-server-test 
+      --env DEBUG=${DEBUG}
+      --env DATABASE_NAME=${DATABASE_NAME}
+      --env DATABASE_USER=${DATABASE_USER}
+      --env DATABASE_PWD=${DATABASE_PWD}
+      --env DATABASE_HOST=${DATABASE_HOST}
+      --env USE_S3='False'
+      django-server python manage.py test
+    # - pipenv install --dev --system --deploy
+    # - python manage.py test\
+  after_script:
+    - docker rm django-server-test
+  only:
+    refs:
+      - feature/pipelines
+  tags:
+    - styling-runner
+
+django-package:
+  stage: package
+  script:
+    - docker save -o django-server.tar django-server
+    - scp -i /home/temp/rcdd-server-key.pem django-server.tar ec2-user@3.34.30.156:/tmp
+
+# transfer:
+#   stage: trans
+#   script:
+#     - cd src/backend/django/src/media
+#     - scp -i /home/temp/rcdd-server-key.pem test.png ec2-user@3.34.30.156:/tmp
