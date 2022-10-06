@@ -1,6 +1,7 @@
 stages:
-  - build
-  - package
+  # - build
+  # - package
+  - transfer
 
 django-buildtest:
   stage: build
@@ -36,36 +37,9 @@ django-package:
   stage: package
   script:
     - docker save -o django-server.tar django-server
-    - echo ${DATABASE_PWD} | scp -i /home/ubuntu/rcdd-server-key.pem spring.tar ec2-user@3.34.30.156:/tmp
-    - sudo scp -i /home/ubuntu/rcdd-server-key.pem spring.tar ec2-user@3.34.30.156:/tmp
-# stages:
-#   - build-django
-#   - build-frontend
 
-# build-django:
-#   stage: build-django
-#   image: python:3.9
-#   script:
-#     - apt-get update
-#     - apt-get install --no-install-recommends gcc -y
-#     - apt-get install ffmpeg libsm6 libxext6 -y
-#     - pip install pipenv gdown
-#     - mkdir -p ~/.u2net
-#     - gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
-#     - cd ./src/backend/django
-#     - pipenv install --dev --system --deploy
-
-# test-django:
-#   stage: build-django
-#   image: python:3.9
-#   script:
-#     - python manage.py test
-
-
-# build-frontend-job:
-#   stage: build-frontend
-#   image: node:latest
-#   script:
-#     - cd ./src/frontend
-#     - npm install
-#     - CI=false npm run build
+transfer:
+  stage: trans
+  script:
+    - cd src/backend/django/src/media
+    - scp -i /home/temp/rcdd-server-key.pem test.png ec2-user@3.34.30.156:/tmp
