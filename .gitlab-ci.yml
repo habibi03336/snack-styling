@@ -15,9 +15,9 @@ django-buildtest:
     - docker build -t django-server .
     # - docker rm django-server-test
     - printenv
-    - docker run --name django-server-test \
-    - --env DEBUG=${DEBUG} \
-    - django-server python manage.py test
+    - docker run --name django-server-test 
+      --env DEBUG=${DEBUG} \
+      django-server python manage.py test
     # - pipenv install --dev --system --deploy
     # - python manage.py test
   only:
