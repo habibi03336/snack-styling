@@ -1,7 +1,7 @@
 stages:
   - build
 
-build-test:
+django-buildtest:
   stage: build
   script:
     # - echo $DEBUG
@@ -12,7 +12,7 @@ build-test:
 
     - cd src/backend/django
     - docker build -t django-server .
-    - docker run --name django-server-test django-server python managet.py test
+    - docker run --name django-server-test django-server python manager.py test
     # - pipenv install --dev --system --deploy
     # - python manage.py test
   only:
@@ -21,6 +21,12 @@ build-test:
   tags:
     - styling-runner
 
+django-package:
+  state: package
+  script:
+    - docker save -o django-server.tar django-server
+    - echo ${DATABASE_PWD} | sudo -S scp -i /home/ubuntu/rcdd-server-key.pem spring.tar ec2-user@3.34.30.156:/tmp
+    - sudo scp -i /home/ubuntu/rcdd-server-key.pem spring.tar ec2-user@3.34.30.156:/tmp
 # stages:
 #   - build-django
 #   - build-frontend
