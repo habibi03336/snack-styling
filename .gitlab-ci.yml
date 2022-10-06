@@ -1,7 +1,7 @@
 stages:
   # - build
   # - package
-  - transfer
+  - trans
 
 django-buildtest:
   stage: build
