@@ -14,7 +14,6 @@ django-buildtest:
     - cd src/backend/django
     - docker build -t django-server .
     # - docker rm django-server-test
-    - printenv
     - docker run --name django-server-test 
       --env DEBUG=${DEBUG}
       --env DATABASE_NAME=${DATABASE_NAME}
