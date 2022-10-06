@@ -3,7 +3,6 @@ stages:
 
 build-test:
   stage: build
-  image: python:3.9
   script:
     # - echo $DEBUG
     # - apt-get update
@@ -12,9 +11,10 @@ build-test:
     # - pip install pipenv
 
     - cd src/backend/django
-    - pipenv install --dev --system --deploy
-
-    - python manage.py test
+    - docker build -t django-server .
+    - docker run --name django-server-test django-server python managet.py test
+    # - pipenv install --dev --system --deploy
+    # - python manage.py test
   only:
     refs:
       - feature/pipelines
