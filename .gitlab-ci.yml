@@ -12,7 +12,8 @@ build-test:
     # - pip install pipenv
 
     - cd src/backend/django
-    - pipenv install --dev --system --deploy
+    - pipenv shell
+    - pipenv install --dev
 
     - python manage.py test
   only:
