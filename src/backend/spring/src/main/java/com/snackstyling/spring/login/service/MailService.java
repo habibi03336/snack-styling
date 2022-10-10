@@ -50,6 +50,5 @@ public class MailService {
         if(!mailNumber.getNumber().equals(compareRequest.getNumber())){
             throw new NonePwdException("인증번호가 일치하지 않습니다.");
         }
-
     }
 }
