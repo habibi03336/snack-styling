@@ -1,51 +1,43 @@
 stages:
-  - build
+  - build-frontend
+  - deploy-frontend
+  - build-nginx
 
-build-test:
-  stage: build
-  image: python:3.9
+build-frontend-job:
+  stage: build-frontend
   script:
-    - echo $DEBUG
-    - apt-get update
-    - apt-get install -y --no-install-recommends gcc
-    - apt-get -qqy install ffmpeg libsm6 libxext6
-    - pip install pipenv
+    - cd ./src/frontend
+    - docker build . -t front-build-env
+    - docker run front-build-env
+    - tar -cvf front.tar ./build/*
 
-    - cd src/backend/django
-    - pipenv install --dev --system --deploy
+  artifacts:
+    paths:
+      - ./front.tar
 
-    - python manage.py test
-  tags:
-    - styling-runner
+deploy-frontend-job:
+  stage: deploy-frontend
 
-# stages:
-#   - build-django
-#   - build-frontend
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
 
-# build-django:
-#   stage: build-django
-#   image: python:3.9
-#   script:
-#     - apt-get update
-#     - apt-get install --no-install-recommends gcc -y
-#     - apt-get install ffmpeg libsm6 libxext6 -y
-#     - pip install pipenv gdown
-#     - mkdir -p ~/.u2net
-#     - gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
-#     - cd ./src/backend/django
-#     - pipenv install --dev --system --deploy
+  script:
+    - cd src/frontend
+    - scp front.tar ec2-user@3.34.30.156:/snack-style/frontend
 
-# test-django:
-#   stage: build-django
-#   image: python:3.9
-#   script:
-#     - python manage.py test
+build-nginx-job:
+  stage: build-nginx
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
 
-
-# build-frontend-job:
-#   stage: build-frontend
-#   image: node:latest
-#   script:
-#     - cd ./src/frontend
-#     - npm install
-#     - CI=false npm run build
+  script:
+    - cd src/nginx
+    - docker build -t nginx ./
+    - docker save -o nginx.tar nginx
+    - scp spring.tar ec2-user@3.34.30.156:/snack-style/image
