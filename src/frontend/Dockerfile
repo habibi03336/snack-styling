@@ -1,6 +1,7 @@
 FROM node:latest
 
-VOLUME ./:./
+VOLUME ./:/src/front
+WORKDIR /src/front
 
 RUN npm install && \
  CI=false npm run build && \
