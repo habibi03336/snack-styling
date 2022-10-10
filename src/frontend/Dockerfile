@@ -1,6 +1,6 @@
 FROM node:latest
 
-VOLUME ./:/src/front
+VOLUME /src/frontend/:/src/front
 WORKDIR /src/front
 
 RUN npm install && \
