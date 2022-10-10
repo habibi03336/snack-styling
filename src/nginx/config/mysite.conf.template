@@ -1,0 +1,3 @@
+export SERVER_NAME=ec2-3-34-30-156.ap-northeast-2.compute.amazonaws.com
+export SRPING_SERVER_NAME=ec2-3-34-30-156.ap-northeast-2.compute.amazonaws.com
+export DJANGO_SERVER_NAME=ec2-3-34-30-156.ap-northeast-2.compute.amazonaws.com
