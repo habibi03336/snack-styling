@@ -5,10 +5,12 @@ stages:
 
 build-frontend-job:
   stage: build-frontend
+  image: node:latest
   script:
     - cd ./src/frontend
-    - docker build . -t front-build-env
-    - docker run front-build-env
+    - npm install
+    - CI=false npm run build
+    - tar -cvf front.tar ./build/*
 
   artifacts:
     paths:
