@@ -7,8 +7,8 @@ build-frontend-job:
   stage: build-frontend
   script:
     - cd ./src/frontend
-    - docker build . -o front-env
-    - docker run -v ./build:/src/front/build front-env
+    - docker build . -o frontenv
+    - docker run -v ./build:/src/front/build frontenv
     - tar -cvf front.tar ./build/*
 
   artifacts:
