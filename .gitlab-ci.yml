@@ -9,7 +9,7 @@ build-frontend-job:
     - cd ./src/frontend
     - docker build . -t frontenv
     - docker images
-    - docker run -v ./build:/src/front/build frontenv
+    - docker run -v build:/src/front/build frontenv
     - tar -cvf front.tar ./build/*
 
   artifacts:
