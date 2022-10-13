@@ -7,7 +7,7 @@ build-frontend-job:
   stage: build-frontend
   script:
     - cd ./src/frontend
-    - docker build . -o frontenv
+    - docker build . -t frontenv
     - docker images
     - docker run -v ./build:/src/front/build frontenv
     - tar -cvf front.tar ./build/*
