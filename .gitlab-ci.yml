@@ -8,7 +8,7 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - docker images
+    - mkdir build
     - docker run -v build:/src/front/build frontenv
     - ls
     - ls ./build
