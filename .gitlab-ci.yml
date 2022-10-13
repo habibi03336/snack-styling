@@ -9,7 +9,7 @@ build-frontend-job:
     - cd ./src/frontend
     - docker build . -t frontenv
     - mkdir build
-    - docker run -v build:/src/front/build frontenv
+    - docker run -v ./build:/src/front/build frontenv
     - ls
     - ls ./build
     - tar -cvf front.tar ./build/*
