@@ -7,13 +7,13 @@ build-frontend-job:
   stage: build-frontend
   script:
     - cd ./src/frontend
-    - npm install
-    - CI=false npm run build
+    - docker build . -o front-env
+    - docker run -v ./build:/src/front/build front-env
     - tar -cvf front.tar ./build/*
 
   artifacts:
     paths:
-      - /front.tar
+      - front.tar
 
 deploy-frontend-job:
   stage: deploy-frontend
@@ -25,7 +25,8 @@ deploy-frontend-job:
     - ssh-add "$SSH_PRIVATE_KEY"
 
   script:
-    - scp /front.tar ec2-user@3.34.30.156:/snack-style/frontend
+    - cd ./src/frontend
+    - scp front.tar ec2-user@3.34.30.156:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
