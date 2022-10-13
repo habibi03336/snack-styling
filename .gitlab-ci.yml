@@ -5,7 +5,6 @@ stages:
 
 build-frontend-job:
   stage: build-frontend
-  image: node:latest
   script:
     - cd ./src/frontend
     - npm install
@@ -14,7 +13,7 @@ build-frontend-job:
 
   artifacts:
     paths:
-      - ./front.tar
+      - /front.tar
 
 deploy-frontend-job:
   stage: deploy-frontend
@@ -26,8 +25,7 @@ deploy-frontend-job:
     - ssh-add "$SSH_PRIVATE_KEY"
 
   script:
-    - cd src/frontend
-    - scp front.tar ec2-user@3.34.30.156:/snack-style/frontend
+    - scp /front.tar ec2-user@3.34.30.156:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
