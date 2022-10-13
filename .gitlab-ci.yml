@@ -8,7 +8,7 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - docker run -v ${PWD}:/ frontenv --name frontenv
+    - docker run frontenv -v ${pwd}:/ --name frontenv
     - docker rm frontenv
     - ls -al
     - tar -cvf front.tar ./build/*
