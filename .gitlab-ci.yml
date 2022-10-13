@@ -8,11 +8,9 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - mkdir build
-    - cd build
-    - docker run -v ${PWD}:/src/front/build frontenv
+    - docker run -v ${PWD}:/src/front/ frontenv
     - ls -al
-    - tar -cvf front.tar ./*
+    - tar -cvf front.tar ./build/*
 
   artifacts:
     paths:
