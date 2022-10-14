@@ -1,8 +1,8 @@
 FROM node:latest
 
-COPY . /src/front
+COPY . /src/frontend
 
-WORKDIR /src/front
+WORKDIR /src/frontend
 
 RUN npm install && \
  mkdir file
