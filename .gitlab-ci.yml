@@ -14,7 +14,6 @@ build-frontend-job:
     - docker build . -t frontenv
     - docker run -v "$(pwd):/src/front" --name frontenv frontenv
     - docker rm frontenv
-    - ls -al
     - tar -cvf front.tar ./build/*
 
   artifacts:
@@ -32,7 +31,7 @@ deploy-frontend-job:
 
   script:
     - cd ./src/frontend
-    - scp front.tar ec2-user@3.34.30.156:/snack-style/frontend
+    - scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
@@ -46,4 +45,4 @@ build-nginx-job:
     - cd src/nginx
     - docker build -t nginx ./
     - docker save -o nginx.tar nginx
-    - scp spring.tar ec2-user@3.34.30.156:/snack-style/image
+    - scp spring.tar ec2-user@snackstyling.com:/snack-style/image
