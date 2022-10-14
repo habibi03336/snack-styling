@@ -18,7 +18,7 @@ build-frontend-job:
 
   artifacts:
     paths:
-      - front.tar
+      - ./src/frontend/front.tar
 
 deploy-frontend-job:
   stage: deploy-frontend
