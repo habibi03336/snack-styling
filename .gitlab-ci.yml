@@ -3,6 +3,10 @@ stages:
   - deploy-frontend
   - build-nginx
 
+default:
+  tags:
+    - snack-test
+
 build-frontend-job:
   stage: build-frontend
   script:
