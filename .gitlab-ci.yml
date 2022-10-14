@@ -31,7 +31,7 @@ deploy-frontend-job:
 
   script:
     - cd ./src/frontend/file
-    - scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
+    - scp front.tar ec2-user@${DEPLOY_IP}:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
@@ -45,4 +45,4 @@ build-nginx-job:
     - cd ./src/nginx
     - docker build -t nginx ./
     - docker save -o nginx.tar nginx
-    - yes | scp nginx.tar ec2-user@snackstyling.com:/snack-style/image
+    - scp nginx.tar ec2-user@${DEPLOY_IP}:/snack-style/image
