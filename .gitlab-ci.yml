@@ -14,7 +14,7 @@ build-frontend-job:
     - docker build . -t frontenv
     - mkdir file
     - cd file
-    - docker run --rm -v "$(pwd):/src/frontend/file" --name frontenv frontenv
+    - docker run --rm -v "$(pwd):/src/frontend/file" frontenv
 
   artifacts:
     paths:
@@ -30,8 +30,8 @@ deploy-frontend-job:
     - ssh-add "$SSH_PRIVATE_KEY"
 
   script:
-    - cd ./src/frontend
-    - yes | scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
+    - cd ./src/frontend/file
+    - scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
