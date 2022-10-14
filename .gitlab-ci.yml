@@ -40,7 +40,7 @@ deploy-frontend:
   tags:
     - snack-service
   script:
-    - sudo tar -xvf /snack-style/frontend/front.tar
+    - sudo tar -xvf /snack-style/frontend/front.tar -C /snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
