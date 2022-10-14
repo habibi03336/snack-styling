@@ -18,6 +18,7 @@ build-frontend-job:
     - docker rm frontenv
     - cd ..
     - tar -cvf front.tar ./build/*
+    - rm -rf build
 
   artifacts:
     paths:
