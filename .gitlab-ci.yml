@@ -31,7 +31,7 @@ deploy-frontend-job:
 
   script:
     - cd ./src/frontend
-    - scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
+    - yes | scp front.tar ec2-user@snackstyling.com:/snack-style/frontend
 
 build-nginx-job:
   stage: build-nginx
@@ -42,7 +42,7 @@ build-nginx-job:
     - ssh-add "$SSH_PRIVATE_KEY"
 
   script:
-    - cd src/nginx
+    - cd ./src/nginx
     - docker build -t nginx ./
     - docker save -o nginx.tar nginx
-    - scp spring.tar ec2-user@snackstyling.com:/snack-style/image
+    - yes | scp nginx.tar ec2-user@snackstyling.com:/snack-style/image
