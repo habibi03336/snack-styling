@@ -14,15 +14,13 @@ build-frontend-job:
     - docker build . -t frontenv
     - mkdir build
     - cd build
-    - docker run -v "$(pwd):/src/front/build" --name frontenv frontenv
+    - docker run --rm -v "$(pwd):/src/front/build:Z" --name frontenv frontenv
     - cd ..
     - tar -cvf front.tar ./build/*
 
   after_script:
     - cd ./src/frontend
-    - chmod 777 build
     - rm -rf build
-    - docker rm frontenv
 
   artifacts:
     paths:
