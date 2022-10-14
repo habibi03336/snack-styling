@@ -4,6 +4,8 @@ COPY . /src/front
 
 WORKDIR /src/front
 
-RUN npm install
+RUN npm install && \
+ mkdir file
 
-CMD CI=false npm run build
+CMD CI=false npm run build && \
+ tar -cvf file/front.tar ./build/*

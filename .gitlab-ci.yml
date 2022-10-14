@@ -12,19 +12,13 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - mkdir build
-    - cd build
-    - docker run --rm -v "$(pwd):/src/front/build:Z" --name frontenv frontenv
-    - cd ..
-    - tar -cvf front.tar ./build/*
-
-  after_script:
-    - cd ./src/frontend
-    - rm -rf build
+    - mkdir file
+    - cd file
+    - docker run --rm -v "$(pwd):/src/frontend/file" --name frontenv frontenv
 
   artifacts:
     paths:
-      - ./src/frontend/front.tar
+      - ./src/frontend/file/front.tar
 
 deploy-frontend-job:
   stage: deploy-frontend
