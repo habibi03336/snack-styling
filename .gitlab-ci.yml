@@ -12,8 +12,11 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - docker run -v "$(pwd):/src/front" --name frontenv frontenv
+    - mkdir build
+    - cd build
+    - docker run -v "$(pwd):/src/front/build" --name frontenv frontenv
     - docker rm frontenv
+    - cd ..
     - tar -cvf front.tar ./build/*
 
   artifacts:

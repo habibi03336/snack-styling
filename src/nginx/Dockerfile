@@ -2,8 +2,6 @@ FROM nginx:latest
 
 COPY ./config /etc/nginx/
 
-VOLUME ../frontend/build:/frontend
-
 RUN apt-get update && \
     envsubst < /etc/nginx/mysite.conf.template
 #  apt-get install certbot -y && \
