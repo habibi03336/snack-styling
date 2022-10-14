@@ -1,7 +1,9 @@
 stages:
   - build-frontend
+  - package-frontend
   - deploy-frontend
   - build-nginx
+  - deploy-nginx
 
 default:
   tags:
@@ -20,8 +22,8 @@ build-frontend-job:
     paths:
       - ./src/frontend/file/front.tar
 
-deploy-frontend-job:
-  stage: deploy-frontend
+package-frontend-job:
+  stage: package-frontend
 
   before_script:
     - mkdir -p ~/.ssh
@@ -32,6 +34,13 @@ deploy-frontend-job:
   script:
     - cd ./src/frontend/file
     - scp front.tar ec2-user@${DEPLOY_IP}:/snack-style/frontend
+
+deploy-frontend:
+  stage: deploy-frontend
+  tags:
+    - snack-service
+  script:
+    - sudo tar -xvf /snack-style/frontend/front.tar
 
 build-nginx-job:
   stage: build-nginx
@@ -46,3 +55,14 @@ build-nginx-job:
     - docker build -t nginx ./
     - docker save -o nginx.tar nginx
     - scp nginx.tar ec2-user@${DEPLOY_IP}:/snack-style/image
+
+deploy-nginx-job:
+  stage: deploy-nginx
+  tags:
+    - snack-service
+  script:
+    - sudo docker stop nginx
+    - sudo docker rm nginx
+    - sudo docker image rm nginx
+    - sudo docker load -i /snack-style/image/nginx.tar
+    - sudo docker run -d --name nginx -p 80:8080 nginx
