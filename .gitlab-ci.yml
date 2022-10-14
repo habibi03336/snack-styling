@@ -19,9 +19,10 @@ build-frontend-job:
     - tar -cvf front.tar ./build/*
 
   after_script:
+    - cd ./src/frontend
+    - chmod 777 build
+    - rm -rf build
     - docker rm frontenv
-    - cd ./src
-    - rm -rf frontend
 
   artifacts:
     paths:
