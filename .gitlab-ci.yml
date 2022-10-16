@@ -14,13 +14,13 @@ build-frontend-job:
   script:
     - cd ./src/frontend
     - docker build . -t frontenv
-    - mkdir result
-    - cd result
-    - docker run --rm -v "$(pwd):/src/frontend/result" frontenv
+    - mkdir file
+    - cd file
+    - docker run --rm -v "$(pwd):/src/frontend/file" frontenv
 
   artifacts:
     paths:
-      - ./src/frontend/result/front.tar
+      - ./src/frontend/file/front.tar
 
 # package-frontend-job:
 #   stage: package-frontend
@@ -32,7 +32,7 @@ build-frontend-job:
 #     - ssh-add "$SSH_PRIVATE_KEY"
 
 #   script:
-#     - cd ./src/frontend/result
+#     - cd ./src/frontend/file
 #     - scp front.tar ec2-user@${DEPLOY_IP}:/snack-style/frontend
 
 deploy-frontend:
@@ -40,7 +40,7 @@ deploy-frontend:
   tags:
     - snack-service
   script:
-    - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
+    - sudo tar -xvf ./src/frontend/file/front.tar -C /snack-style/frontend
 # build-nginx-job:
 #   stage: build-nginx
 #   before_script:
