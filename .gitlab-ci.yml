@@ -137,7 +137,7 @@ deploy-django:
     - docker image rm django-server || echo 'docker rm image.'
   script:
     - sudo docker load -i /tmp/django-server.tar
-    - docker run -d --name django-server
+    - docker run -d --name django-server -p 8000:8000 --net snack-net
       --env-file=.env
       django-server
   only:
