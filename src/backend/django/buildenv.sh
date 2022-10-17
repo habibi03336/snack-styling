@@ -14,7 +14,7 @@ AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
 " > .env
 
 if [ "$1" == "DEBUG" ]; then
-    echo -e "DEBUG='True'\nUSE_S3='False'" >> .env
+    echo -e "DEBUG=True\nUSE_S3=False" >> .env
 else
-    echo -e "DEBUG='False'\nUSE_S3='True'" >> .env
+    echo -e "DEBUG=False\nUSE_S3=True" >> .env
 fi
