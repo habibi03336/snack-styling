@@ -7,6 +7,6 @@ RUN apt-get update && \
 #  apt-get install certbot -y && \
 #  certbot certonly -i nginx --dns-route53 -d *.${domain_name} --dry-run
 
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 80

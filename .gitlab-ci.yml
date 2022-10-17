@@ -80,7 +80,7 @@ package-spring:
     - cd src/backend/spring
     - docker build -t spring ./
     - docker save -o spring.tar spring
-    - scp spring.tar ec2-user@13.209.54.85:/tmp
+    - scp spring.tar ec2-user@{DEPLOY_IP}:/tmp
 
   only:
     refs:
@@ -107,9 +107,9 @@ deploy-spring:
   tags:
     - snack-service
   script:
-    - sudo docker stop spring-service
-    - sudo docker rm spring-service
-    - sudo docker image rm spring
+    - sudo docker stop spring-service || true
+    - sudo docker rm spring-service || true
+    - sudo docker image rm spring || true
     - sudo docker load -i /tmp/spring.tar
     - sudo docker run --env-file=/tmp/.env -d --name spring-service spring
   only:
