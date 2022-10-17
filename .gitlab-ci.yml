@@ -80,7 +80,7 @@ package-spring:
     - cd src/backend/spring
     - docker build -t spring ./
     - docker save -o spring.tar spring
-    - scp spring.tar ec2-user@{DEPLOY_IP}:/tmp
+    - scp spring.tar ec2-user@${DEPLOY_IP}:/tmp
 
   only:
     refs:
