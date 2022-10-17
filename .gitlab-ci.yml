@@ -2,8 +2,9 @@ default:
   tags:
     - snack-test
   only:
-    - master
-    - feature/pipeline
+    refs:
+      - master
+      - feature/pipeline
     
 stages:
   - build
