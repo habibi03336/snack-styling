@@ -22,46 +22,31 @@ build-frontend-job:
     paths:
       - ./src/frontend/result/front.tar
 
-# package-frontend-job:
-#   stage: package-frontend
-
-#   before_script:
-#     - mkdir -p ~/.ssh
-#     - eval $(ssh-agent -s)
-#     - chmod 600 "$SSH_PRIVATE_KEY"
-#     - ssh-add "$SSH_PRIVATE_KEY"
-
-#   script:
-#     - cd ./src/frontend/result
-#     - scp front.tar ec2-user@${DEPLOY_IP}:/snack-style/frontend
-
 deploy-frontend:
   stage: deploy-frontend
   tags:
     - snack-service
   script:
     - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
-# build-nginx-job:
-#   stage: build-nginx
-#   before_script:
-#     - mkdir -p ~/.ssh
-#     - eval $(ssh-agent -s)
-#     - chmod 600 "$SSH_PRIVATE_KEY"
-#     - ssh-add "$SSH_PRIVATE_KEY"
 
-#   script:
-#     - cd ./src/nginx
-#     - docker build -t nginx ./
-#     - docker save -o nginx.tar nginx
-#     - scp nginx.tar ec2-user@${DEPLOY_IP}:/snack-style/image
+build-nginx-job:
+  stage: build-nginx
+  script:
+    - cd ./src/nginx
+    - docker build -t nginx ./
+    - docker save -o nginx.tar nginx
 
-# deploy-nginx-job:
-#   stage: deploy-nginx
-#   tags:
-#     - snack-service
-#   script:
-#     - sudo docker stop nginx
-#     - sudo docker rm nginx
-#     - sudo docker image rm nginx
-#     - sudo docker load -i /snack-style/image/nginx.tar
-#     - sudo docker run -d --name nginx -p 80:8080 nginx
+  artifacts:
+    paths:
+      - ./src/nginx/nginx.tar
+
+deploy-nginx-job:
+  stage: deploy-nginx
+  tags:
+    - snack-service
+  script:
+    - sudo docker stop nginx || true
+    - sudo docker rm nginx || true
+    - sudo docker image rm nginx || true
+    - sudo docker load -i ./src/nginx/nginx.tar
+    - sudo docker run -d --name nginx -p 80:8080 nginx
