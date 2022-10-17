@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class MemberController {
     private final MemberService memberService;
     private final JwtService jwtService;

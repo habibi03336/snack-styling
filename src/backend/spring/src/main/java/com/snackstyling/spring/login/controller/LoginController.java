@@ -18,7 +18,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class LoginController {
     private final JoinService joinService;
     private final LoginService loginService;
