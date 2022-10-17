@@ -1,11 +1,9 @@
 #!/bin/sh
 #!/bin/bash
 
-echo "[RUN] Running migrations."
+echo "[Init] Running DB update..."
 python manage.py makemigrations
 python manage.py migrate
-
-echo "[RUN] Insert initial data"
 python manage.py loaddata data.json
 
 echo "[RUN] Start Application."

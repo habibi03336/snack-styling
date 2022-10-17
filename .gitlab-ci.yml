@@ -16,11 +16,16 @@ build-spring:
     - ./gradlew build
   artifacts:
     paths:
-      - src/backend/spring/build/libs/*.jar 
-  only:
-    refs:
-      - master
-      - feature/pipeline
+      - src/backend/spring/build/libs/*.jar
+
+  allow_failure: true
+
+build-django:
+  stage: build
+  script:
+    - cp ~/u2net.onnx ./src/backend/django
+    - cd src/backend/django
+    - docker build -t django-server .
 
 test-spring:
   stage: test 
@@ -29,11 +34,21 @@ test-spring:
     - ./gradlew test
   artifacts:
     paths:
-      - src/backend/spring/build/libs/*.jar 
-  only:
-    refs:
-      - master
-      - feature/pipeline
+      - src/backend/spring/build/libs/*.jar
+
+test-django:
+  stage: test
+  script:
+    - docker run --name django-server-test
+      --env DEBUG=${DEBUG}
+      --env DATABASE_NAME=${DATABASE_NAME}
+      --env DATABASE_USER=${DATABASE_USER}
+      --env DATABASE_PWD=${DATABASE_PWD}
+      --env DATABASE_HOST=${DATABASE_HOST}
+      --env USE_S3='False'
+      django-server python manage.py test
+  after_script:
+    - docker rm django-server-test
 
 package-spring:
   stage: package
@@ -55,6 +70,22 @@ package-spring:
       - master
       - feature/pipeline
 
+
+package-django:
+  stage: package
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+  script:
+    - docker save -o django-server.tar django-server
+    - scp django-server.tar ec2-user@${DEPLOY_IP}:/tmp
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
 deploy-spring:
   stage: deploy
   tags:
@@ -69,3 +100,26 @@ deploy-spring:
     refs:
       - master
       - feature/pipeline
+
+deploy-django-server:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - echo 'Service restart'
+    - docker stop snack-django-service || echo 'docker stop.'
+    - docker rm snack-django-service || echo 'docker rm container.'
+    - docker image rm django-server || echo 'docker rm image.'
+    - sudo docker load -i /tmp/django-server.tar
+    - docker run -d --name snack-django-service
+      --env DEBUG='False'
+      --env DATABASE_NAME=${DATABASE_NAME}
+      --env DATABASE_USER=${DATABASE_USER}
+      --env DATABASE_PWD=${DATABASE_PWD}
+      --env DATABASE_HOST=${DATABASE_HOST}
+      --env USE_S3='True'
+      --env AWS_S3_ACCESS_KEY_ID=${AWS_S3_ACCESS_KEY_ID}
+      --env AWS_S3_SECRET_ACCESS_KEY=${AWS_S3_SECRET_ACCESS_KEY}
+      --env AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      --env AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
+      django-server
