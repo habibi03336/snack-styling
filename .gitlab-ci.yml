@@ -1,7 +1,7 @@
 default:
   tags:
     - snack-test
-    
+
 stages:
   - build
   - test
@@ -13,12 +13,10 @@ build-spring:
   script:
     - cd src/backend/spring
     - ./gradlew clean
-    - ./gradlew build
+    - ./gradlew build --exclude-task test
   artifacts:
     paths:
       - src/backend/spring/build/libs/*.jar
-
-  allow_failure: true
 
 build-django:
   stage: build
@@ -28,13 +26,14 @@ build-django:
     - docker build -t django-server .
 
 test-spring:
-  stage: test 
+  stage: test
   script:
     - cd src/backend/spring
     - ./gradlew test
   artifacts:
     paths:
       - src/backend/spring/build/libs/*.jar
+  allow_failure: true
 
 test-django:
   stage: test
@@ -64,12 +63,11 @@ package-spring:
     - scp spring.tar ec2-user@13.209.54.85:/tmp
   artifacts:
     paths:
-      - src/backend/spring/build/libs/*.jar 
+      - src/backend/spring/build/libs/*.jar
   only:
     refs:
       - master
       - feature/pipeline
-
 
 package-django:
   stage: package
