@@ -25,6 +25,30 @@ build-django:
     - cd src/backend/django
     - docker build -t django-server .
 
+build-react:
+  stage: build
+  script:
+    - cd ./src/frontend
+    - docker build . -t frontenv
+    - mkdir result
+    - cd result
+    - docker run --rm -v "$(pwd):/src/frontend/result" frontenv
+
+  artifacts:
+    paths:
+      - ./src/frontend/result/front.tar
+
+build-nginx:
+  stage: build
+  script:
+    - cd ./src/nginx
+    - docker build -t nginx ./
+    - docker save -o nginx.tar nginx
+
+  artifacts:
+    paths:
+      - ./src/nginx/nginx.tar
+
 test-spring:
   stage: test
   script:
@@ -125,3 +149,37 @@ deploy-django-server:
     refs:
       - master
       - feature/pipeline
+
+deploy-frontend:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
+
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+  dependencies:
+    - build-react
+
+deploy-nginx:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo docker stop nginx || true
+    - sudo docker rm nginx || true
+    - sudo docker image rm nginx || true
+    - sudo docker load -i ./src/nginx/nginx.tar
+    - sudo docker run -d --name nginx -p 80:8080 nginx
+
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+  dependencies:
+    - build-nginx

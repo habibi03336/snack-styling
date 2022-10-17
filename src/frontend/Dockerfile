@@ -1,9 +1,11 @@
 FROM node:latest
 
-VOLUME ./:./
+COPY . /src/frontend
+
+WORKDIR /src/frontend
 
 RUN npm install && \
- CI=false npm run build && \
- tar -cvf front.tar ./build/*
+ mkdir result
 
-
+CMD CI=false npm run build && \
+ tar -cvf result/front.tar ./build/*
