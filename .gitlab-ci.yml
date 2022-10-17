@@ -60,7 +60,7 @@ test-django:
   script:
     - bash ./src/backend/django/buildenv.sh DEBUG
     - docker run --name django-server-test
-      --env-file=./src/backend/django/.env
+      --env-file=.env
       django-server python manage.py test
 
   after_script:
