@@ -51,7 +51,7 @@ import MyAnswers from "./apps/mypage/pages/MyAnswers";
 import MyQuestions from "./apps/mypage/pages/MyQuestions";
 import Alarms from "./apps/alarms/pages/Alarms";
 import CustomerLetter from "./apps/mypage/pages/CustomerLetter";
-console.log("hello");
+
 const App: React.FC = () => {
   const [userState] = useRecoilState(user);
 
