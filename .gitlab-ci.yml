@@ -157,18 +157,14 @@ deploy-frontend:
   script:
     - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
 
-  only:
-    refs:
-      - master
-      - develop
-
   dependencies:
     - build-react
 
   rules:
-    - if:
+    - if: ($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "develop")
       changes:
         - src/frontend/*
+
 deploy-nginx:
   stage: deploy
   tags:
