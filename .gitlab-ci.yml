@@ -82,7 +82,7 @@ package-spring:
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
 package-django:
   stage: package
@@ -97,7 +97,6 @@ package-django:
   only:
     refs:
       - master
-      - feature/pipeline
 
 deploy-spring:
   stage: deploy
@@ -112,7 +111,7 @@ deploy-spring:
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
 deploy-django:
   stage: deploy
@@ -131,7 +130,7 @@ deploy-django:
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
 deploy-frontend:
   stage: deploy
@@ -143,7 +142,7 @@ deploy-frontend:
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
   dependencies:
     - build-react
@@ -162,7 +161,7 @@ deploy-nginx:
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
   dependencies:
     - build-nginx
