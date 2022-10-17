@@ -103,16 +103,29 @@ package-django:
       - master
       - feature/pipeline
 
+deploy-prejob:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo docker network rm snack-net || true
+    - sudo docker network create snack-net || true
+
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
 deploy-spring:
   stage: deploy
   tags:
     - snack-service
   script:
-    - sudo docker stop spring-service || true
-    - sudo docker rm spring-service || true
+    - sudo docker stop spring-server || true
+    - sudo docker rm spring-server || true
     - sudo docker image rm spring || true
     - sudo docker load -i /tmp/spring.tar
-    - sudo docker run --env-file=/tmp/.env -d --name spring-service spring
+    - sudo docker run --net snack-net --env-file=/tmp/.env -d -p 8080:8080 --name spring-server spring
   only:
     refs:
       - master
@@ -124,11 +137,11 @@ deploy-django:
     - snack-service
   script:
     - echo 'Service restart'
-    - docker stop snack-django-service || echo 'docker stop.'
-    - docker rm snack-django-service || echo 'docker rm container.'
+    - docker stop django-server || echo 'docker stop.'
+    - docker rm django-server || echo 'docker rm container.'
     - docker image rm django-server || echo 'docker rm image.'
     - sudo docker load -i /tmp/django-server.tar
-    - docker run -d --name snack-django-service
+    - docker run -d --name django-server --net snack-net -p 8000:8000
       --env DEBUG='False'
       --env DATABASE_NAME=${DATABASE_NAME}
       --env DATABASE_USER=${DATABASE_USER}
@@ -169,7 +182,7 @@ deploy-nginx:
     - sudo docker rm nginx || true
     - sudo docker image rm nginx || true
     - sudo docker load -i ./src/nginx/nginx.tar
-    - sudo docker run -d --name nginx -p 80:80 nginx
+    - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend --name nginx -p 80:80 nginx
 
   only:
     refs:

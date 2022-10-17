@@ -28,6 +28,4 @@ RUN pipenv install --dev --system --deploy
 COPY . .
 RUN mv u2net.onnx ~/.u2net || echo 'models copy change'
 
-EXPOSE 8000
-
 CMD ["sh","entrypoint.sh"]
