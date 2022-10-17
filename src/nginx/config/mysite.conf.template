@@ -1,3 +1,0 @@
-export SERVER_NAME=snackstyling.com
-export SRPING_SERVER_NAME=api.snackstyling.com
-export DJANGO_SERVER_NAME=img.snackstyling.com

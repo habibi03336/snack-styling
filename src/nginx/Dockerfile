@@ -2,8 +2,7 @@ FROM nginx:latest
 
 COPY ./config /etc/nginx/
 
-RUN apt-get update && \
-    envsubst < /etc/nginx/mysite.conf.template
+RUN apt-get update
     
 CMD ["nginx", "-g", "daemon off;"]
 
