@@ -121,3 +121,7 @@ deploy-django-server:
       --env AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       --env AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
       django-server
+  only:
+    refs:
+      - master
+      - feature/pipeline
