@@ -213,7 +213,7 @@ CORS_ALLOWED_ORIGINS = [
 #     'http://*:*',
 # ]
 
-CSRF_TRUSTED_ORIGINS = (
-    'http://*.snackstyling.com'
+CSRF_TRUSTED_ORIGINS = [
+    'http://*.snackstyling.com',
     'https://*.snackstyling.com'
-)
+]
