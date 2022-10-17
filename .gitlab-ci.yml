@@ -1,10 +1,6 @@
 default:
   tags:
     - snack-test
-  only:
-    refs:
-      - master
-      - feature/pipeline
     
 stages:
   - build
@@ -21,6 +17,10 @@ build-spring:
   artifacts:
     paths:
       - src/backend/spring/build/libs/*.jar 
+  only:
+    refs:
+      - master
+      - feature/pipeline
 
 test-spring:
   stage: test 
@@ -30,6 +30,10 @@ test-spring:
   artifacts:
     paths:
       - src/backend/spring/build/libs/*.jar 
+  only:
+    refs:
+      - master
+      - feature/pipeline
 
 package-spring:
   stage: package
@@ -46,6 +50,10 @@ package-spring:
   artifacts:
     paths:
       - src/backend/spring/build/libs/*.jar 
+  only:
+    refs:
+      - master
+      - feature/pipeline
 
 deploy-spring:
   stage: deploy
@@ -57,3 +65,7 @@ deploy-spring:
     - sudo docker image rm spring
     - sudo docker load -i /tmp/spring.tar
     - sudo docker run --env-file=/tmp/.env -d --name spring-service -p 80:8080 spring
+  only:
+    refs:
+      - master
+      - feature/pipeline
