@@ -39,8 +39,7 @@ build-react:
       - ./src/frontend/result/front.tar
 
   rules:
-    - if:
-      changes:
+    - changes:
         - ./src/frontend/*
       when: manual
 
