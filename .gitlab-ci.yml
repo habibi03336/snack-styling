@@ -182,7 +182,7 @@ deploy-nginx:
     - sudo docker rm nginx || true
     - sudo docker image rm nginx || true
     - sudo docker load -i ./src/nginx/nginx.tar
-    - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend --name nginx -p 80:80 nginx
+    - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend -v /etc/letsencrypt:/etc/letsencrypt --name nginx -p 80:80 nginx
 
   only:
     refs:
