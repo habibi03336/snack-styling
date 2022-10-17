@@ -38,10 +38,10 @@ build-react:
     paths:
       - ./src/frontend/result/front.tar
 
-  rules:
-    - if:
-      changes:
-        - src/frontend/*
+  # rules:
+  #   - if:
+  #     changes:
+  #       - src/frontend/*
 
 build-nginx:
   stage: build
@@ -160,10 +160,10 @@ deploy-frontend:
   dependencies:
     - build-react
 
-  rules:
-    - if: ($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "develop")
-      changes:
-        - src/frontend/*
+  # rules:
+  #   - if: ($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "develop")
+  #     changes:
+  #       - src/frontend/*
 
 deploy-nginx:
   stage: deploy
