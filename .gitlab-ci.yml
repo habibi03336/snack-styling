@@ -39,7 +39,7 @@ build-react:
       - ./src/frontend/result/front.tar
 
   rules:
-    -if:
+    - if:
       changes:
         - src/frontend/*
 
@@ -166,7 +166,7 @@ deploy-frontend:
     - build-react
 
   rules:
-    -if:
+    - if:
       changes:
         - src/frontend/*
 deploy-nginx:
