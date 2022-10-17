@@ -2,13 +2,11 @@ FROM nginx:latest
 
 COPY ./config /etc/nginx/
 
-VOLUME ../frontend/build:/frontend
-
 RUN apt-get update && \
     envsubst < /etc/nginx/mysite.conf.template
 #  apt-get install certbot -y && \
 #  certbot certonly -i nginx --dns-route53 -d *.${domain_name} --dry-run
 
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 80

@@ -14,6 +14,8 @@ RUN useradd --create-home appuser
 USER appuser
 WORKDIR /home/appuser
 
+RUN mkdir -p src/media/cloth
+
 # Download deeplearning model
 RUN mkdir -p ~/.u2net
 # RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
@@ -24,10 +26,7 @@ COPY ./Pipfile.lock .
 RUN pipenv install --dev --system --deploy
 
 COPY . .
-RUN ls -al
-# RUN mv u2net.onnx ~/.u2net
-
-VOLUME [ "./src" ]
+RUN mv u2net.onnx ~/.u2net || echo 'models copy change'
 
 EXPOSE 8000
 

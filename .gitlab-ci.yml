@@ -1,21 +1,64 @@
+default:
+  tags:
+    - snack-test
+
 stages:
   - build
+  - test
   - package
-  # - trans
+  - deploy
 
-django-buildtest:
+build-spring:
   stage: build
   script:
-    # - echo $DEBUG
-    # - apt-get update
-    # - apt-get install -y --no-install-recommends gcc
-    # - apt-get -qqy install ffmpeg libsm6 libxext6
-    # - pip install pipenv
+    - cd src/backend/spring
+    - ./gradlew clean
+    - ./gradlew build --exclude-task test
+  artifacts:
+    paths:
+      - src/backend/spring/build/libs/*.jar
 
+build-django:
+  stage: build
+  script:
+    - cp ~/u2net.onnx ./src/backend/django
     - cd src/backend/django
     - docker build -t django-server .
-    # - docker rm django-server-test
-    - docker run --name django-server-test 
+
+build-react:
+  stage: build
+  script:
+    - cd ./src/frontend
+    - docker build . -t frontenv
+    - mkdir result
+    - cd result
+    - docker run --rm -v "$(pwd):/src/frontend/result" frontenv
+
+  artifacts:
+    paths:
+      - ./src/frontend/result/front.tar
+
+build-nginx:
+  stage: build
+  script:
+    - cd ./src/nginx
+    - docker build -t nginx ./
+    - docker save -o nginx.tar nginx
+
+  artifacts:
+    paths:
+      - ./src/nginx/nginx.tar
+
+test-spring:
+  stage: test
+  script:
+    - cd src/backend/spring
+    - ./gradlew test
+
+test-django:
+  stage: test
+  script:
+    - docker run --name django-server-test
       --env DEBUG=${DEBUG}
       --env DATABASE_NAME=${DATABASE_NAME}
       --env DATABASE_USER=${DATABASE_USER}
@@ -23,24 +66,115 @@ django-buildtest:
       --env DATABASE_HOST=${DATABASE_HOST}
       --env USE_S3='False'
       django-server python manage.py test
-    # - pipenv install --dev --system --deploy
-    # - python manage.py test\
+
   after_script:
     - docker rm django-server-test
+
+package-spring:
+  stage: package
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+  script:
+    - cd src/backend/spring
+    - docker build -t spring ./
+    - docker save -o spring.tar spring
+    - scp spring.tar ec2-user@${DEPLOY_IP}:/tmp
+
   only:
     refs:
-      - feature/pipelines
-  tags:
-    - styling-runner
+      - master
+      - feature/pipeline
 
-django-package:
+package-django:
   stage: package
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
   script:
     - docker save -o django-server.tar django-server
-    - scp -i /home/temp/rcdd-server-key.pem django-server.tar ec2-user@3.34.30.156:/tmp
+    - scp django-server.tar ec2-user@${DEPLOY_IP}:/tmp
+  only:
+    refs:
+      - master
+      - feature/pipeline
 
-# transfer:
-#   stage: trans
-#   script:
-#     - cd src/backend/django/src/media
-#     - scp -i /home/temp/rcdd-server-key.pem test.png ec2-user@3.34.30.156:/tmp
+deploy-spring:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo docker stop spring-service || true
+    - sudo docker rm spring-service || true
+    - sudo docker image rm spring || true
+    - sudo docker load -i /tmp/spring.tar
+    - sudo docker run --env-file=/tmp/.env -d --name spring-service spring
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+deploy-django:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - echo 'Service restart'
+    - docker stop snack-django-service || echo 'docker stop.'
+    - docker rm snack-django-service || echo 'docker rm container.'
+    - docker image rm django-server || echo 'docker rm image.'
+    - sudo docker load -i /tmp/django-server.tar
+    - docker run -d --name snack-django-service
+      --env DEBUG='False'
+      --env DATABASE_NAME=${DATABASE_NAME}
+      --env DATABASE_USER=${DATABASE_USER}
+      --env DATABASE_PWD=${DATABASE_PWD}
+      --env DATABASE_HOST=${DATABASE_HOST}
+      --env USE_S3='True'
+      --env AWS_S3_ACCESS_KEY_ID=${AWS_S3_ACCESS_KEY_ID}
+      --env AWS_S3_SECRET_ACCESS_KEY=${AWS_S3_SECRET_ACCESS_KEY}
+      --env AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      --env AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
+      django-server
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+deploy-frontend:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
+
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+  dependencies:
+    - build-react
+
+deploy-nginx:
+  stage: deploy
+  tags:
+    - snack-service
+  script:
+    - sudo docker stop nginx || true
+    - sudo docker rm nginx || true
+    - sudo docker image rm nginx || true
+    - sudo docker load -i ./src/nginx/nginx.tar
+    - sudo docker run -d --name nginx -p 80:80 nginx
+
+  only:
+    refs:
+      - master
+      - feature/pipeline
+
+  dependencies:
+    - build-nginx
