@@ -41,7 +41,8 @@ build-react:
   rules:
     - if:
       changes:
-        - src/frontend/*
+        paths:
+          - src/frontend/*
 
 build-nginx:
   stage: build
@@ -163,7 +164,8 @@ deploy-frontend:
   rules:
     - if: ($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "develop")
       changes:
-        - src/frontend/*
+        paths:
+          - src/frontend/*
 
 deploy-nginx:
   stage: deploy
