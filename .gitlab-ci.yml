@@ -39,7 +39,7 @@ build-react:
       - ./src/frontend/result/front.tar
 
   rules:
-    - if:
+    - if: true
       changes:
         - src/frontend/*
 
