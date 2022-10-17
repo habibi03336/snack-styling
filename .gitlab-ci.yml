@@ -132,12 +132,12 @@ deploy-django:
     - snack-service
   before_script:
     - bash ./src/backend/django/buildenv.sh
-    - docker stop django-service || echo 'docker stop.'
-    - docker rm django-service || echo 'docker rm container.'
+    - docker stop django-server || echo 'docker stop.'
+    - docker rm django-server || echo 'docker rm container.'
     - docker image rm django-server || echo 'docker rm image.'
   script:
     - sudo docker load -i /tmp/django-server.tar
-    - docker run -d --name django-service
+    - docker run -d --name django-server
       --env-file=.env
       django-server
   only:
