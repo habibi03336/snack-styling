@@ -126,7 +126,7 @@ deploy-django:
   script:
     - sudo docker load -i /tmp/django-server.tar
     - docker run -d --name snack-django-service
-      --env-file=./src/backend/django/.env
+      --env-file=.env
       django-server
   only:
     refs:
