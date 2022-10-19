@@ -201,16 +201,12 @@ CORS_ALLOW_METHODS = (
 )
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://*:*',
+    'https://www.snackstyling.com',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'http://*:*',
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.snackstyling.com'
 ]
-
-CSRF_TRUSTED_ORIGINS = (
-    'http://*:*',
-)
