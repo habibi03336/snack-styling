@@ -204,11 +204,9 @@ CORS_ALLOW_CREDENTIALS = True
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://*.snackstyling.com',
-    'https://*.snackstyling.com',
+    'https://www.snackstyling.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://*.snackstyling.com',
-    'https://*.snackstyling.com'
+    'https://www.snackstyling.com'
 ]
