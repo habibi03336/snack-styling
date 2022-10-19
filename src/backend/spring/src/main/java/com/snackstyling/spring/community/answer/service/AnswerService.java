@@ -63,7 +63,7 @@ public class AnswerService {
         headers.set("Authorization", token);
 
         RestTemplate restTemplate=new RestTemplate();
-        String url="http://django-server:8000/api/v1/codi/";
+        String url="https://django-server:8000/api/v1/codi/";
         HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
         try {
             ResponseEntity<CodiDto> result = restTemplate.postForEntity(url,entity, CodiDto.class);
@@ -108,7 +108,7 @@ public class AnswerService {
         HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
 
         RestTemplate restTemplate=new RestTemplate();
-        String url="http://django-server:8000/api/v1/codi/";
+        String url="https://django-server:8000/api/v1/codi/";
         try {
             ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,entity, CodiDto.class);
             answer.setCodi(result.getBody().getId());
@@ -127,7 +127,7 @@ public class AnswerService {
         headers.set("Authorization", token);
 
         RestTemplate restTemplate=new RestTemplate();
-        String url="http://django-server:8000/api/v1/codi/"+answer.getCodi().toString()+"/dup/";
+        String url="https://django-server:8000/api/v1/codi/"+answer.getCodi().toString()+"/dup/";
         Map<String, Object> map=new HashMap<>();
         map.put("userId",answer.getMember().getId());
         map.put("date",answer.getQuestion().getPostDate());
