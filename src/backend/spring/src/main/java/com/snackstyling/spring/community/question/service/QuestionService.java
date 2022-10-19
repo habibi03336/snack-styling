@@ -144,7 +144,7 @@ public class QuestionService {
             AnswerResponse answerResponse=new AnswerResponse();
             answerResponse.setNickname(temp.getMember().getNickname());
             try {
-                String url="https://django-server:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
+                String url="http://django-server:8000/api/v1/codi/"+temp.getCodi().toString()+"/";
                 ResponseEntity<ClothDto> result=restTemplate.exchange(url, HttpMethod.GET, request, ClothDto.class);
                 answerResponse.setMid(temp.getMember().getId());
                 answerResponse.setAid(temp.getId());

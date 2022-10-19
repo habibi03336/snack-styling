@@ -12,7 +12,7 @@ class UserAccessPermission(permissions.BasePermission):
             mutableCheck(request)
             return True
         token = request.META.get('HTTP_AUTHORIZATION')
-        url = 'https://spring-server:8080/api/v1/accounts/token'
+        url = 'http://spring-server:8080/api/v1/accounts/token'
         try:
             res = requests.get(url, headers={'Authorization': token})
 
