@@ -97,6 +97,7 @@ package-django:
   only:
     refs:
       - master
+      - develop
 
 deploy-prejob:
   stage: deploy
