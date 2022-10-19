@@ -11,7 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://*.snackstyling.com")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
         /*
         addMapping : 해당 설정을 적요할 API 범위 선택 =-> /** 전체 적용
