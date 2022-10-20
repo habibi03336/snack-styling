@@ -9,7 +9,7 @@ const CodiBoard = ({
 }: {
   codiClothes: I.CodiCloth[];
   boardConfig: I.BoardConfig;
-  onBoardImgClick: (clickedCategory: string) => void;
+  onBoardImgClick?: (clickedCategory: string) => void;
   style?: { [key: string]: string };
 }) => {
   const ImageElems = codiClothes.map((data, idx) => {
@@ -33,7 +33,9 @@ const CodiBoard = ({
               width: boardConfig.clothWidth,
               height: boardConfig.clothHeight,
             }}
-            onClick={() => onBoardImgClick(data.category)}
+            onClick={() => {
+              if (onBoardImgClick) onBoardImgClick(data.category);
+            }}
           />
         </div>
       </PositionDiv>
