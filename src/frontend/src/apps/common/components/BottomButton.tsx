@@ -8,11 +8,12 @@ const BottomButton = ({
   children: React.ReactNode;
   onClick?: () => void;
   activated?: boolean;
+  type?: string;
 }) => {
   const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
 
   return (
-    <span
+    <div
       style={{
         position: "fixed",
         height: "70px",
@@ -24,14 +25,14 @@ const BottomButton = ({
         backgroundColor: "white",
       }}
     >
-      <Button
+      {/* <Button
         activated={activated === undefined ? true : activated}
         onClick={onClick}
         color="primary"
-      >
-        {children}
-      </Button>
-    </span>
+      > */}
+      {children}
+      {/* </Button> */}
+    </div>
   );
 };
 

@@ -6,16 +6,19 @@ const Button = ({
   activated,
   onClick,
   style,
+  type,
 }: {
   children: React.ReactNode;
-  color: string;
+  color?: string;
   activated?: boolean;
   onClick?: () => void;
   style?: { [key: string]: string };
+  type?: "button" | "submit" | "reset";
 }) => {
   if (activated === undefined) activated = true;
   return (
     <IonButton
+      type={type ? type : "submit"}
       onClick={onClick}
       color={activated ? color : "medium"}
       style={{
@@ -24,7 +27,6 @@ const Button = ({
         border: color === "light" ? "solid 2px black" : "",
         ...style,
       }}
-      type="submit"
       expand="block"
     >
       {children}

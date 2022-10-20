@@ -16,6 +16,7 @@ import Header from "../../common/components/Header";
 import BottomButton from "../../common/components/BottomButton";
 import RowFiller from "../../common/components/RowFiller";
 import Label from "../../common/components/Label";
+import Button from "../../common/components/Button";
 
 const Signin = () => {
   const history = useHistory();
@@ -140,9 +141,7 @@ const Signin = () => {
             </IonItem>
           </IonList>
           <BottomButton>
-            <IonButton type="submit" expand="block">
-              회원가입
-            </IonButton>
+            <Button type="submit">회원가입</Button>
           </BottomButton>
           <p>{errorMessage}</p>
         </form>
