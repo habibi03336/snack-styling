@@ -26,10 +26,12 @@ const ClothCard = ({ cloth, onCardClick, type }: IClothCard) => {
 
 export default ClothCard;
 
+const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
+
 const SmallImg = styled.img`
   object-fit: contain;
-  width: ${(window.innerWidth - 40) / 2 - 7.5}px;
-  height: ${(window.innerWidth - 40) / 2 - 7.5}px;
+  width: ${(innerWidth - 40) / 2 - 7.5}px;
+  height: ${(innerWidth - 40) / 2 - 7.5}px;
   padding: 25px;
   vertical-align: bottom;
 `;

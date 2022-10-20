@@ -19,5 +19,7 @@ export const GET_USER_QUESTIONS = () => client.get(baseURL + "/questions");
 
 export const GET_USER_ANSWERS = () => client.get(baseURL + "/answers");
 
+export const GET_PROFILE = () => client.get(baseURL);
+
 export const POST_SUGGESTION = (text: string) =>
   client.post(baseURL + "/suggestions", { contents: text });

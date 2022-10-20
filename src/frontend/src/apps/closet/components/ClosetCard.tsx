@@ -14,7 +14,7 @@ const ClosetCard = ({
       onClick={onCardClick}
       key={id}
       style={{
-        margin: "8px 0px",
+        margin: "8px 8px",
         backgroundColor: "#fafafa",
       }}
     >

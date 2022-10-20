@@ -1,4 +1,10 @@
-import { IonContent, IonIcon, IonPage, IonRouterLink } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonPage,
+  IonRouterLink,
+} from "@ionic/react";
 import { useRecoilValue } from "recoil";
 import IDCard from "../components/IDCard";
 import userDetailAtom from "../state/userDetail";
@@ -19,7 +25,7 @@ const Mypage = () => {
       <Header text="마이페이지" type="title" />
       <IonContent>
         <RowFiller px={24} />
-        <IDCard nickname={userDetail.nickname} level={userDetail.level} />
+        <IDCard nickname={userDetail.nickname} level={userDetail.rank} />
         <RowFiller px={72} />
         <div
           style={{
@@ -79,7 +85,11 @@ const Mypage = () => {
         </div>
 
         <div style={{ position: "absolute", right: 10, bottom: 50 }}>
-          <button onClick={onClickLogOut}>로그아웃</button>
+          <div onClick={onClickLogOut}>
+            <span style={{ color: "black", textDecoration: "underline" }}>
+              로그아웃
+            </span>
+          </div>
         </div>
       </IonContent>
     </IonPage>

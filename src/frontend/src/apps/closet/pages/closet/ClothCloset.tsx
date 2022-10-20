@@ -60,7 +60,9 @@ const ClothCloset = () => {
           <DownButton onClickButton={() => setShowTags(!showTags)} />
           <div
             style={{
-              width: `${window.innerWidth - 40 - 32}px`,
+              width: `${
+                window.innerWidth <= 400 ? window.innerWidth - 40 - 32 : 328
+              }px`,
               marginLeft: "10px",
             }}
           >
@@ -179,7 +181,7 @@ const ClothCloset = () => {
         </IonFabButton>
       </IonFab>
 
-      <IonModal isOpen={selectedClothId !== -1}>
+      <IonModal isOpen={selectedClothId !== -1} mode="ios">
         {/* {selectedClothId && ( */}
         <>
           <IonHeader>

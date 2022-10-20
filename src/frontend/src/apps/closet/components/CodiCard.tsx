@@ -15,10 +15,9 @@ const CodiCard = ({
   comment,
   type = "default",
 }: ICodiCard) => {
+  const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
   const width =
-    type === "default"
-      ? (window.innerWidth - 40) / 2 - 7.5
-      : window.innerWidth * 0.9;
+    type === "default" ? (innerWidth - 40) / 2 - 7.5 : innerWidth * 0.9;
   return (
     <ClosetCard id={codi.id!}>
       <div onClick={onCodiClick}>
