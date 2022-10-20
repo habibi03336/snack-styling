@@ -126,7 +126,7 @@ deploy-spring:
     - sudo docker image rm spring || true
   script:
     - sudo docker load -i /tmp/spring.tar
-    - sudo docker run --net snack-net --env-file=/tmp/.env -d -p 8080:8080 --name spring-server spring
+    - sudo docker run --net snack-net --env-file=/tmp/.env -d --name spring-server spring
   dependencies:
     - build-spring
   only:
@@ -145,7 +145,7 @@ deploy-django:
     - bash ./src/backend/django/buildenv.sh
   script:
     - sudo docker load -i /tmp/django-server.tar
-    - docker run -d --name django-server -p 8000:8000 --net snack-net
+    - docker run -d --name django-server --net snack-net
       --env-file=.env
       django-server
   dependencies: []
