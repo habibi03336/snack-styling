@@ -61,12 +61,10 @@ test-django:
   stage: test
   script:
     - bash ./src/backend/django/buildenv.sh DEBUG
-    - docker run --name django-test
+    - docker run --rm --name django-test
       --env-file=.env
       django-server sh testcode.sh
   dependencies: []
-  after_script:
-    - docker rm django-test
 
 # Package task
 package-spring:
@@ -122,10 +120,11 @@ deploy-spring:
   stage: deploy
   tags:
     - snack-service
-  script:
+  before_script:
     - sudo docker stop spring-server || true
     - sudo docker rm spring-server || true
     - sudo docker image rm spring || true
+  script:
     - sudo docker load -i /tmp/spring.tar
     - sudo docker run --net snack-net --env-file=/tmp/.env -d -p 8080:8080 --name spring-server spring
   dependencies:
@@ -140,10 +139,10 @@ deploy-django:
   tags:
     - snack-service
   before_script:
-    - bash ./src/backend/django/buildenv.sh
     - sudo docker stop django-server || echo 'docker stop.'
     - sudo docker rm django-server || echo 'docker rm container.'
     - sudo docker image rm django-server || echo 'docker rm image.'
+    - bash ./src/backend/django/buildenv.sh
   script:
     - sudo docker load -i /tmp/django-server.tar
     - docker run -d --name django-server -p 8000:8000 --net snack-net
@@ -172,10 +171,11 @@ deploy-nginx:
   stage: deploy
   tags:
     - snack-service
-  script:
+  before_script:
     - sudo docker stop nginx || true
     - sudo docker rm nginx || true
     - sudo docker image rm nginx || true
+  script:
     - sudo docker load -i ./src/nginx/nginx.tar
     - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend -v /etc/letsencrypt:/etc/letsencrypt --name nginx -p 80:80 -p 443:443 nginx
   dependencies:

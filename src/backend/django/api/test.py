@@ -105,7 +105,7 @@ class ClothTests(APITestCase):
 
         self.assertEqual(len(res), 3)
 
-    def _test_옷_추가시_태그수정_후_추가수정(self):
+    def test_옷_추가시_태그수정_후_추가수정(self):
         """
         시나리오: 옷 추가시 태그수정 후 추가로 수정
         1. 옷 추가
