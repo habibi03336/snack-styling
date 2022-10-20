@@ -8,6 +8,7 @@ stages:
   - package
   - deploy
 
+# Build task
 build-spring:
   stage: build
   script:
@@ -33,7 +34,6 @@ build-react:
     - mkdir result
     - cd result
     - docker run --rm -v "$(pwd):/src/frontend/result" frontenv
-
   artifacts:
     paths:
       - ./src/frontend/result/front.tar
@@ -44,16 +44,18 @@ build-nginx:
     - cd ./src/nginx
     - docker build -t nginx ./
     - docker save -o nginx.tar nginx
-
   artifacts:
     paths:
       - ./src/nginx/nginx.tar
 
+# Test Task
 test-spring:
   stage: test
   script:
     - cd src/backend/spring
     - ./gradlew test
+  dependencies:
+    - build-spring
 
 test-django:
   stage: test
@@ -62,10 +64,11 @@ test-django:
     - docker run --name django-test
       --env-file=.env
       django-server python manage.py test
-
+  dependencies: []
   after_script:
     - docker rm django-test
 
+# Package task
 package-spring:
   stage: package
   before_script:
@@ -78,7 +81,8 @@ package-spring:
     - docker build -t spring ./
     - docker save -o spring.tar spring
     - scp spring.tar ec2-user@${DEPLOY_IP}:/tmp
-
+  dependencies:
+    - build-spring
   only:
     refs:
       - master
@@ -94,11 +98,13 @@ package-django:
   script:
     - docker save -o django-server.tar django-server
     - scp django-server.tar ec2-user@${DEPLOY_IP}:/tmp
+  dependencies: []
   only:
     refs:
       - master
       - develop
 
+# Deploy task
 deploy-prejob:
   stage: deploy
   tags:
@@ -106,11 +112,11 @@ deploy-prejob:
   script:
     - sudo docker network rm snack-net || true
     - sudo docker network create snack-net || true
-
+  dependencies: []
   only:
     refs:
       - master
-      - feature/pipeline
+      - develop
 
 deploy-spring:
   stage: deploy
@@ -122,6 +128,8 @@ deploy-spring:
     - sudo docker image rm spring || true
     - sudo docker load -i /tmp/spring.tar
     - sudo docker run --net snack-net --env-file=/tmp/.env -d -p 8080:8080 --name spring-server spring
+  dependencies:
+    - build-spring
   only:
     refs:
       - master
@@ -133,14 +141,15 @@ deploy-django:
     - snack-service
   before_script:
     - bash ./src/backend/django/buildenv.sh
-    - docker stop django-server || echo 'docker stop.'
-    - docker rm django-server || echo 'docker rm container.'
-    - docker image rm django-server || echo 'docker rm image.'
+    - sudo docker stop django-server || echo 'docker stop.'
+    - sudo docker rm django-server || echo 'docker rm container.'
+    - sudo docker image rm django-server || echo 'docker rm image.'
   script:
     - sudo docker load -i /tmp/django-server.tar
     - docker run -d --name django-server -p 8000:8000 --net snack-net
       --env-file=.env
       django-server
+  dependencies: []
   only:
     refs:
       - master
@@ -152,14 +161,12 @@ deploy-frontend:
     - snack-service
   script:
     - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
-
+  dependencies:
+    - build-react
   only:
     refs:
       - master
       - develop
-
-  dependencies:
-    - build-react
 
 deploy-nginx:
   stage: deploy
@@ -171,11 +178,9 @@ deploy-nginx:
     - sudo docker image rm nginx || true
     - sudo docker load -i ./src/nginx/nginx.tar
     - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend -v /etc/letsencrypt:/etc/letsencrypt --name nginx -p 80:80 -p 443:443 nginx
-
+  dependencies:
+    - build-nginx
   only:
     refs:
       - master
       - develop
-
-  dependencies:
-    - build-nginx
