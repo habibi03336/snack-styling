@@ -43,7 +43,7 @@ client.interceptors.response.use(
     }
 
     // refresh 토큰도 만료 된 경우 status 500
-    if (error.response.status === 500 || error.response.status === 409) {
+    if (error.response.status === 500 || error.response.status === 401) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("removeToken");
 
@@ -51,7 +51,7 @@ client.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    return Promise.resolve(error.response);
   }
 );
 

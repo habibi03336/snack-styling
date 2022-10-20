@@ -10,7 +10,6 @@ interface IStyleQBlock {
 }
 
 const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
-  console.log(styleQ);
   const [year, month, day] = styleQ.endDate
     ? styleQ.endDate.split("-")
     : [0, 0, 0];
