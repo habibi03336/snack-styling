@@ -9,13 +9,15 @@ import useTabBarControl from "../../common/hooks/useTabBarControl";
 import BottomButton from "../../common/components/BottomButton";
 import Plus from "../../../assets/common/plus.svg";
 import RowFiller from "../../common/components/RowFiller";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../../common/state/user";
 import { ADOPT_ANSWER, DELETE_QUESTION } from "../../../lib/api/styleQ";
 import { useHistory } from "react-router-dom";
+import { styleQState } from "../state/styleQ";
 type IStyleQDetail = RouteComponentProps<{ id: string }>;
 
 const StyleQDetail = ({ match }: IStyleQDetail) => {
+  const [styleQs, setStyleQs] = useRecoilState(styleQState);
   const history = useHistory();
   const { styleQDetailData, removeAnswer } = useStyleQDetail(
     Number(match.params.id)
@@ -25,6 +27,14 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
   const removeQ = async () => {
     if (!styleQDetailData?.que.qid) return;
     await DELETE_QUESTION(styleQDetailData?.que.qid);
+    setStyleQs(
+      styleQs.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
+    );
+    history.push("/styleQ");
+    const tabbar = document.querySelector("ion-tab-bar");
+    const fabButton = document.querySelector("ion-fab");
+    if (tabbar !== null) tabbar.style.display = "flex";
+    if (fabButton !== null) fabButton.style.display = "flex";
   };
 
   const adoptAns = async (aid: number) => {
