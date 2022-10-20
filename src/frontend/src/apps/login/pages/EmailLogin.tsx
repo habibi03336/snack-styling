@@ -21,13 +21,7 @@ const EmailLogin: React.FC = () => {
 
   return (
     <IonPage>
-      <Header
-        text="이메일로 시작하기"
-        type="back"
-        onHeaderClick={() => {
-          window.location.href = "/login";
-        }}
-      />
+      <Header text="이메일로 시작하기" type="back" routeTo="/login" />
       <RowFiller px={24} />
       <IonContent>
         <form
@@ -47,7 +41,12 @@ const EmailLogin: React.FC = () => {
               complete() {
                 history.push("/home");
               },
+              error() {
+                setErrorMessage("로그인에 실패했습니다.");
+              },
             });
+
+            return;
           }}
         >
           <IonList>
@@ -78,7 +77,9 @@ const EmailLogin: React.FC = () => {
             로그인
           </Button>
         </form>
-        <p>{errorMessage}</p>
+        <div style={{ color: "tomato" }}>
+          <p>{errorMessage}</p>
+        </div>
         <div style={{ position: "absolute", width: "100%", bottom: "20px" }}>
           <IonRouterLink routerLink={"/signin"}>
             <Button color="light"> 회원가입 </Button>

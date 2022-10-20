@@ -49,14 +49,8 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
   return (
     <IonPage>
       <IonContent>
-        <IonRouterLink routerLink="/styleQ" routerDirection="back">
-          <Header
-            type="back"
-            onHeaderClick={() => {
-              1;
-            }}
-          />
-        </IonRouterLink>
+        <Header type="back" routeTo="/styleQ" />
+
         {id === styleQDetailData?.que.mid &&
         styleQDetailData.ans.length === 0 ? (
           <div style={{ display: "flex", flexDirection: "row-reverse" }}>

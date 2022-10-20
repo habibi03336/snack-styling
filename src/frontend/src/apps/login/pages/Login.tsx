@@ -4,22 +4,24 @@ import Google from "../../../assets/auth/google.svg";
 import Kakao from "../../../assets/auth/kakao.svg";
 import Naver from "../../../assets/auth/naver.svg";
 import Email from "../../../assets/auth/email.svg";
+import { IonPage, IonRouterLink } from "@ionic/react";
 
 const Login = () => {
   return (
-    <div>
+    <IonPage>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           height: `${window.innerHeight - 300}px`,
-
+          width: window.innerWidth > 400 ? 400 : window.innerWidth,
           flexDirection: "column",
           background:
             "url('https://www.ikea.com/kr/en/images/products/platsa-open-clothes-hanging-unit-white__0780262_pe759915_s5.jpg')",
           backgroundSize: "cover",
           filter: "grayscale(20%)",
+          marginLeft: "-20px",
         }}
       >
         <img style={{ width: "236px", height: "80px" }} src={Logo} />
@@ -52,19 +54,16 @@ const Login = () => {
           </div>
           네이버로 시작하기
         </Button>
-        <Button
-          onClick={() => {
-            window.location.href = "/emailLogin";
-          }}
-          color="primary"
-        >
-          <div style={{ position: "absolute", left: "0px" }}>
-            <img src={Email} />
-          </div>
-          이메일로 시작하기
-        </Button>
+        <IonRouterLink routerLink="/emailLogin">
+          <Button color="primary">
+            <div style={{ position: "absolute", left: "0px" }}>
+              <img src={Email} />
+            </div>
+            이메일로 시작하기
+          </Button>
+        </IonRouterLink>
       </div>
-    </div>
+    </IonPage>
   );
 };
 

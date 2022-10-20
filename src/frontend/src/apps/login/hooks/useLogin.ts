@@ -12,7 +12,7 @@ const useLogin = () => {
   const postLogin = new Observable((subscriber) => {
     (async () => {
       const res = await AUTH_LOGIN({ email: id, pwd: pwd });
-      if (res.status < 300) {
+      if (res.status === 200) {
         window.localStorage.setItem("accessToken", res.data.tokens.accessToken);
         window.localStorage.setItem(
           "refreshToken",
@@ -23,6 +23,9 @@ const useLogin = () => {
         window.localStorage.setItem("id", Key);
         setUser({ ...user, isLogined: true, id: Key });
         subscriber.complete();
+      }
+      if (res.status === 409) {
+        subscriber.error();
       }
     })();
   });
