@@ -93,7 +93,7 @@ const Home = () => {
                 codi={codiSelected}
                 comment={""}
                 onCodiClick={function (): void {
-                  throw new Error("Function not implemented.");
+                  1 + 1;
                 }}
               />
             )}
