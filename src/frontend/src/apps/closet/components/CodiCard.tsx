@@ -21,16 +21,17 @@ const CodiCard = ({
       : window.innerWidth * 0.9;
   return (
     <ClosetCard id={codi.id!}>
-      <CodiBoard
-        boardConfig={{
-          width: width,
-          height: width,
-          clothWidth: width * 0.35,
-          clothHeight: width * 0.35,
-        }}
-        codiClothes={codi.clothes}
-        onBoardImgClick={onCodiClick}
-      />
+      <div onClick={onCodiClick}>
+        <CodiBoard
+          boardConfig={{
+            width: width,
+            height: width,
+            clothWidth: width * 0.35,
+            clothHeight: width * 0.35,
+          }}
+          codiClothes={codi.clothes}
+        />
+      </div>
       {comment}
     </ClosetCard>
   );
