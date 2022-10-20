@@ -1,10 +1,10 @@
 #!/bin/sh
 #!/bin/bash
 
-echo "[Init] Running DB update..."
+echo "[DB] Running DB update..."
 python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata data.json
 
-echo "[RUN] Start Application."
-python manage.py runserver 0.0.0.0:8000
+echo "[Test] Running Test code..."
+python manage.py test
