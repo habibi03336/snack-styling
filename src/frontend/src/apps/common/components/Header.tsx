@@ -4,6 +4,7 @@ import {
   IonButtons,
   IonButton,
   IonImg,
+  IonRouterLink,
 } from "@ionic/react";
 import { useHistory } from "react-router";
 
@@ -13,10 +14,10 @@ import Logo from "../../../assets/logo.png";
 interface IHeader {
   type?: "default" | "back" | "title";
   text?: string;
+  routeTo?: string;
   onHeaderClick?: () => void;
 }
-const Header = ({ text, type, onHeaderClick }: IHeader) => {
-  const history = useHistory();
+const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
   return (
     <IonHeader
       style={{
@@ -37,7 +38,8 @@ const Header = ({ text, type, onHeaderClick }: IHeader) => {
           <>
             <IonButtons slot="start">
               <IonButton
-                onClick={onHeaderClick ? onHeaderClick : () => history.goBack()}
+                routerLink={routeTo}
+                onClick={onHeaderClick}
                 routerDirection="back"
               >
                 {" "}
