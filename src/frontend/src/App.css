@@ -61,6 +61,7 @@
 	src: local('Pretendard Thin'), url('./assets/font/pretendard/Pretendard-Thin.woff') format('woff');
 }
 .ion-page {
+	background-color: white;
     padding: 0px 20px !important;
 }
 
