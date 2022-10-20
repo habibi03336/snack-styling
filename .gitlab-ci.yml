@@ -21,6 +21,9 @@ build-spring:
 
 build-django:
   stage: build
+  before_script:
+    - docker image prune --force
+    - docker container prune --force
   script:
     - cp ~/u2net.onnx ./src/backend/django
     - cd src/backend/django
