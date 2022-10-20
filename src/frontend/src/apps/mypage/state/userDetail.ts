@@ -1,11 +1,22 @@
 import { atom } from "recoil";
+import { GET_PROFILE } from "../../../lib/api/user";
 
 const userDetailAtom = atom({
   key: "Mypage/userDetail",
   default: {
-    nickname: "춤추는 훌라후프",
-    level: 3,
+    nickname: "",
+    rank: 0,
   },
+  effects: [
+    ({ setSelf }) => {
+      (async () => {
+        const res = await GET_PROFILE();
+        const data = res.data;
+        console.log(data);
+        setSelf(data);
+      })();
+    },
+  ],
 });
 
 export default userDetailAtom;
