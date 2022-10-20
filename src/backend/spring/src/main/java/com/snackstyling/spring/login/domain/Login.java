@@ -16,6 +16,7 @@ public class Login {
     @GeneratedValue
     @Column(name="userId")
     private Long id;
+    @Column(unique = true)
     private String email;
     private String password;
     private Integer used=1;
