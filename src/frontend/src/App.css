@@ -60,6 +60,12 @@
 	font-display: swap;
 	src: local('Pretendard Thin'), url('./assets/font/pretendard/Pretendard-Thin.woff') format('woff');
 }
+
+ion-app {
+	margin: auto;
+	max-width: 400px;
+}
+
 .ion-page {
 	background-color: white;
     padding: 0px 20px !important;
