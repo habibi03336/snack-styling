@@ -40,7 +40,7 @@ const CodiCloset = () => {
         })}
       />
       <FloatingButton routeTo="/codiShowcase/create/-1/-1/-1" />
-      <IonModal isOpen={modalDetail !== null}>
+      <IonModal isOpen={modalDetail !== null} mode="ios">
         {modalDetail && (
           <>
             <IonHeader>

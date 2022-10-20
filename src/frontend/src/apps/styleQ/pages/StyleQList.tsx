@@ -36,6 +36,7 @@ const StyleQList = () => {
                     };
                   })
                 }
+                mode="ios"
               >
                 <IonSelectOption value={0}>미채택</IonSelectOption>
                 <IonSelectOption value={1}>채택</IonSelectOption>
@@ -55,6 +56,7 @@ const StyleQList = () => {
                     };
                   })
                 }
+                mode="ios"
               >
                 <IonSelectOption value={-1}>전체</IonSelectOption>
                 <IonSelectOption value="0">데일리</IonSelectOption>

@@ -9,12 +9,14 @@ const BottomButton = ({
   onClick?: () => void;
   activated?: boolean;
 }) => {
+  const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
+
   return (
     <span
       style={{
         position: "fixed",
         height: "70px",
-        width: `${window.innerWidth}px`,
+        width: `${innerWidth}px`,
         bottom: "0px",
         left: "0px",
         padding: "10px 20px",
