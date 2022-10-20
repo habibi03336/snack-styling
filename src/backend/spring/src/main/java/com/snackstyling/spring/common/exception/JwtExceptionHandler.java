@@ -19,22 +19,22 @@ public class JwtExceptionHandler {
     }
     @ExceptionHandler(TokenMatchException.class)
     public ResponseEntity<Map<String, String>> TokenNotMatch(Exception e){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap("message",e.getMessage()));
     }
     @ExceptionHandler(TokenSignatureException.class)
     public ResponseEntity<Map<String, String>> TokenSignatureNotMatch(Exception e){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap("message",e.getMessage()));
     }
     @ExceptionHandler(TokenSupportException.class)
     public ResponseEntity<Map<String, String>> TokenNotSupport(Exception e){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap("message",e.getMessage()));
     }
     @ExceptionHandler(ClaimEmptyException.class)
     public ResponseEntity<Map<String, String>> ClaimEmpty(Exception e){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap("message",e.getMessage()));
     }
 }
