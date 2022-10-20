@@ -61,6 +61,13 @@
 	src: local('Pretendard Thin'), url('./assets/font/pretendard/Pretendard-Thin.woff') format('woff');
 }
 
+@media screen and (min-width: 400px) {
+	ion-app  {
+	  border-right: 0.5px solid black;
+	  border-left: 0.5px solid black;
+	}
+}
+  
 ion-app {
 	margin: auto;
 	max-width: 400px;
