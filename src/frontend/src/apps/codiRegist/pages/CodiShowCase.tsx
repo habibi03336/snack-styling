@@ -121,13 +121,13 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
           <IonButton
             color={"primary"}
             style={{ width: "100%" }}
-            id="open-modal"
+            id="open-modal-codishowcase"
             expand="full"
           >
             다음
           </IonButton>
         </BottomButton>
-        <IonModal trigger="open-modal" initialBreakpoint={0.8}>
+        <IonModal trigger="open-modal-codishowcase" initialBreakpoint={0.8}>
           <IonContent className="ion-padding">
             <IonLabel position="stacked">코디 설명</IonLabel>
             <IonTextarea
