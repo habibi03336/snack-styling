@@ -53,7 +53,7 @@ public class MemberService {
     }
     public QuestionsResponse memberQuestions(Long id){
         Member member=memberSelect(id);
-        List<Question> questions=questionRepository.findByMember(member);
+        List<Question> questions=questionRepository.findByMemberAndUsed(member,0);
         List<QuestionResponse> questionResponses=new ArrayList<>();
         for (Question temp: questions){
             QuestionResponse questionResponse=new QuestionResponse();
