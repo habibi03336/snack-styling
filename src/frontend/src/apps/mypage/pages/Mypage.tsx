@@ -84,15 +84,14 @@ const Mypage = () => {
             </div>
           </IonRouterLink> */}
         </div>
-
-        <div style={{ position: "absolute", right: 10, bottom: 50 }}>
-          <div onClick={onClickLogOut}>
-            <span style={{ color: "black", textDecoration: "underline" }}>
-              로그아웃
-            </span>
-          </div>
-        </div>
       </IonContent>
+      <div style={{ position: "absolute", right: 10, bottom: 20 }}>
+        <div onClick={onClickLogOut}>
+          <span style={{ color: "black", textDecoration: "underline" }}>
+            로그아웃
+          </span>
+        </div>
+      </div>
     </IonPage>
   );
 };

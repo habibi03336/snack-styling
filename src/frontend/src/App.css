@@ -67,6 +67,27 @@
 	  border-left: 0.5px solid black;
 	}
 }
+
+html,
+body
+{
+    overflow: hidden;
+}
+
+ion-content {
+	--offset-bottom: auto!important;
+	--overflow: hidden;
+	overflow: auto; 
+}
+
+ion-content::-webkit-scrollbar {
+	display: none;
+}
+
+
+body {
+	overscroll-behavior-x: none;
+}
   
 ion-app {
 	margin: auto;
