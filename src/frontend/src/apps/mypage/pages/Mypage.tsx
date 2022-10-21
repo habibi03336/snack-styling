@@ -8,9 +8,10 @@ import {
 import { useRecoilValue } from "recoil";
 import IDCard from "../components/IDCard";
 import userDetailAtom from "../state/userDetail";
-import { helpCircle, chatbubbles, heart, cube } from "ionicons/icons";
+import { helpCircle, chatbubbles, cube } from "ionicons/icons";
 import Header from "../../common/components/Header";
 import RowFiller from "../../common/components/RowFiller";
+import RoutingLink from "../../common/components/RoutingLink";
 
 const Mypage = () => {
   const userDetail = useRecoilValue(userDetailAtom);
@@ -34,7 +35,7 @@ const Mypage = () => {
             justifyContent: "space-around",
           }}
         >
-          <IonRouterLink routerLink={"/mypage/myquestions"}>
+          <RoutingLink routerLink={"/mypage/myquestions"}>
             <div
               style={{
                 display: "flex",
@@ -45,8 +46,8 @@ const Mypage = () => {
               <IonIcon src={helpCircle} />
               <div style={{ fontSize: 16 }}>질문내역</div>
             </div>
-          </IonRouterLink>
-          <IonRouterLink routerLink={"/mypage/myanswers"}>
+          </RoutingLink>
+          <RoutingLink routerLink={"/mypage/myanswers"}>
             <div
               style={{
                 display: "flex",
@@ -57,8 +58,8 @@ const Mypage = () => {
               <IonIcon src={chatbubbles} />
               <div style={{ fontSize: 16 }}>답변내역</div>
             </div>
-          </IonRouterLink>
-          <IonRouterLink routerLink={"/mypage/customerLetter"}>
+          </RoutingLink>
+          <RoutingLink routerLink={"/mypage/customerLetter"}>
             <div
               style={{
                 display: "flex",
@@ -69,7 +70,7 @@ const Mypage = () => {
               <IonIcon src={cube} />
               <div style={{ fontSize: 16 }}>건의하기</div>
             </div>
-          </IonRouterLink>
+          </RoutingLink>
           {/* <IonRouterLink routerLink={""}>
             <div
               style={{

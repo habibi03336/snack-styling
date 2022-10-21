@@ -15,8 +15,11 @@ import useStyleQList from "../hooks/useStyleQList";
 
 import FloatingButton from "../../common/components/FloatingButton";
 import ListDiv from "../../common/components/ListDiv";
+import { useSetRecoilState } from "recoil";
+import routeContextAtom from "../../common/state/routeContext";
 
 const StyleQList = () => {
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   const { styleQs, loadDone, loadMore, setFilter } = useStyleQList();
 
   return (
@@ -76,6 +79,12 @@ const StyleQList = () => {
               routeTo={`/styleQ/${styleQ.qid}`}
               styleQ={styleQ}
               type="small"
+              onClick={() => {
+                setRouteContextState((state) => [
+                  ...state,
+                  `/styleQ/${styleQ.qid}`,
+                ]);
+              }}
             />
           ))}
         </ListDiv>

@@ -7,14 +7,20 @@ interface IStyleQBlock {
   routeTo?: string;
   styleQ: I.StyleQ;
   type: "small" | "big";
+  onClick?: () => void;
 }
 
-const StyleQBlock = ({ styleQ, routeTo, type = "small" }: IStyleQBlock) => {
+const StyleQBlock = ({
+  styleQ,
+  routeTo,
+  onClick,
+  type = "small",
+}: IStyleQBlock) => {
   const [year, month, day] = styleQ.endDate
     ? styleQ.endDate.split("-")
     : [0, 0, 0];
   return (
-    <IonRouterLink routerLink={routeTo}>
+    <IonRouterLink onClick={onClick} routerLink={routeTo}>
       <Block>
         <div>
           <div

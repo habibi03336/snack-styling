@@ -28,10 +28,12 @@ import DownButton from "../../../common/components/DownButton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ClothDetail from "../../containers/ClothDetail";
 import { selectedClothIdAtom } from "../../state/clothes";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { DELETE_CLOTH } from "../../../../lib/api/cloth";
+import routeContextAtom from "../../../common/state/routeContext";
 
 const ClothCloset = () => {
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   const [showTags, setShowTags] = useState<boolean>(false);
   const [selectedClothId, setSelectedClothId] =
     useRecoilState(selectedClothIdAtom);
@@ -49,6 +51,7 @@ const ClothCloset = () => {
     const $input = e.target as HTMLInputElement;
     uploadClothes($input.files);
     history.push("/clothRegist");
+    setRouteContextState((state) => [...state, "/clothRegist"]);
   };
 
   return (

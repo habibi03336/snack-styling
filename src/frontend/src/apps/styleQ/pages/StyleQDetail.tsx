@@ -5,36 +5,35 @@ import StyleQCardDetail from "../components/StyleQCardDetail";
 import StyleAnsCard from "../components/StyleAnsCard";
 import ListDiv from "../../common/components/ListDiv";
 import { RouteComponentProps } from "react-router";
-import useTabBarControl from "../../common/hooks/useTabBarControl";
 import BottomButton from "../../common/components/BottomButton";
 import Plus from "../../../assets/common/plus.svg";
 import RowFiller from "../../common/components/RowFiller";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../../common/state/user";
 import { ADOPT_ANSWER, DELETE_QUESTION } from "../../../lib/api/styleQ";
 import { useHistory } from "react-router-dom";
 import { styleQState } from "../state/styleQ";
+import routeContextAtom from "../../common/state/routeContext";
+import RoutingLink from "../../common/components/RoutingLink";
+
 type IStyleQDetail = RouteComponentProps<{ id: string }>;
 
 const StyleQDetail = ({ match }: IStyleQDetail) => {
-  const [styleQs, setStyleQs] = useRecoilState(styleQState);
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
+  const setStyleQs = useSetRecoilState(styleQState);
   const history = useHistory();
   const { styleQDetailData, removeAnswer } = useStyleQDetail(
     Number(match.params.id)
   );
   const { id } = useRecoilValue(userAtom);
-  useTabBarControl("useUnmount");
   const removeQ = async () => {
     if (!styleQDetailData?.que.qid) return;
     await DELETE_QUESTION(styleQDetailData?.que.qid);
-    setStyleQs(
-      styleQs.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
+    setStyleQs((state) =>
+      state.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
     );
     history.push("/styleQ");
-    const tabbar = document.querySelector("ion-tab-bar");
-    const fabButton = document.querySelector("ion-fab");
-    if (tabbar !== null) tabbar.style.display = "flex";
-    if (fabButton !== null) fabButton.style.display = "flex";
+    setRouteContextState(() => ["/styleQ"]);
   };
 
   const adoptAns = async (aid: number) => {
@@ -107,10 +106,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
             <RowFiller px={70} />
 
             <BottomButton>
-              <IonRouterLink
-                // onClick={() => {
-                //   window.location.href = `/codiShowcase/create/${styleQDetailData?.que.mid}/${styleQDetailData?.que.qid}`;
-                // }}
+              <RoutingLink
                 routerLink={`/codiShowcase/create/${styleQDetailData?.que.mid}/${styleQDetailData?.que.qid}/-1`}
               >
                 <div style={{ color: "white" }}>
@@ -126,7 +122,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
                     스타일링 답변하기
                   </span>
                 </div>
-              </IonRouterLink>
+              </RoutingLink>
             </BottomButton>
           </>
         )}

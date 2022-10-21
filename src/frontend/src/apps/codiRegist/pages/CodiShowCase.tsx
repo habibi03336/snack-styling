@@ -16,7 +16,6 @@ import useTags from "../../common/hooks/useTags";
 import { RouteComponentProps } from "react-router-dom";
 import { SwiperSlide, Swiper } from "swiper/react";
 
-import useTabBarControl from "../../common/hooks/useTabBarControl";
 import BottomButton from "../../common/components/BottomButton";
 import { useRef } from "react";
 
@@ -71,7 +70,6 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     }
   };
 
-  useTabBarControl(isSelfCodi ? "useUnmount" : undefined);
   let clothCnt = 0;
   return (
     <IonPage>

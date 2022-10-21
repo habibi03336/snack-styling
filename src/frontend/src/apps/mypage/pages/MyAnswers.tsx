@@ -9,12 +9,15 @@ import Header from "../../common/components/Header";
 import ListDiv from "../../common/components/ListDiv";
 import useInfiniteScroll from "../../common/hooks/useInfiniteScroll";
 import myAnswers from "../lib/infiniteScroll/myAnswers";
-import useTabBarControl from "../../common/hooks/useTabBarControl";
+
 import StyleQBlock from "../../styleQ/components/StyleQBlock";
+
+import { useSetRecoilState } from "recoil";
+import routeContextAtom from "../../common/state/routeContext";
 
 const MyAnswers = () => {
   const { elems, loadDone, loadMore } = useInfiniteScroll(myAnswers);
-  useTabBarControl("useUnmount");
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   return (
     <IonPage>
       <Header text="나의 답변" type="back" />
@@ -28,6 +31,12 @@ const MyAnswers = () => {
                 routeTo={`/styleQ/${elem.qid}`}
                 styleQ={elem}
                 type="small"
+                onClick={() =>
+                  setRouteContextState((state) => [
+                    ...state,
+                    `/styleQ/${elem.qid}`,
+                  ])
+                }
               />
             ))
           }

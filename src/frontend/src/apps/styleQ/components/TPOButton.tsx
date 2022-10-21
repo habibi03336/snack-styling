@@ -9,11 +9,12 @@ const TPOButton = ({
   selected: boolean;
   onClick: () => void;
 }) => {
+  const innerWidth = window.innerWidth > 400 ? 400 : window.innerWidth;
   return (
     <IonItem
       onClick={onClick}
       style={{
-        width: `${(window.innerWidth - 40) / 2 - 5}px`,
+        width: `${(innerWidth - 40) / 2 - 5}px`,
         border: "1px solid #eeeeee",
         margin: "5px 0",
       }}
