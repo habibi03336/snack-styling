@@ -2,14 +2,6 @@ import axios from "axios";
 import address from "./address";
 // axios 요청 클라이언트 생성
 const client = axios.create();
-// // accessToken 헤더에 기본적으로 넣어주기
-// if (localStorage.getItem("accessToken")) {
-//   client.defaults.headers.common["Authorization"] = `${localStorage.getItem(
-//     "accessToken"
-//   )}`;
-// } else {
-//   client.defaults.headers.common["Authorization"] = ``;
-// }
 
 client.interceptors.request.use((config) => {
   const token =
@@ -34,9 +26,7 @@ client.interceptors.response.use(
         "refreshToken"
       )}`;
       const res = await client.post(address.api + `/accounts/token`);
-      console.log("token refreshed!");
-      console.log("old token: " + localStorage.getItem("accessToken"));
-      console.log("new token: " + res.data.accessToken);
+
       localStorage.setItem("accessToken", res.data.accessToken);
 
       return client.request(error.config);

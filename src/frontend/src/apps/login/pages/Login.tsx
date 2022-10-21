@@ -5,6 +5,7 @@ import Kakao from "../../../assets/auth/kakao.svg";
 import Naver from "../../../assets/auth/naver.svg";
 import Email from "../../../assets/auth/email.svg";
 import { IonPage, IonRouterLink } from "@ionic/react";
+import RoutingLink from "../../common/components/RoutingLink";
 
 const Login = () => {
   return (
@@ -14,7 +15,7 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: `${window.innerHeight - 300}px`,
+          height: `${window.innerHeight - 100}px`,
           width: window.innerWidth > 400 ? 400 : window.innerWidth,
           flexDirection: "column",
           background:
@@ -30,13 +31,13 @@ const Login = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "300px",
+          height: "100px",
           backgroundColor: "white",
           padding: "10px 20px",
           justifyContent: "space-evenly",
         }}
       >
-        <Button color="light" style={{ border: "1px solid #eeeeee" }}>
+        {/* <Button color="light" style={{ border: "1px solid #eeeeee" }}>
           <div style={{ position: "absolute", left: "0px" }}>
             <img src={Google} />
           </div>
@@ -53,15 +54,15 @@ const Login = () => {
             <img src={Naver} />
           </div>
           네이버로 시작하기
-        </Button>
-        <IonRouterLink routerLink="/emailLogin">
+        </Button> */}
+        <RoutingLink routerLink="/emailLogin">
           <Button color="primary">
             <div style={{ position: "absolute", left: "0px" }}>
               <img src={Email} />
             </div>
             이메일로 시작하기
           </Button>
-        </IonRouterLink>
+        </RoutingLink>
       </div>
     </IonPage>
   );

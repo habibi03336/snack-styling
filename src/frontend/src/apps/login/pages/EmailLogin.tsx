@@ -13,10 +13,13 @@ import Header from "../../common/components/Header";
 import RowFiller from "../../common/components/RowFiller";
 import Label from "../../common/components/Label";
 import Button from "../../common/components/Button";
+import { useSetRecoilState } from "recoil";
+import routeContextAtom from "../../common/state/routeContext";
 
 const EmailLogin: React.FC = () => {
   const { id, setId, pwd, setPwd, postLogin } = useLogin();
   const [errorMessage, setErrorMessage] = useState("");
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   const history = useHistory();
 
   return (
@@ -39,6 +42,7 @@ const EmailLogin: React.FC = () => {
 
             postLogin.subscribe({
               complete() {
+                setRouteContextState(() => ["/home"]);
                 history.push("/home");
               },
               error() {
