@@ -12,7 +12,6 @@ const userDetailAtom = atom({
       (async () => {
         const res = await GET_PROFILE();
         const data = res.data;
-        console.log(data);
         setSelf(data);
       })();
     },

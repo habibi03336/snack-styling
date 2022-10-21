@@ -1,14 +1,13 @@
 import { DELETE_ANSWER, GET_STYLEQ } from "../../../lib/api/styleQ";
 import { makeCodiTemplate } from "../../../lib/process/codi";
 import { defaultTemplate } from "../../../assets/codiTemplates";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as I from "../../../lib/types/interfaces";
-import useOnMount from "../../common/hooks/useOnMount";
 
 const useStyleQDetail = (styleQId: number) => {
   const [styleQDetailData, setStyleQDetailData] = useState<I.StyleQDetail>();
 
-  useOnMount(() => {
+  useEffect(() => {
     (async () => {
       const res = await GET_STYLEQ(styleQId);
       const styleQ = res.data.question;
@@ -34,7 +33,7 @@ const useStyleQDetail = (styleQId: number) => {
 
       setStyleQDetailData({ que: styleQ, ans: styleAns });
     })();
-  });
+  }, [styleQId]);
 
   const removeAnswer = async (answerId: number) => {
     const res = await DELETE_ANSWER(answerId);

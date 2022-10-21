@@ -7,10 +7,13 @@ import {
   IonRouterLink,
 } from "@ionic/react";
 import { useHistory } from "react-router";
+import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
 import Backarrow from "../../../assets/common/backarrow.png";
 import Logo from "../../../assets/logo.png";
+
+import routeContextAtom from "../state/routeContext";
 interface IHeader {
   type?: "default" | "back" | "title";
   text?: string;
@@ -18,6 +21,8 @@ interface IHeader {
   onHeaderClick?: () => void;
 }
 const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
+  const history = useHistory();
+  const [routeContext, setRouteContextState] = useRecoilState(routeContextAtom);
   return (
     <IonHeader
       style={{
@@ -38,8 +43,16 @@ const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
           <>
             <IonButtons slot="start">
               <IonButton
-                routerLink={routeTo}
-                onClick={onHeaderClick}
+                onClick={() => {
+                  if (routeContext.length > 1) {
+                    history.push(routeContext[routeContext.length - 2]);
+                    setRouteContextState(
+                      routeContext.slice(0, routeContext.length - 1)
+                    );
+                  } else {
+                    history.push(routeContext[0]);
+                  }
+                }}
                 routerDirection="back"
               >
                 {" "}

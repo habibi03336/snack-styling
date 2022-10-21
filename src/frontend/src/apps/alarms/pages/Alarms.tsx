@@ -3,14 +3,16 @@ import Header from "../../common/components/Header";
 import ListDiv from "../../common/components/ListDiv";
 import AlarmCard from "../components/AlarmCard";
 import { alarmsAtom } from "../state/alarms";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useHistory } from "react-router";
 import {
   PATCH_ALL_NOTIFICATIONS,
   PATCH_NOTIFICATION,
 } from "../../../lib/api/notification";
 import RowFiller from "../../common/components/RowFiller";
+import routeContextAtom from "../../common/state/routeContext";
 const Alarms = () => {
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   const [alarms, setAlarms] = useRecoilState(alarmsAtom);
   const history = useHistory();
 
@@ -41,6 +43,9 @@ const Alarms = () => {
                 info={elem}
                 onClickCard={async () => {
                   history.push(`/styleQ/${elem.qid}`);
+                  setRouteContextState((state) => {
+                    return [...state, `/styleQ/${elem.qid}`];
+                  });
                   setAlarms(alarms.filter((el) => el.nid !== elem.nid));
                   const res = await PATCH_NOTIFICATION(elem.nid);
                 }}

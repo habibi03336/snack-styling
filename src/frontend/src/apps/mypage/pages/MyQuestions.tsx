@@ -10,11 +10,14 @@ import ListDiv from "../../common/components/ListDiv";
 import useInfiniteScroll from "../../common/hooks/useInfiniteScroll";
 import StyleQBlock from "../../styleQ/components/StyleQBlock";
 import myQuestions from "../lib/infiniteScroll/myQuestions";
-import useTabBarControl from "../../common/hooks/useTabBarControl";
+
+import { useSetRecoilState } from "recoil";
+import routeContextAtom from "../../common/state/routeContext";
 
 const MyQuestions = () => {
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
   const { elems, loadDone, loadMore } = useInfiniteScroll(myQuestions);
-  useTabBarControl("useUnmount");
+
   return (
     <IonPage>
       <Header text="나의 질문" type="back" />
@@ -28,6 +31,12 @@ const MyQuestions = () => {
                 routeTo={`/styleQ/${elem.qid}`}
                 styleQ={elem}
                 type="small"
+                onClick={() =>
+                  setRouteContextState((state) => [
+                    ...state,
+                    `/styleQ/${elem.qid}`,
+                  ])
+                }
               />
             ))
           }

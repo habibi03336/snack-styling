@@ -44,16 +44,20 @@ import Signin from "./apps/signin/pages/Signin";
 import Home from "./apps/home/pages/Home";
 import MemberDetailRegist from "./apps/mypage/pages/MemberDetail";
 import Mypage from "./apps/mypage/pages/Mypage";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import user from "./apps/common/state/user";
 import Login from "./apps/login/pages/Login";
 import MyAnswers from "./apps/mypage/pages/MyAnswers";
 import MyQuestions from "./apps/mypage/pages/MyQuestions";
 import Alarms from "./apps/alarms/pages/Alarms";
 import CustomerLetter from "./apps/mypage/pages/CustomerLetter";
+import tabbarAtom from "./apps/common/state/tabbar";
+import routeContextAtom from "./apps/common/state/routeContext";
 
 const App: React.FC = () => {
-  const [userState] = useRecoilState(user);
+  const userState = useRecoilValue(user);
+  const tabbarState = useRecoilValue(tabbarAtom);
+  const setRouteContextState = useSetRecoilState(routeContextAtom);
 
   if (!userState.isLogined) {
     return (
@@ -81,11 +85,11 @@ const App: React.FC = () => {
         <IonTabs>
           <IonRouterOutlet>
             <Route exact path="/home" component={Home} />
-            <Route exact path="/styleQ" component={StyleQList} />
+            <Route exact path="/styleQList" component={StyleQList} />
+            <Route exact path="/styleQ/:id" component={StyleQDetail} />
             <Route exact path="/closet/:defaultTab" component={Closet} />
             <Route path="/alarm" component={Alarms} />
             <Route exact path="/mypage" component={Mypage} />
-            <Route path="/styleQ/:id" component={StyleQDetail} />
             <Route path="/clothRegist" component={ClothRegist} />
             <Route
               path="/codiShowcase/:type/:mid/:qid/:id"
@@ -97,20 +101,53 @@ const App: React.FC = () => {
             <Route path="/mypage/customerLetter" component={CustomerLetter} />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
-          <IonTabBar style={{ height: "60px" }} slot="bottom">
-            <IonTabButton tab="home" href="/home">
+          <IonTabBar
+            style={{ height: "60px", display: tabbarState ? "flex" : "none" }}
+            slot="bottom"
+          >
+            <IonTabButton
+              tab="home"
+              href="/home"
+              onClick={() => {
+                setRouteContextState(() => ["/home"]);
+              }}
+            >
               <Icon iconName="home" />
             </IonTabButton>
-            <IonTabButton tab="styleQ" href="/styleQ">
+            <IonTabButton
+              tab="styleQ"
+              href="/styleQList"
+              onClick={() => {
+                setRouteContextState(() => ["/styleQList"]);
+              }}
+            >
               <Icon iconName="community" />
             </IonTabButton>
-            <IonTabButton tab="closet" href="/closet/cloth">
+            <IonTabButton
+              tab="closet"
+              href="/closet/cloth"
+              onClick={() => {
+                setRouteContextState(() => ["/closet/cloth"]);
+              }}
+            >
               <Icon iconName="closet" />
             </IonTabButton>
-            <IonTabButton tab="alarm" href="/alarm">
+            <IonTabButton
+              tab="alarm"
+              href="/alarm"
+              onClick={() => {
+                setRouteContextState(() => ["/alarm"]);
+              }}
+            >
               <Icon iconName="alarm" />
             </IonTabButton>
-            <IonTabButton tab="mypage" href="/mypage">
+            <IonTabButton
+              tab="mypage"
+              href="/mypage"
+              onClick={() => {
+                setRouteContextState(() => ["/mypage"]);
+              }}
+            >
               <Icon iconName="mypage" />
             </IonTabButton>
           </IonTabBar>

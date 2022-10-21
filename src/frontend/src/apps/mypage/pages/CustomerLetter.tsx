@@ -3,12 +3,11 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { POST_SUGGESTION } from "../../../lib/api/user";
 import Header from "../../common/components/Header";
-import useTabBarControl from "../../common/hooks/useTabBarControl";
 
 const CustomerLetter = () => {
   const [text, setText] = useState("");
   const history = useHistory();
-  useTabBarControl("useUnmount");
+
   const onClickSubmit = async () => {
     await POST_SUGGESTION(text);
     setText("");

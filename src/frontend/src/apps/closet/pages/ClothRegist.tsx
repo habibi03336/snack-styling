@@ -16,14 +16,12 @@ import "@ionic/react/css/ionic-swiper.css";
 import useTags from "../../common/hooks/useTags";
 import useClothRegist from "../hooks/useClothRegist";
 import { useHistory } from "react-router-dom";
-import useTabBarControl from "../../common/hooks/useTabBarControl";
 
 const ClothRegist: React.FC = () => {
   const { processClothes, setProcessClothes, updateClothesInfo } =
     useClothRegist();
   const { tags } = useTags();
   const history = useHistory();
-  useTabBarControl("useUnmount");
 
   return (
     <IonPage>
