@@ -48,7 +48,7 @@ const useCloths = (userId?: number) => {
 
       setClothes(clothes.concat(clothArray));
     })();
-  });
+  }, [infiniteParam.page]);
 
   const deleteCloth = async (clothId: number) => {
     const res = await DELETE_CLOTH(clothId);
