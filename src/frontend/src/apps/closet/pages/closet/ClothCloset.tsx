@@ -31,6 +31,7 @@ import { selectedClothIdAtom } from "../../state/clothes";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { DELETE_CLOTH } from "../../../../lib/api/cloth";
 import routeContextAtom from "../../../common/state/routeContext";
+import innerViewWidth from "../../../../lib/constants/innerViewWidth";
 
 const ClothCloset = () => {
   const setRouteContextState = useSetRecoilState(routeContextAtom);
@@ -63,9 +64,7 @@ const ClothCloset = () => {
           <DownButton onClickButton={() => setShowTags(!showTags)} />
           <div
             style={{
-              width: `${
-                window.innerWidth <= 400 ? window.innerWidth - 40 - 32 : 328
-              }px`,
+              width: `${innerViewWidth - 40 - 32}px`,
               marginLeft: "10px",
             }}
           >

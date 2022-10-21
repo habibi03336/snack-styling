@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonRouterLink } from "@ionic/react";
+import { IonButton, IonContent, IonPage, IonRouterLink } from "@ionic/react";
 import Header from "../../common/components/Header";
 import useStyleQDetail from "../hooks/useStyleQDetail";
 import StyleQCardDetail from "../components/StyleQCardDetail";
@@ -109,19 +109,24 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
               <RoutingLink
                 routerLink={`/codiShowcase/create/${styleQDetailData?.que.mid}/${styleQDetailData?.que.qid}/-1`}
               >
-                <div style={{ color: "white" }}>
-                  <img
-                    style={{
-                      margin: "0px 10px",
-                      position: "relative",
-                      top: "1px",
-                    }}
-                    src={Plus}
-                  />
-                  <span style={{ fontSize: "16px", fontWeight: "bold" }}>
-                    스타일링 답변하기
-                  </span>
-                </div>
+                <IonButton
+                  color={"primary"}
+                  style={{ width: "100%" }}
+                  expand="full"
+                >
+                  <div style={{ color: "white" }}>
+                    <img
+                      style={{
+                        margin: "0px 10px",
+                        position: "relative",
+                        top: "1px",
+                        fontWeight: 200,
+                      }}
+                      src={Plus}
+                    />
+                    <span style={{ fontSize: "16px" }}>스타일링 답변하기</span>
+                  </div>
+                </IonButton>
               </RoutingLink>
             </BottomButton>
           </>

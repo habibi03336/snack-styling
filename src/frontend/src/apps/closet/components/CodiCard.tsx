@@ -1,6 +1,7 @@
 import CodiBoard from "../../common/components/CodiBoard";
 import * as I from "../../../lib/types/interfaces";
 import ClosetCard from "./ClosetCard";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 interface ICodiCard {
   codi: I.CodiTemplate;
@@ -15,9 +16,8 @@ const CodiCard = ({
   comment,
   type = "default",
 }: ICodiCard) => {
-  const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
   const width =
-    type === "default" ? (innerWidth - 40) / 2 - 7.5 : innerWidth * 0.9;
+    type === "default" ? (innerViewWidth - 40) / 2 - 7.5 : innerViewWidth * 0.9;
   return (
     <ClosetCard id={codi.id!}>
       <div onClick={onCodiClick}>
