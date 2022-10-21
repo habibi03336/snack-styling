@@ -19,6 +19,7 @@ import useCodis from "../hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
 import { POST_CODIPLAN } from "../../../lib/api/codiplan";
 import Header from "../../common/components/Header";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 const Home = () => {
   const { setDate, date, codiSelected, setCodiplan, codiplan } = useHome();
@@ -55,7 +56,7 @@ const Home = () => {
           <div></div>
           <IonDatetime
             style={{
-              width: `${window.innerWidth - 40}px`,
+              width: `${innerViewWidth - 40}px`,
             }}
             mode="ios"
             value={date.toISOString().split("T")[0]}

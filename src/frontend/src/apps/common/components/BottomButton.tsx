@@ -1,3 +1,4 @@
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 import Button from "./Button";
 
 const BottomButton = ({
@@ -10,14 +11,12 @@ const BottomButton = ({
   activated?: boolean;
   type?: string;
 }) => {
-  const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
-
   return (
     <div
       style={{
         position: "fixed",
         height: "70px",
-        width: `${innerWidth}px`,
+        width: `${innerViewWidth}px`,
         bottom: "0px",
         left: "0px",
         padding: "10px 20px",

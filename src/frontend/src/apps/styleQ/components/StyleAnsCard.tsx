@@ -3,6 +3,7 @@ import * as I from "../../../lib/types/interfaces";
 import CodiBoard from "../../common/components/CodiBoard";
 import Block from "../../common/components/Block";
 import LevelIcon from "../../common/components/LevelIcon";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 interface IStyleAnsCard {
   styleAns: I.StyleAns;
@@ -24,6 +25,7 @@ const StyleAnsCard = ({
   showAdopt,
 }: IStyleAnsCard) => {
   const level: [0, 1, 2, 3] = [0, 1, 2, 3];
+
   return (
     <Block>
       <div
@@ -34,10 +36,9 @@ const StyleAnsCard = ({
         }}
       >
         <div style={{ display: "flex" }}>
-          <LevelIcon level={level[Math.floor(Math.random() * 4)]} />
+          {adopted && <LevelIcon level={level[0]} />}
           <div
             style={{
-              backgroundColor: adopted ? "powderblue" : "white",
               margin: "0px 12px",
               height: "40px",
               fontSize: "16px",
@@ -75,10 +76,10 @@ const StyleAnsCard = ({
           <CodiBoard
             codiClothes={styleAns.codiTemplate.clothes}
             boardConfig={{
-              width: window.innerWidth * 0.7,
-              height: window.innerWidth * 0.7,
-              clothWidth: window.innerWidth * 0.3,
-              clothHeight: window.innerWidth * 0.3,
+              width: innerViewWidth * 0.7,
+              height: innerViewWidth * 0.7,
+              clothWidth: innerViewWidth * 0.3,
+              clothHeight: innerViewWidth * 0.3,
             }}
             onBoardImgClick={() => console.log("style ans codi board clicked")}
           />

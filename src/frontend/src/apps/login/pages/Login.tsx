@@ -6,6 +6,8 @@ import Naver from "../../../assets/auth/naver.svg";
 import Email from "../../../assets/auth/email.svg";
 import { IonPage, IonRouterLink } from "@ionic/react";
 import RoutingLink from "../../common/components/RoutingLink";
+import BottomButton from "../../common/components/BottomButton";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 const Login = () => {
   return (
@@ -16,7 +18,7 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: `${window.innerHeight - 100}px`,
-          width: window.innerWidth > 400 ? 400 : window.innerWidth,
+          width: innerViewWidth,
           flexDirection: "column",
           background:
             "url('https://www.ikea.com/kr/en/images/products/platsa-open-clothes-hanging-unit-white__0780262_pe759915_s5.jpg')",
@@ -55,6 +57,7 @@ const Login = () => {
           </div>
           네이버로 시작하기
         </Button> */}
+
         <RoutingLink routerLink="/emailLogin">
           <Button color="primary">
             <div style={{ position: "absolute", left: "0px" }}>

@@ -1,4 +1,5 @@
 import { IonCheckbox, IonItem, IonLabel } from "@ionic/react";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 const TPOButton = ({
   text,
@@ -9,12 +10,11 @@ const TPOButton = ({
   selected: boolean;
   onClick: () => void;
 }) => {
-  const innerWidth = window.innerWidth > 400 ? 400 : window.innerWidth;
   return (
     <IonItem
       onClick={onClick}
       style={{
-        width: `${(innerWidth - 40) / 2 - 5}px`,
+        width: `${(innerViewWidth - 40) / 2 - 5}px`,
         border: "1px solid #eeeeee",
         margin: "5px 0",
       }}

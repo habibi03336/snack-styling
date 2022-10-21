@@ -1,6 +1,7 @@
 import * as I from "../../../lib/types/interfaces";
 import styled from "styled-components";
 import ClosetCard from "./ClosetCard";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 interface IClothCard {
   onCardClick?: () => void;
@@ -26,12 +27,10 @@ const ClothCard = ({ cloth, onCardClick, type }: IClothCard) => {
 
 export default ClothCard;
 
-const innerWidth = window.innerWidth >= 400 ? 400 : window.innerWidth;
-
 const SmallImg = styled.img`
   object-fit: contain;
-  width: ${(innerWidth - 40) / 2 - 7.5}px;
-  height: ${(innerWidth - 40) / 2 - 7.5}px;
+  width: ${(innerViewWidth - 40) / 2 - 7.5}px;
+  height: ${(innerViewWidth - 40) / 2 - 7.5}px;
   padding: 25px;
   vertical-align: bottom;
 `;

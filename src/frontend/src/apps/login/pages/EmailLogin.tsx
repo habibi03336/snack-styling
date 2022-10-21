@@ -15,6 +15,7 @@ import Label from "../../common/components/Label";
 import Button from "../../common/components/Button";
 import { useSetRecoilState } from "recoil";
 import routeContextAtom from "../../common/state/routeContext";
+import BottomButton from "../../common/components/BottomButton";
 
 const EmailLogin: React.FC = () => {
   const { id, setId, pwd, setPwd, postLogin } = useLogin();
@@ -84,11 +85,11 @@ const EmailLogin: React.FC = () => {
         <div style={{ color: "tomato" }}>
           <p>{errorMessage}</p>
         </div>
-        <div style={{ position: "absolute", width: "100%", bottom: "20px" }}>
+        <BottomButton>
           <IonRouterLink routerLink={"/signin"}>
             <Button color="light"> 회원가입 </Button>
           </IonRouterLink>
-        </div>
+        </BottomButton>
       </IonContent>
     </IonPage>
   );

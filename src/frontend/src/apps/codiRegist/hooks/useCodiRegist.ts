@@ -13,6 +13,7 @@ import { deepcopy } from "../../../lib/utils/common";
 import useOnMount from "../../common/hooks/useOnMount";
 import produce from "immer";
 import { makeCodiTemplate } from "../../../lib/process/codi";
+import innerViewWidth from "../../../lib/constants/innerViewWidth";
 // import { assert } from "console";
 
 const useCodiRegist = (
@@ -41,10 +42,10 @@ const useCodiRegist = (
   });
 
   const boardConfig: I.BoardConfig = {
-    width: window.innerWidth - 40,
-    height: window.innerWidth - 40,
-    clothWidth: window.innerWidth * 0.3,
-    clothHeight: window.innerWidth * 0.3,
+    width: innerViewWidth - 40,
+    height: innerViewWidth - 40,
+    clothWidth: innerViewWidth * 0.3,
+    clothHeight: innerViewWidth * 0.3,
   };
 
   const putCodiCloth = (cloth: I.Cloth) => {
