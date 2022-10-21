@@ -43,14 +43,16 @@ const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
           <>
             <IonButtons slot="start">
               <IonButton
+                routerLink={
+                  routeContext.length > 1
+                    ? routeContext[routeContext.length - 2]
+                    : routeContext[0]
+                }
                 onClick={() => {
                   if (routeContext.length > 1) {
-                    history.push(routeContext[routeContext.length - 2]);
                     setRouteContextState(
                       routeContext.slice(0, routeContext.length - 1)
                     );
-                  } else {
-                    history.push(routeContext[0]);
                   }
                 }}
                 routerDirection="back"
