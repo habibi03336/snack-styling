@@ -101,7 +101,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
         >
           답변하기
         </IonButton> */}
-        {adoptedAns === -1 && (
+        {adoptedAns === -1 && styleQDetailData?.que.mid !== id && (
           <>
             <RowFiller px={70} />
 
