@@ -75,15 +75,23 @@ body
 }
 
 ion-content {
-	--offset-bottom: auto!important;
-	--overflow: hidden;
+
 	overflow: auto; 
 }
 
 ion-content::-webkit-scrollbar {
 	display: none;
+	
 }
 
+/* Hide scrollbar */
+*::-webkit-scrollbar {
+    display: none; /*Chore, safari*/
+}
+* {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 
 body {
 	overscroll-behavior-x: none;

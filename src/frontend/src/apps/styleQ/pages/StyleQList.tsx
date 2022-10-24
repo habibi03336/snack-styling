@@ -88,7 +88,6 @@ const StyleQList = () => {
             />
           ))}
         </ListDiv>
-
         <IonInfiniteScroll
           onIonInfinite={loadMore}
           threshold="100px"
@@ -98,7 +97,6 @@ const StyleQList = () => {
             loadingSpinner="bubbles"
             loadingText="Loading more data..."
           />
-          {/* 모든 보기가 끝났습니다. */}
         </IonInfiniteScroll>
         <FloatingButton routeTo={"/apply/create/-1"} />
       </IonContent>
