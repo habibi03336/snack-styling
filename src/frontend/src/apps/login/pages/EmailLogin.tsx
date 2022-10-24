@@ -25,7 +25,7 @@ const EmailLogin: React.FC = () => {
 
   return (
     <IonPage>
-      <Header text="이메일로 시작하기" type="back" routeTo="/login" />
+      <Header text="이메일로 시작하기" type="back" routeTo="/home" />
       <RowFiller px={24} />
       <IonContent>
         <form
