@@ -73,7 +73,7 @@ public class AnswerService {
         }
         answerRepository.save(answer);
         Notification notify= new Notification();
-        notify.setMember(member);
+        notify.setMember(question.getMember());
         notify.setQuestion(question);
         notify.setAnswer(answer);
         notify.setType(0); //0은 해당 질문에 답변이 달렸을 때 알람
