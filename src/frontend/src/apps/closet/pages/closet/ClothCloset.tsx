@@ -184,7 +184,6 @@ const ClothCloset = () => {
       </IonFab>
 
       <IonModal isOpen={selectedClothId !== -1} mode="ios">
-        {/* {selectedClothId && ( */}
         <>
           <IonHeader>
             <IonToolbar>
@@ -213,7 +212,6 @@ const ClothCloset = () => {
             <ClothDetail />
           </IonContent>
         </>
-        {/* )} */}
       </IonModal>
     </>
   );

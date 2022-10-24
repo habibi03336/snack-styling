@@ -53,11 +53,29 @@ import Alarms from "./apps/alarms/pages/Alarms";
 import CustomerLetter from "./apps/mypage/pages/CustomerLetter";
 import tabbarAtom from "./apps/common/state/tabbar";
 import routeContextAtom from "./apps/common/state/routeContext";
+import useOnMount from "./apps/common/hooks/useOnMount";
 
 const App: React.FC = () => {
   const userState = useRecoilValue(user);
   const tabbarState = useRecoilValue(tabbarAtom);
   const setRouteContextState = useSetRecoilState(routeContextAtom);
+
+  useOnMount(() => {
+    window.addEventListener("popstate", () => {
+      if (
+        [
+          "/home",
+          "/styleQList",
+          "/closet/cloth",
+          "/closet/codi",
+          "/alarm",
+          "mypage",
+        ].includes(window.location.pathname)
+      ) {
+        setRouteContextState(() => [window.location.pathname]);
+      }
+    });
+  });
 
   if (!userState.isLogined) {
     return (
