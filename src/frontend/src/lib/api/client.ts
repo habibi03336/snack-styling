@@ -42,7 +42,7 @@ client.interceptors.response.use(
       localStorage.removeItem("removeToken");
       localStorage.removeItem("id");
 
-      window.location.href = "/login";
+      window.location.href = "/home";
       return Promise.reject(error);
     }
 
