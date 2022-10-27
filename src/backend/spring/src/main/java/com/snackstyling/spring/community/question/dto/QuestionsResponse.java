@@ -7,9 +7,11 @@ import java.util.List;
 @Getter
 public class QuestionsResponse {
     private List<QuestionResponse> questionResponses;
+    private Integer curPage;
     private Integer totalPage;
-    public QuestionsResponse(List<QuestionResponse> questionResponses, Integer totalPage){
+    public QuestionsResponse(List<QuestionResponse> questionResponses, Integer curPage, Integer totalPage){
         this.questionResponses=questionResponses;
+        this.curPage=curPage;
         this.totalPage=totalPage;
     }
 }
