@@ -1,1 +1,3 @@
-export type infiniteScrollCallBackType = () => Promise<[[], boolean]>;
+export type infiniteScrollCallBackType = (
+  page: number
+) => Promise<[[], boolean]>;

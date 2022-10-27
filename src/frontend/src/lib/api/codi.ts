@@ -12,7 +12,8 @@ export interface ICodiData {
   comments?: string;
 }
 
-export const GET_CODIS = () => client.get(baseURL + `/codi/user/`);
+export const GET_CODIS = (page: number) =>
+  client.get(baseURL + `/codi/user/?page=${page}`);
 
 export const GET_CODI = (codiId: number) =>
   client.get(baseURL + `/codi/${codiId}/`);
