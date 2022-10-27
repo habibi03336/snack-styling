@@ -1,15 +1,13 @@
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from drf_spectacular.utils import extend_schema_view
-
-from api.codiplan.serializers import CodiPlanRetrieveSerializer, CodiPlanSerializer
+import api.codiplan.schemas as CodiplanSchema
+from api.codiplan.serializers import (CodiPlanRetrieveSerializer,
+                                      CodiPlanSerializer)
 from api.libs import isSelfRequest
 from api.permissions import UserAccessPermission
-
 from model.codiplanmodel.models import CodiPlan
-
-import api.codiplan.schemas as CodiplanSchema
 
 
 @extend_schema_view(

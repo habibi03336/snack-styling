@@ -1,17 +1,17 @@
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from drf_spectacular.utils import extend_schema_view
-from api.libs import isSelfRequest
-
-from api.codi.paginations import CodiListPagination
-from api.codi.serializers import CodiSerializer, CodiUserSerializer, CodiCreateSerializer, CodiUserCreateSerializer, CodiListSerializer, CodiDuplicateSerializer
-from api.permissions import UserAccessPermission
-
-from model.codimodel.models import Codi
-
 import api.codi.schemas as CodiSchema
+from api.codi.paginations import CodiListPagination
+from api.codi.serializers import (CodiCreateSerializer,
+                                  CodiDuplicateSerializer, CodiListSerializer,
+                                  CodiSerializer, CodiUserCreateSerializer,
+                                  CodiUserSerializer)
+from api.libs import isSelfRequest
+from api.permissions import UserAccessPermission
+from model.codimodel.models import Codi
 
 
 @extend_schema_view(

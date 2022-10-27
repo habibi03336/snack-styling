@@ -1,5 +1,6 @@
 from django.db import models
 
+
 def isNoneCloth(obj: models.Model):
         if obj == None:
             return None

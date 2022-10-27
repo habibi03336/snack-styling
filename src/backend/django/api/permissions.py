@@ -1,9 +1,9 @@
 import requests
-from django.conf import settings
 from rest_framework import permissions, status
-from api.exceptions import AccessTokenExpired, AuthServerConnectionError
 
+from api.exceptions import AccessTokenExpired, AuthServerConnectionError
 from api.libs import decodeJWTPayload, mutableCheck
+from django.conf import settings
 
 
 class UserAccessPermission(permissions.BasePermission):
@@ -16,8 +16,8 @@ class UserAccessPermission(permissions.BasePermission):
         try:
             res = requests.get(url, headers={'Authorization': token})
 
-        except requests.exceptions.ConnectionError as e:
-            print("ConnectionError:", e)
+        except requests.exceptions.ConnectionError as err:
+            print("ConnectionError:", err)
             raise AuthServerConnectionError
 
         if res.status_code == requests.codes.ok:

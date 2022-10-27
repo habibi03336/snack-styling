@@ -1,10 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
+from drf_spectacular.views import (SpectacularJSONAPIView,
+                                   SpectacularSwaggerView)
+
 from django.conf import settings
 from django.conf.urls.static import static
-
-from drf_spectacular.views import SpectacularJSONAPIView
-from drf_spectacular.views import SpectacularSwaggerView
+from django.contrib import admin
+from django.urls import include, path
 
 urlpatterns = [
     path('api/v1/', include('api.urls')),

@@ -1,11 +1,12 @@
 import random
+
 import jwt
 from rest_framework import status
 from rest_framework.test import APITestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 from coffProject.test_settings import common_settings
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 @common_settings
@@ -75,7 +76,7 @@ class ClothTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         return res.data
 
-    def _test_옷_추가시_태그수정(self):
+    def test_옷_추가시_태그수정(self):
         """
         시나리오: 옷 추가후 태그수정
         1. 사용자가 옷 3벌을 추가

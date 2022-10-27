@@ -1,18 +1,20 @@
+from drf_spectacular.utils import extend_schema_view
 from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from drf_spectacular.utils import extend_schema_view
-from api.libs import getUserIdFromJWT, isSelfRequest
-
-from api.cloth.paginations import ClothPagePagination
-from api.cloth.serializers import ClothDestroySerializer, ClothSerializer, ClothDetailSerializer, ClothCreateSerializer, ClothUserCreateSerializer, ClothRetrieveUpdateSerializer, ClothTagSerializer
-from api.permissions import UserAccessPermission
-
-from model.clothmodel.models import Cloth
-
 import api.cloth.schemas as ClothSchema
+from api.cloth.paginations import ClothPagePagination
+from api.cloth.serializers import (ClothCreateSerializer,
+                                   ClothDestroySerializer,
+                                   ClothDetailSerializer,
+                                   ClothRetrieveUpdateSerializer,
+                                   ClothSerializer, ClothTagSerializer,
+                                   ClothUserCreateSerializer)
+from api.libs import getUserIdFromJWT, isSelfRequest
+from api.permissions import UserAccessPermission
+from model.clothmodel.models import Cloth
 
 
 @extend_schema_view(
