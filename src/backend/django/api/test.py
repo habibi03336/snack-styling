@@ -76,7 +76,7 @@ class ClothTests(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         return res.data
 
-    def _test_옷_추가시_태그수정(self):
+    def test_옷_추가시_태그수정(self):
         """
         시나리오: 옷 추가후 태그수정
         1. 사용자가 옷 3벌을 추가
