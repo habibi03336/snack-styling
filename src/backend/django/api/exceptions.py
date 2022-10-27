@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.exceptions import APIException
 
+
 class AuthServerConnectionError(APIException):
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     default_detail = "AUTH_SERVER_CONNECTION_ERROR"

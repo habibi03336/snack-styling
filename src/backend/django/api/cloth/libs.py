@@ -1,23 +1,18 @@
-from PIL import Image
-from io import BytesIO
 import time
+from io import BytesIO
+from typing import Optional, Union
+
+import cv2
+import numpy as np
+from PIL import Image
+from PIL.Image import Image as PILImage
+from rembg.bg import (alpha_matting_cutout, get_concat_v_multi, naive_cutout,
+                      post_process)
+from rembg.session_base import BaseSession
+from rembg.session_factory import new_session
 
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
-#############
-from rembg.bg import ReturnType, post_process, alpha_matting_cutout, naive_cutout, get_concat_v_multi
-
-import io
-from typing import Optional, Union
-
-import numpy as np
-import cv2
-from PIL import Image
-from PIL.Image import Image as PILImage
-
-from rembg.session_base import BaseSession
-from rembg.session_factory import new_session
 
 
 def remove(
@@ -30,21 +25,9 @@ def remove(
     only_mask: bool = False,
     post_process_mask: bool = False,
 ) -> Union[bytes, PILImage, np.ndarray]:
+    img = data
 
-    if isinstance(data, PILImage):
-        return_type = ReturnType.PILLOW
-        img = data
-    elif isinstance(data, bytes):
-        return_type = ReturnType.BYTES
-        img = Image.open(io.BytesIO(data))
-    elif isinstance(data, np.ndarray):
-        return_type = ReturnType.NDARRAY
-        img = Image.fromarray(data)
-    else:
-        raise ValueError("Input type {} is not supported.".format(type(data)))
-
-    if session is None:
-        session = new_session("u2net")
+    session = new_session("u2net")
 
     masks = session.predict(img)
     cutouts = []
@@ -73,20 +56,21 @@ def remove(
         else:
             cutout = naive_cutout(img, mask)
 
-        ####
+        cutouts.append(cutout)
+
+        # find contours, custom function
         open_cv_image = np.array(mask)
         contours, hierarchy = cv2.findContours(
             open_cv_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # print(len(contours))
         for contour in contours:
+            # get bounding box = (x,y,w,h)
             temp = cv2.boundingRect(contour)
-            if mask_bound[2] * mask_bound[3] < temp[2]*temp[3]:
+            if mask_bound[2] * mask_bound[3] < temp[2] * temp[3]:
                 mask_bound = temp
         ####
-        cutouts.append(cutout)
 
     cutout = img
-    print(mask_bound)
+
     if len(cutouts) > 0:
         cutout = get_concat_v_multi(cutouts)
 
@@ -94,24 +78,14 @@ def remove(
     cutout = cutout.crop((x, y, x+w, y+h))
     print(type(cutout))
 
-    if ReturnType.PILLOW == return_type:
-        return cutout
-
-    if ReturnType.NDARRAY == return_type:
-        return np.asarray(cutout)
-
-    bio = io.BytesIO()
-    cutout.save(bio, "PNG")
-    bio.seek(0)
-
-    return bio.read()
+    return cutout
 #####
 
 
 def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     if settings.DEBUG == True:
         return raw_img
-    
+
     pil_img = Image.open(raw_img).convert('RGBA')
 
     max_value = max(pil_img.width, pil_img.height)

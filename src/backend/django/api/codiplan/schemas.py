@@ -1,6 +1,5 @@
 from drf_spectacular.utils import extend_schema
 
-
 CODIPLAN_SCHEMA_DEFAULT = extend_schema(
     tags=['Codiplan']
 )

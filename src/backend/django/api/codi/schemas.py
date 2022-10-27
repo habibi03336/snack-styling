@@ -1,5 +1,5 @@
-from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
-
+from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
+                                   extend_schema)
 
 CODI_SCHEMA_CREATE = extend_schema(
     summary="코디 등록",
@@ -35,7 +35,7 @@ CODIUSER_SCHEMA_LIST = extend_schema(
     tags=["Codi/User"],
 )
 
-
+# Example Schemas
 # CODI_CREATE_RESPONSE_EXAMPLE = OpenApiExample(
 #     response_only=True,
 #     name="success_example",

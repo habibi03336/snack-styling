@@ -1,11 +1,11 @@
 from collections import OrderedDict
-from rest_framework import serializers
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
 
-from model.codimodel.models import Codi
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
 
 from api.codi.libs import isNoneCloth
+from model.codimodel.models import Codi
 
 
 class CodiSerializer(serializers.ModelSerializer):

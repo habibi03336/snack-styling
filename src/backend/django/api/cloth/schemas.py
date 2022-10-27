@@ -1,7 +1,6 @@
-from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
+from drf_spectacular.utils import extend_schema
 
 from api.cloth.serializers import ClothTagSerializer
-
 
 CLOTH_SCHEMA_CREATE = extend_schema(
     summary="옷 이미지 등록",
@@ -30,15 +29,16 @@ CLOTH_SCHEMA_MULTI_UPDATE = extend_schema(
     responses=None
 )
 
-CLOTHUSER_SCHEMA_CREATE =extend_schema(
-        summary="userId 기반 옷 이미지 등록",
-        tags=["Cloth/User"],
-    )
-CLOTHUSER_SCHEMA_LIST =extend_schema(
-        summary="userId 기반 옷 리스트 출력",
-        tags=["Cloth/User"],
-    )
+CLOTHUSER_SCHEMA_CREATE = extend_schema(
+    summary="userId 기반 옷 이미지 등록",
+    tags=["Cloth/User"],
+)
+CLOTHUSER_SCHEMA_LIST = extend_schema(
+    summary="userId 기반 옷 리스트 출력",
+    tags=["Cloth/User"],
+)
 
+# Example Schemas
 # CLOTH_LIST_EXAMPLE = OpenApiExample(
 #     response_only=True,
 #     name="success_example",

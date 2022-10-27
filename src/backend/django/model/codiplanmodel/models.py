@@ -1,7 +1,6 @@
-from django.db import models
-from django.db import IntegrityError
-
+from django.db import IntegrityError, models
 from model.exceptions import DuplicateCodiplanException
+
 
 class CodiPlan(models.Model):    
     userId = models.IntegerField('userId', default=1)

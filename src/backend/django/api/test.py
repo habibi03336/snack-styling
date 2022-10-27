@@ -1,11 +1,12 @@
 import random
+
 import jwt
 from rest_framework import status
 from rest_framework.test import APITestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 from coffProject.test_settings import common_settings
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 @common_settings

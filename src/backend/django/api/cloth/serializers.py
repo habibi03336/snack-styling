@@ -1,11 +1,10 @@
-from rest_framework import serializers
-from model.clothmodel.models import Cloth
-
-from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
 
-from api.exceptions import AlreadyTerminated
 from api.cloth.libs import removeBackground
+from api.exceptions import AlreadyTerminated
+from model.clothmodel.models import Cloth
 
 
 class ClothSerializer(serializers.ModelSerializer):
