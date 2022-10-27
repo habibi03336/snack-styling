@@ -131,7 +131,7 @@ deploy-spring:
     - bash ./src/backend/spring/buildenv.sh
   script:
     - sudo docker load -i /tmp/spring.tar
-    - sudo docker run --net snack-net --env-file=/tmp/.env_spring -d --name spring-server spring
+    - sudo docker run --net snack-net --env-file=.env_spring -d --name spring-server spring
   dependencies:
     - build-spring
   only:
