@@ -61,6 +61,14 @@ const App: React.FC = () => {
   const setRouteContextState = useSetRecoilState(routeContextAtom);
 
   useOnMount(() => {
+    window.addEventListener("touchstart", (e) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      /* @ts-ignore */
+      if (e.pageX > 20 && e.pageX < window.innerWidth - 20) return;
+      // prevent swipe to navigate back gesture
+      e.preventDefault();
+    });
+
     window.addEventListener("popstate", () => {
       if (
         [
