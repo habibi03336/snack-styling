@@ -8,7 +8,7 @@ import infiniteCloths from "../../common/lib/infiniteCloths";
 const useCloths = (userId?: number) => {
   const userState = useRecoilValue(user);
 
-  const { elems, loadMore, loadDone } = useInfiniteScroll((page) => {
+  const { elems, loadMore, loadDone } = useInfiniteScroll((page: number) => {
     return infiniteCloths(page, userId ? userId : userState.id);
   });
 
