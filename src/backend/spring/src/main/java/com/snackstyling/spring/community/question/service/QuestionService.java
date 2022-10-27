@@ -87,7 +87,7 @@ public class QuestionService {
         }
 
 
-        return new QuestionsResponse(questionResponses, totalPage);
+        return new QuestionsResponse(questionResponses, page, totalPage);
     }
     public void questionDelete(Long id){
         Question question=questionSelect(id);
