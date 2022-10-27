@@ -78,7 +78,11 @@ class ClothUserViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         pk = self.request.data['userId']
-        return Cloth.objects.filter(userId=pk)
+        category = self.request.query_params.get('category')
+        queryset = Cloth.objects.filter(userId=pk)
+        if category is not None:
+            queryset = queryset.filter(tags__name__in=[category])
+        return queryset
 
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
