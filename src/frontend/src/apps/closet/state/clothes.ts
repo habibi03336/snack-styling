@@ -20,12 +20,3 @@ export const clothDetailState = selector({
     return clothes.find((cloth) => cloth.id === selectedId);
   },
 });
-
-export const closetClothInfiniteScrollParamAtom = atom({
-  key: "Closet/closetClothPage",
-  default: {
-    prev: 0,
-    page: 1,
-    loadDone: false,
-  },
-});

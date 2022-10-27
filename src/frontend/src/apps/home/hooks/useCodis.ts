@@ -8,7 +8,7 @@ const useCodis = () => {
   const [codis, setCodis] = useState<I.CodiTemplate[]>([]);
   useEffect(() => {
     (async () => {
-      const res = await GET_CODIS();
+      const res = await GET_CODIS(1);
       const data = res.data;
 
       const codiList = data.codiList.map((codi: I.Codi) => {

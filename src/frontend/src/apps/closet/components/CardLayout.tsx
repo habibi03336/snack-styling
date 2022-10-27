@@ -3,8 +3,9 @@ import styled from "styled-components";
 const CardLayout = ({
   cardComponents,
 }: {
-  cardComponents: Array<JSX.Element | "">;
+  cardComponents: Array<JSX.Element | false>;
 }) => {
+  cardComponents = cardComponents.filter((elem) => elem !== false);
   return (
     <div
       style={{

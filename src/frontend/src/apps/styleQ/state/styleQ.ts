@@ -16,7 +16,7 @@ export const selectedFilterState = atom<{
 
 export const pageState = atom({
   key: "styleQ/page",
-  default: 1,
+  default: 0,
 });
 
 export const filterState = selector({
@@ -26,7 +26,7 @@ export const filterState = selector({
     return filterState;
   },
   set: ({ set }, newValue) => {
-    set(pageState, 1);
+    set(pageState, 0);
     set(selectedFilterState, newValue);
     set(styleQState, []);
   },
