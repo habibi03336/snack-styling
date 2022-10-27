@@ -3,6 +3,7 @@ import {
   IonSegmentButton,
   IonContent,
   IonPage,
+  IonHeader,
 } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
 import { RouteComponentProps } from "react-router";
@@ -29,7 +30,7 @@ const Closet = ({ match }: IClosetSetting) => {
   return (
     <IonPage>
       <Header text="나의 옷장" type="title" />
-      <IonContent>
+      <div>
         <div style={{ padding: "10px 0px 10px 0px" }}>
           <IonSegment
             value={tabState}
@@ -56,10 +57,10 @@ const Closet = ({ match }: IClosetSetting) => {
             </IonSegmentButton>
           </IonSegment>
         </div>
+      </div>
 
-        {tabState === "cloth" && <ClothCloset />}
-        {tabState === "codi" && <CodiCloset />}
-      </IonContent>
+      {tabState === "cloth" && <ClothCloset />}
+      {tabState === "codi" && <CodiCloset />}
     </IonPage>
   );
 };

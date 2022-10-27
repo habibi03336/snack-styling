@@ -20,7 +20,7 @@ import routeContextAtom from "../../common/state/routeContext";
 
 const StyleQList = () => {
   const setRouteContextState = useSetRecoilState(routeContextAtom);
-  const { styleQs, loadDone, loadMore, setFilter } = useStyleQList();
+  const { styleQs, loadDone, loadMore, filterChange } = useStyleQList();
 
   return (
     <IonPage>
@@ -31,14 +31,7 @@ const StyleQList = () => {
             <IonItem>
               <IonSelect
                 placeholder="채택"
-                onIonChange={(e) =>
-                  setFilter((filter) => {
-                    return {
-                      ...filter,
-                      adopt: e.detail.value === -1 ? undefined : e.detail.value,
-                    };
-                  })
-                }
+                onIonChange={(e) => filterChange(e, "adopt")}
                 mode="ios"
               >
                 <IonSelectOption value={0}>미채택</IonSelectOption>
@@ -51,14 +44,7 @@ const StyleQList = () => {
             <IonItem>
               <IonSelect
                 placeholder="TPO"
-                onIonChange={(e) =>
-                  setFilter((filter) => {
-                    return {
-                      ...filter,
-                      tpo: e.detail.value === -1 ? undefined : e.detail.value,
-                    };
-                  })
-                }
+                onIonChange={(e) => filterChange(e, "tpo")}
                 mode="ios"
               >
                 <IonSelectOption value={-1}>전체</IonSelectOption>

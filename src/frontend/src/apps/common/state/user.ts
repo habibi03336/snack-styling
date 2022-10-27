@@ -2,7 +2,7 @@ import { atom } from "recoil";
 export interface userState {
   isLogined: boolean;
   uid: number | null;
-  id: number | null;
+  id: number;
 }
 const id = window.localStorage.getItem("id");
 
@@ -11,7 +11,7 @@ export const userAtom = atom<userState>({
   default: {
     isLogined: id ? true : false,
     uid: null,
-    id: id ? Number(id) : null,
+    id: Number(id),
   },
 });
 

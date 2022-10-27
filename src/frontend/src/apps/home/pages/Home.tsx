@@ -4,6 +4,8 @@ import {
   IonContent,
   IonDatetime,
   IonHeader,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
   IonModal,
   IonPage,
   IonTitle,
@@ -15,7 +17,7 @@ import WeatherBox from "../components/WeatherBox";
 import RowFiller from "../../common/components/RowFiller";
 import CodiCard from "../../closet/components/CodiCard";
 import { useRef } from "react";
-import useCodis from "../hooks/useCodis";
+import useCodis from "../../common/hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
 import { POST_CODIPLAN } from "../../../lib/api/codiplan";
 import Header from "../../common/components/Header";
@@ -24,14 +26,13 @@ import innerViewWidth from "../../../lib/constants/innerViewWidth";
 const Home = () => {
   const { setDate, date, codiSelected, setCodiplan, codiplan } = useHome();
   const modal = useRef<HTMLIonModalElement>(null);
-  const { codis } = useCodis();
+  const { codis, loadMore, loadDone } = useCodis();
   function dismiss() {
     modal.current?.dismiss();
   }
 
   const codiplanning = async (codiId: number, date: string) => {
     try {
-      console.log(date);
       await POST_CODIPLAN(codiId, date);
       setCodiplan({
         ...codiplan,
@@ -132,6 +133,16 @@ const Home = () => {
                   );
                 })}
               />
+              <IonInfiniteScroll
+                onIonInfinite={loadMore}
+                threshold="100px"
+                disabled={loadDone}
+              >
+                <IonInfiniteScrollContent
+                  loadingSpinner="bubbles"
+                  loadingText="Loading more data..."
+                />
+              </IonInfiniteScroll>
             </IonContent>
           </IonModal>
           <RowFiller px={10} />

@@ -12,6 +12,7 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { shirtOutline, trashOutline } from "ionicons/icons";
 import { useState } from "react";
@@ -23,21 +24,21 @@ import * as I from "../../../../lib/types/interfaces";
 import CardLayout from "../../components/CardLayout";
 import { useHistory } from "react-router-dom";
 import useClosetClothTags from "../../hooks/useClosetClothTags";
-import useClothes from "../../hooks/useClothes";
+import useClothes from "../../../common/hooks/useClothes";
 import DownButton from "../../../common/components/DownButton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ClothDetail from "../../containers/ClothDetail";
 import { selectedClothIdAtom } from "../../state/clothes";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { DELETE_CLOTH } from "../../../../lib/api/cloth";
 import routeContextAtom from "../../../common/state/routeContext";
 import innerViewWidth from "../../../../lib/constants/innerViewWidth";
+import RowFiller from "../../../common/components/RowFiller";
 
 const ClothCloset = () => {
   const setRouteContextState = useSetRecoilState(routeContextAtom);
   const [showTags, setShowTags] = useState<boolean>(false);
-  const [selectedClothId, setSelectedClothId] =
-    useRecoilState(selectedClothIdAtom);
+  const [selectedCloth, setSelectedCloth] = useState<I.Cloth | null>(null);
 
   const { tags, toggleTag, clearAndSelect, selectTag, selectedTags } =
     useClosetClothTags();
@@ -56,7 +57,7 @@ const ClothCloset = () => {
   };
 
   return (
-    <>
+    <IonContent>
       <CategoryTab>
         <div
           style={{ display: "flex", flexDirection: "row", flexWrap: "unset" }}
@@ -133,23 +134,22 @@ const ClothCloset = () => {
           })}
         </TagDiv>
       )}
+
       <CardLayout
-        cardComponents={clothes
-          .map((cloth) => {
-            if (!selectedTags.every((tagName) => cloth.tags.has(tagName)))
-              return "";
-            return (
-              <div
-                onClick={() => {
-                  setSelectedClothId(cloth.id);
-                }}
-                key={cloth.id}
-              >
-                <ClothCard cloth={cloth} type="small" />
-              </div>
-            );
-          })
-          .filter((elem) => elem !== "")}
+        cardComponents={clothes.map((cloth) => {
+          if (!selectedTags.every((tagName) => cloth.tags.has(tagName)))
+            return false;
+          return (
+            <div
+              onClick={() => {
+                setSelectedCloth(cloth);
+              }}
+              key={cloth.id}
+            >
+              <ClothCard cloth={cloth} type="small" />
+            </div>
+          );
+        })}
       />
 
       <IonInfiniteScroll
@@ -163,6 +163,7 @@ const ClothCloset = () => {
         />
       </IonInfiniteScroll>
 
+      {!loadDone && <RowFiller px={300} />}
       <IonFab
         vertical="bottom"
         horizontal="end"
@@ -182,22 +183,21 @@ const ClothCloset = () => {
           />
         </IonFabButton>
       </IonFab>
-
-      <IonModal isOpen={selectedClothId !== -1} mode="ios">
+      <IonModal isOpen={selectedCloth !== null} mode="ios">
         <>
           <IonHeader>
             <IonToolbar>
               <IonTitle>상세정보</IonTitle>
               <IonButtons slot="end">
-                <IonButton onClick={() => setSelectedClothId(-1)}>
+                <IonButton onClick={() => setSelectedCloth(null)}>
                   Close
                 </IonButton>
               </IonButtons>
               <IonButtons slot="start">
                 <IonButton
                   onClick={() => {
-                    deleteCloth(selectedClothId);
-                    setSelectedClothId(-1);
+                    deleteCloth(selectedCloth!.id);
+                    setSelectedCloth(null);
                   }}
                 >
                   <IonIcon
@@ -209,11 +209,11 @@ const ClothCloset = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent style={{ display: "flex", justifyContent: "center" }}>
-            <ClothDetail />
+            {selectedCloth && <ClothDetail cloth={selectedCloth} />}
           </IonContent>
         </>
       </IonModal>
-    </>
+    </IonContent>
   );
 };
 

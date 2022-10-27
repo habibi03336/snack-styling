@@ -5,15 +5,11 @@ import TagChip from "../../common/components/TagChip";
 import { PATCH_CLOTH } from "../../../lib/api/cloth";
 import BottomButton from "../../common/components/BottomButton";
 import { useState } from "react";
-import { clothDetailState, clothesAtom } from "../state/clothes";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { IonButton } from "@ionic/react";
 
-const ClothDetail = () => {
-  const [clothes, setClothes] = useRecoilState(clothesAtom);
-  const cloth = useRecoilValue(clothDetailState);
-
+const ClothDetail = ({ cloth }: { cloth: I.Cloth }) => {
   const [updateMode, setUpdateMode] = useState<boolean>(false);
-  const { tags, toggleTag, useSelectedTags, clearSelection } = useTags();
+  const { tags, toggleTag, useSelectedTags } = useTags();
 
   if (cloth === undefined) {
     return <div></div>;
@@ -26,16 +22,7 @@ const ClothDetail = () => {
       tagsId.push(tags[tagName].id);
     });
     const res = await PATCH_CLOTH(cloth.id, { tags: tagsId });
-    const clothIdx = clothes.findIndex((elem) => elem.id === cloth.id);
-    const newCloth = { ...clothes[clothIdx] };
-    newCloth.tags = new Set(selectedTags);
-    setClothes([
-      ...clothes.slice(0, clothIdx),
-      newCloth,
-      ...clothes.slice(clothIdx + 1),
-    ]);
-    clearSelection();
-    setUpdateMode(false);
+    window.location.href = "/closet/cloth";
   };
 
   updateMode === false &&
@@ -57,7 +44,11 @@ const ClothDetail = () => {
             />
           ))}
         </div>
-        <BottomButton onClick={onClickUpdateDone}>수정완료</BottomButton>
+        <BottomButton>
+          <IonButton expand="full" onClick={onClickUpdateDone}>
+            수정완료
+          </IonButton>
+        </BottomButton>
       </div>
     );
   }
@@ -69,12 +60,15 @@ const ClothDetail = () => {
           <TagChip key={tag} tagName={tag} isSelected={false} />
         ))}
       </div>
-      <BottomButton
-        onClick={() => {
-          setUpdateMode(true);
-        }}
-      >
-        수정하기
+      <BottomButton>
+        <IonButton
+          expand="full"
+          onClick={() => {
+            setUpdateMode(true);
+          }}
+        >
+          수정하기
+        </IonButton>
       </BottomButton>
     </div>
   );
