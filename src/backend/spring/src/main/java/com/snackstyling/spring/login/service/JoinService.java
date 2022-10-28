@@ -1,8 +1,9 @@
 package com.snackstyling.spring.login.service;
 
+import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.AuthRequest;
-import com.snackstyling.spring.login.dto.AuthResponse;
+import com.snackstyling.spring.login.dto.LoginResponse;
 import com.snackstyling.spring.login.exception.DuplicateEmailException;
 import com.snackstyling.spring.login.exception.NonePwdException;
 import com.snackstyling.spring.login.repository.LoginRepository;
@@ -15,14 +16,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JoinService {
     private final LoginRepository loginRepository;
+    private final JwtService jwtService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public AuthResponse joinUser(AuthRequest authRequest){
+    public LoginResponse joinUser(AuthRequest authRequest){
+        LoginResponse loginResponse=new LoginResponse();
+        loginResponse.setIsMember(false);
         Login user=new Login();
         user.setEmail(authRequest.getEmail());
         user.setPassword(passwordEncoder.encode(authRequest.getPwd()));
         loginRepository.save(user);
-        return new AuthResponse(user.getId());
+        loginResponse.setTokens(jwtService.createToken(user));
+        return loginResponse;
     }
     public void dupUser(String email){
         if(loginRepository.existsByEmail(email)){
