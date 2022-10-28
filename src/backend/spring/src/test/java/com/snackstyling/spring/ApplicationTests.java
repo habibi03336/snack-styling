@@ -52,6 +52,7 @@ class ApplicationTests {
       /*
       사용자가 전체 게시글을 조회한다.
        */
+		System.out.println(accessToken);
 		mvc.perform(get("/api/v1/board/question")
 						.header("Authorization", accessToken)
 						.param("page","1"))
