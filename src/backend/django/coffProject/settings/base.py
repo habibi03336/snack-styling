@@ -14,7 +14,7 @@ from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # env
 env = environ.Env()
@@ -28,11 +28,6 @@ SECRET_KEY = 'django-insecure-n!2yy0+e46#zw3^(o6sb8rsp^e_v2=b48t114$52!7um*d!d)m
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-if env('DEBUG') == 'True':
-    DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -130,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -150,24 +145,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MEDIA SETTINGS
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'src/media'
-
-# if use S3
-if env('USE_S3') == 'True':
-    AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
-    AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
-    AWS_REGION = 'ap-northeast-2'
-
-    # S3 Storages
-    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
-        AWS_STORAGE_BUCKET_NAME, AWS_REGION)
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
-
-    AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
-
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # MIGRATION SETTINGS
 MIGRATION_MODULES = {
@@ -202,12 +179,3 @@ CORS_ALLOW_METHODS = (
 )
 
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ALLOWED_ORIGINS = [
-    'https://www.snackstyling.com',
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://www.snackstyling.com'
-]

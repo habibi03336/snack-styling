@@ -12,9 +12,3 @@ AWS_S3_SECRET_ACCESS_KEY=${AWS_S3_SECRET_ACCESS_KEY}
 AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
 AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
 " > .env
-
-if [ "$1" == "DEBUG" ]; then
-    echo -e "DEBUG=True\nUSE_S3=False" >> .env
-else
-    echo -e "DEBUG=False\nUSE_S3=True" >> .env
-fi

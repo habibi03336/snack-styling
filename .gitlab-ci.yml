@@ -64,7 +64,7 @@ test-spring:
 test-django:
   stage: test
   script:
-    - bash ./src/backend/django/buildenv.sh DEBUG
+    - bash ./src/backend/django/buildenv.sh
     - docker run --rm --name django-test
       --env-file=.env
       django-server sh testcode.sh
@@ -144,9 +144,9 @@ deploy-django:
   tags:
     - snack-service
   before_script:
-    - sudo docker stop django-server || echo 'docker stop.'
-    - sudo docker rm django-server || echo 'docker rm container.'
-    - sudo docker image rm django-server || echo 'docker rm image.'
+    - sudo docker stop django-server || true
+    - sudo docker rm django-server || true
+    - sudo docker image rm django-server || true
     - bash ./src/backend/django/buildenv.sh
   script:
     - sudo docker load -i /tmp/django-server.tar
