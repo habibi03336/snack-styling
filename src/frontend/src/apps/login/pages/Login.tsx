@@ -8,8 +8,10 @@ import { IonPage, IonRouterLink } from "@ionic/react";
 import RoutingLink from "../../common/components/RoutingLink";
 import BottomButton from "../../common/components/BottomButton";
 import innerViewWidth from "../../../lib/constants/innerViewWidth";
+import socialLoginLinks from "../../../lib/socialLogin";
 
 const Login = () => {
+  const ButtonBoxHeight = 200;
   return (
     <IonPage>
       <div
@@ -17,7 +19,7 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: `${window.innerHeight - 100}px`,
+          height: `${window.innerHeight - ButtonBoxHeight}px`,
           width: innerViewWidth,
           flexDirection: "column",
           background:
@@ -33,19 +35,23 @@ const Login = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100px",
+          height: `${ButtonBoxHeight}px`,
           backgroundColor: "white",
           padding: "10px 20px",
           justifyContent: "space-evenly",
         }}
       >
-        {/* <Button color="light" style={{ border: "1px solid #eeeeee" }}>
+        <Button
+          color="light"
+          style={{ border: "1px solid #eeeeee" }}
+          onClick={() => (window.location.href = socialLoginLinks.google)}
+        >
           <div style={{ position: "absolute", left: "0px" }}>
             <img src={Google} />
           </div>
           구글로 시작하기
         </Button>
-        <Button color="warning">
+        {/* <Button color="warning">
           <div style={{ position: "absolute", left: "0px" }}>
             <img src={Kakao} />
           </div>
