@@ -28,7 +28,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-setupIonicReact();
+setupIonicReact({ swipeBackEnabled: false });
 
 import "./App.css";
 import Icon from "./apps/common/components/Icon";
