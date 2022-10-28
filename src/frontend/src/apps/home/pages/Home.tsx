@@ -54,7 +54,6 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          <div></div>
           <IonDatetime
             style={{
               width: `${innerViewWidth - 40}px`,
@@ -102,13 +101,13 @@ const Home = () => {
             <div style={{ display: codiSelected ? "none" : "block" }}>
               <div>등록된 코디가 없습니다.</div>
 
-              <IonButton id="open-modal" expand="block">
+              <IonButton id="open-home-modal" expand="block">
                 코디 등록하기
               </IonButton>
             </div>
           </div>
 
-          <IonModal ref={modal} trigger="open-modal">
+          <IonModal ref={modal} trigger="open-home-modal">
             <IonHeader>
               <IonToolbar>
                 <IonTitle>코디 옷장</IonTitle>

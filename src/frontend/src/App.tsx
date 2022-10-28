@@ -28,7 +28,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-setupIonicReact();
+setupIonicReact({ swipeBackEnabled: false });
 
 import "./App.css";
 import Icon from "./apps/common/components/Icon";
@@ -69,6 +69,19 @@ const App: React.FC = () => {
       e.preventDefault();
     });
 
+    if (
+      [
+        "/home",
+        "/styleQList",
+        "/closet/cloth",
+        "/closet/codi",
+        "/alarm",
+        "/mypage",
+      ].includes(window.location.pathname)
+    ) {
+      setRouteContextState(() => [window.location.pathname]);
+    }
+
     window.addEventListener("popstate", () => {
       if (
         [
@@ -77,7 +90,7 @@ const App: React.FC = () => {
           "/closet/cloth",
           "/closet/codi",
           "/alarm",
-          "mypage",
+          "/mypage",
         ].includes(window.location.pathname)
       ) {
         setRouteContextState(() => [window.location.pathname]);
@@ -93,11 +106,6 @@ const App: React.FC = () => {
             <Route exact path="/home" component={Login} />
             <Route exact path="/emailLogin" component={EmailLogin} />
             <Route exact path="/signin" component={Signin} />
-            <Route
-              exact
-              path="/memberDetailRegist"
-              component={MemberDetailRegist}
-            />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
         </IonReactRouter>
@@ -125,6 +133,11 @@ const App: React.FC = () => {
             <Route path="/mypage/myanswers" component={MyAnswers} />
             <Route path="/mypage/myquestions" component={MyQuestions} />
             <Route path="/mypage/customerLetter" component={CustomerLetter} />
+            <Route
+              exact
+              path="/memberDetailRegist"
+              component={MemberDetailRegist}
+            />
             <Redirect exact from="/" to="/home" />
           </IonRouterOutlet>
           <IonTabBar

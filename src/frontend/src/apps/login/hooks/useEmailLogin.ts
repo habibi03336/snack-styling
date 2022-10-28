@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
-import { AUTH_LOGIN } from "../../../lib/api/auth";
+import { AUTH_LOGIN, AUTH_SOCIAL_LOGIN } from "../../../lib/api/auth";
 import { userAtom } from "../../common/state/user";
+import storeToken from "../lib/storeToken";
 
-const useLogin = () => {
+const useEmailLogin = () => {
   const [id, setId] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
   const [user, setUser] = useRecoilState(userAtom);
@@ -13,15 +14,15 @@ const useLogin = () => {
     (async () => {
       const res = await AUTH_LOGIN({ email: id, pwd: pwd });
       if (res.status === 200) {
-        window.localStorage.setItem("accessToken", res.data.tokens.accessToken);
-        window.localStorage.setItem(
-          "refreshToken",
+        const id = storeToken(
+          res.data.tokens.accessToken,
           res.data.tokens.refreshToken
         );
-        const token = res.data.tokens.accessToken.split(".");
-        const { Key } = JSON.parse(atob(token[1]));
-        window.localStorage.setItem("id", Key);
-        setUser({ ...user, isLogined: true, id: Key });
+        setUser({ ...user, isLogined: true, id: id });
+        if (res.data.isMember === false) {
+          window.location.href = "/memberDetailRegist";
+          return;
+        }
         subscriber.complete();
       }
       if (res.status === 409) {
@@ -33,4 +34,4 @@ const useLogin = () => {
   return { id, setId, pwd, setPwd, postLogin };
 };
 
-export default useLogin;
+export default useEmailLogin;

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
 import { AUTH_SIGNIN, EMAIL_CONFIRM, EMAIL_SEND } from "../../../lib/api/auth";
-import user from "../../common/state/user";
+import { userAtom } from "../../common/state/user";
+import storeToken from "../../login/lib/storeToken";
 
 // interface IUserFeatures {
 //   age: number | null;
@@ -17,14 +18,24 @@ const useSignin = () => {
   const [pwd, setPwd] = useState<string>("");
   const [pwd2, setPwd2] = useState<string>("");
   const [code, setCode] = useState<number>();
-  const [userState, setUserState] = useRecoilState(user);
+  const [user, setUser] = useRecoilState(userAtom);
   // -1 : 시도 X, 0: 인증코드 전송, 1: 인증 성공, 2: 인증 실패
   const [verification, setVerification] = useState<-1 | 0 | 1 | 2>(-1);
 
   const postSignin = new Observable((subscriber) => {
     (async () => {
       const res = await AUTH_SIGNIN({ email: id, pwd: pwd });
-      setUserState({ ...userState, uid: res.data.uid });
+      if (res.status === 200) {
+        const id = storeToken(
+          res.data.tokens.accessToken,
+          res.data.tokens.refreshToken
+        );
+        setUser({ ...user, isLogined: true, id: id });
+        if (res.data.isMember === false) {
+          window.location.href = "/memberDetailRegist";
+          return;
+        }
+      }
       subscriber.complete();
     })();
   });

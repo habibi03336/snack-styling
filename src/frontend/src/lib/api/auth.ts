@@ -11,6 +11,8 @@ export interface ILoginInfo {
 export const AUTH_LOGIN = (loginInfo: ILoginInfo) =>
   client.post(baseURL, loginInfo);
 
+export const AUTH_SOCIAL_LOGIN = (authCode: string) =>
+  client.post(address["api"] + "/oauth2/google", { code: authCode });
 export interface ISigninInfo {
   email: string;
   pwd: string;
