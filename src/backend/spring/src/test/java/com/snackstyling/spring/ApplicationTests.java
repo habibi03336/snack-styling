@@ -2,9 +2,7 @@ package com.snackstyling.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snackstyling.spring.community.question.dto.QuestionRequest;
-import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.AuthRequest;
-import com.snackstyling.spring.login.dto.LoginResponse;
 import com.snackstyling.spring.member.dto.SuggestionResquest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultHandler;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -49,8 +43,8 @@ class ApplicationTests {
 				.andExpect(status().isOk())
 				.andReturn();
 		String[] result=mvcResult.getResponse().getContentAsString().split("\"");
-		accessToken=result[9];
-		refreshToken=result[5];
+		accessToken=result[11];
+		refreshToken=result[7];
 	}
 	@Test
 	@DisplayName("전체 게시글 조회")
@@ -58,6 +52,7 @@ class ApplicationTests {
       /*
       사용자가 전체 게시글을 조회한다.
        */
+		System.out.println(accessToken);
 		mvc.perform(get("/api/v1/board/question")
 						.header("Authorization", accessToken)
 						.param("page","1"))

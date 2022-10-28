@@ -7,6 +7,8 @@ import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.QuestionResponse;
 import com.snackstyling.spring.community.question.dto.QuestionsResponse;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
+import com.snackstyling.spring.login.domain.Login;
+import com.snackstyling.spring.login.repository.LoginRepository;
 import com.snackstyling.spring.login.service.LoginService;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.domain.Suggestion;
@@ -27,16 +29,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final LoginService loginService;
+    private final LoginRepository loginRepository;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final SuggestionRepository suggestionRepository;
-    public void memberInsert(MemberRequest memberRequest){
+    public void memberInsert(Long id,MemberRequest memberRequest){
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
         }
         Member member=new Member();
-        member.setLogin(loginService.selectLogin(memberRequest.getId()));
+        member.setLogin(loginRepository.findById(id).orElse(null));
         member.setAge(memberRequest.getAge());
         member.setNickname(memberRequest.getNickname());
         member.setGender(memberRequest.getGender());

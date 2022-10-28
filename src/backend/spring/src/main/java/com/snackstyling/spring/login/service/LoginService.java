@@ -12,7 +12,6 @@ import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.login.repository.LoginRepository;
 import com.snackstyling.spring.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +37,7 @@ public class LoginService {
     private String googleRedirect;
     private final JwtService jwtService;
     public LoginResponse checkUser(AuthRequest authRequest){
+        LoginResponse loginResponse=new LoginResponse();
         if(!loginRepository.existsByEmail(authRequest.getEmail())){
             throw new NoneEmailException("존재하지 않는 아이디입니다.");
         }
@@ -50,21 +50,25 @@ public class LoginService {
         }
         Member member=memberRepository.findByLogin(user);
         if(member==null){
-            throw new NoneMemberException("맴버정보를 입력하지 않았습니다.");
+            loginResponse.setIsMember(false);
         }
-        TokenDto tokens=jwtService.createToken(authRequest.getEmail(), member);
-        return new LoginResponse(tokens);
+        else{
+            loginResponse.setIsMember(true);
+        }
+        TokenDto tokens=jwtService.createToken(user);
+        loginResponse.setTokens(tokens);
+        return loginResponse;
     }
     public Login selectLogin(Long id){ return loginRepository.findById(id).orElse(null);}
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }
     public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
-    public Object googleLogin(String authCode){
+    public Object googleLogin(AuthCodeRequest authCodeRequest){
         RestTemplate restTemplate = new RestTemplate();
         GoogleRequest googleOAuthRequestParam = GoogleRequest
                 .builder()
                 .clientId(googleClientId)
                 .clientSecret(googleClientPw)
-                .code(authCode)
+                .code(authCodeRequest.getCode())
                 .redirectUri(googleRedirect)
                 .grantType("authorization_code").build();
         ResponseEntity<GoogleResponse> resultEntity = restTemplate.postForEntity("https://oauth2.googleapis.com/token",
@@ -78,11 +82,16 @@ public class LoginService {
         Login user=loginUser(email);
         if(user!=null){
             Member member=memberRepository.findByLogin(user);
+            LoginResponse loginResponse=new LoginResponse();
             if(member==null){
-                throw new NoneMemberException("맴버정보를 입력하지 않았습니다.");
+                loginResponse.setIsMember(false);
             }
-            TokenDto tokens=jwtService.createToken(email, member);
-            return new LoginResponse(tokens);
+            else{
+                loginResponse.setIsMember(true);
+            }
+
+            loginResponse.setTokens(jwtService.createToken(user));
+            return loginResponse;
         }
         else{
             AuthRequest authRequest=new AuthRequest();
