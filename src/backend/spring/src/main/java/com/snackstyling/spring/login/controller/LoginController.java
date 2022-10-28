@@ -26,6 +26,8 @@ public class LoginController {
     private String googleClientId;
     @Value("${google.client.pw}")
     private String googleClientPw;
+    @Value("${google.client.redirect}")
+    private String googleRedirect;
     @ApiOperation(value="회원가입",notes = "<strong>이메일과 패스워드를 입력받아 회원 가입을 진행한다.</strong>")
     @RequestMapping(value="/api/v1/accounts/register", method = RequestMethod.POST)
     public ResponseEntity<AuthResponse> userRegister(@RequestBody AuthRequest authRequest){
@@ -74,7 +76,7 @@ public class LoginController {
     @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.POST)
     public String loginUrlGoogle(){
         String reqUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId
-                + "&redirect_uri=http://localhost:8080/api/v1/oauth2/google&response_type=code&scope=email%20profile%20openid&access_type=offline";
+                + "&redirect_uri=" + googleRedirect+"&response_type=code&scope=email%20profile%20openid&access_type=offline";
         return reqUrl;
     }
     @ApiOperation(value="구글 로그인",notes = "<strong>구글로 로그인을 진행한다.</strong>")

@@ -34,6 +34,8 @@ public class LoginService {
     private String googleClientId;
     @Value("${google.client.pw}")
     private String googleClientPw;
+    @Value("${google.client.redirect}")
+    private String googleRedirect;
     private final JwtService jwtService;
     public LoginResponse checkUser(AuthRequest authRequest){
         if(!loginRepository.existsByEmail(authRequest.getEmail())){
@@ -63,7 +65,7 @@ public class LoginService {
                 .clientId(googleClientId)
                 .clientSecret(googleClientPw)
                 .code(authCode)
-                .redirectUri("http://localhost:8080/api/v1/oauth2/google")
+                .redirectUri(googleRedirect)
                 .grantType("authorization_code").build();
         ResponseEntity<GoogleResponse> resultEntity = restTemplate.postForEntity("https://oauth2.googleapis.com/token",
                 googleOAuthRequestParam, GoogleResponse.class);
