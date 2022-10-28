@@ -7,4 +7,4 @@ python manage.py migrate
 python manage.py loaddata data.json
 
 echo "[Test] Running Test code..."
-python manage.py test
+python manage.py test --settings=coffProject.settings.local
