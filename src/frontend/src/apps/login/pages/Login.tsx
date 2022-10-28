@@ -8,9 +8,38 @@ import { IonPage, IonRouterLink } from "@ionic/react";
 import RoutingLink from "../../common/components/RoutingLink";
 import BottomButton from "../../common/components/BottomButton";
 import innerViewWidth from "../../../lib/constants/innerViewWidth";
-import socialLoginLinks from "../../../lib/socialLogin";
+import socialLoginLinks from "../lib/socialLoginURI";
+import useOnMount from "../../common/hooks/useOnMount";
+import userAtom from "../../common/state/user";
+import { useRecoilState } from "recoil";
+import { AUTH_SOCIAL_LOGIN } from "../../../lib/api/auth";
+import storeToken from "../lib/storeToken";
 
 const Login = () => {
+  const [user, setUser] = useRecoilState(userAtom);
+
+  useOnMount(() => {
+    (async () => {
+      const params = new URL(window.location.href).searchParams;
+      const authCode = params.get("code");
+      if (authCode === null) return;
+
+      const res = await AUTH_SOCIAL_LOGIN(authCode);
+      if (res.status === 200) {
+        const id = storeToken(
+          res.data.tokens.accessToken,
+          res.data.tokens.refreshToken
+        );
+        setUser({ ...user, isLogined: true, id: id });
+        if (res.data.isMember === false) {
+          window.location.href = "/memberDetailRegist";
+          return;
+        }
+        window.location.href = "/home";
+      }
+    })();
+  });
+
   const ButtonBoxHeight = 200;
   return (
     <IonPage>

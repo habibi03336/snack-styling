@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useLogin from "../hooks/useLogin";
+import useEmailLogin from "../hooks/useEmailLogin";
 import {
   IonContent,
   IonPage,
@@ -18,7 +18,7 @@ import routeContextAtom from "../../common/state/routeContext";
 import BottomButton from "../../common/components/BottomButton";
 
 const EmailLogin: React.FC = () => {
-  const { id, setId, pwd, setPwd, postLogin } = useLogin();
+  const { id, setId, pwd, setPwd, postLogin } = useEmailLogin();
   const [errorMessage, setErrorMessage] = useState("");
   const setRouteContextState = useSetRecoilState(routeContextAtom);
   const history = useHistory();
