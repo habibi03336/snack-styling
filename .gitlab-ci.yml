@@ -64,7 +64,7 @@ test-spring:
 test-django:
   stage: test
   script:
-    - bash ./src/backend/django/buildenv.sh DEBUG
+    - bash ./src/backend/django/buildenv.sh
     - docker run --rm --name django-test
       --env-file=.env
       django-server sh testcode.sh
