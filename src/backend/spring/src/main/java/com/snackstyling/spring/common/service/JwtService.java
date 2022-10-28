@@ -31,14 +31,14 @@ public class JwtService {
     private final TokenRepository tokenRepository;
     private final LoginRepository loginRepository;
     private final MemberRepository memberRepository;
-    public TokenDto createToken(String email, Member member) {
+    public TokenDto createToken(Login member) {
         Map<String, Object> headers=new HashMap<>();
         headers.put("typ","JWT");
         headers.put("alg","HS256");
 
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("Key", member.getId());
-        payloads.put("Email",email);
+        payloads.put("Email",member.getEmail());
 
         Date now = new Date();
         String refresh=Jwts.builder()
@@ -56,7 +56,7 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256,ac_secret_key)
                 .compact();
 
-        tokenRepository.save(new Token(email,refresh));
+        tokenRepository.save(new Token(member.getEmail(),refresh));
         return new TokenDto(refresh,access);
     }
     public String getUser(String token){
@@ -66,10 +66,16 @@ public class JwtService {
                 .get("Email").toString();
     }
     public Long getMemberId(String token){
-        return Long.parseLong(Jwts.parser().setSigningKey(ac_secret_key)
+        Long accId=Long.parseLong(Jwts.parser().setSigningKey(ac_secret_key)
                 .parseClaimsJws(token)
                 .getBody()
                 .get("Key").toString());
+        Login login=loginRepository.findById(accId).orElse(null);
+        Member member=memberRepository.findByLogin(login);
+        if(member==null) return accId;
+        else {
+            return member.getId();
+        }
     }
     public void validateToken(String token){
         try {
