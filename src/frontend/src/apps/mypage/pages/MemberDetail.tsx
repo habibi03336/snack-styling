@@ -28,7 +28,7 @@ const MemberDetailRegist = () => {
             e.preventDefault();
             postSignin.subscribe({
               complete() {
-                window.location.href = "/login";
+                window.location.href = "/mypage";
               },
             });
           }}

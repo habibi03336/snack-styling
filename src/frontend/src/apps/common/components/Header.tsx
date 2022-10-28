@@ -20,8 +20,7 @@ interface IHeader {
   routeTo?: string;
   onHeaderClick?: () => void;
 }
-const Header = ({ text, type, routeTo, onHeaderClick }: IHeader) => {
-  const history = useHistory();
+const Header = ({ text, type }: IHeader) => {
   const [routeContext, setRouteContextState] = useRecoilState(routeContextAtom);
   return (
     <IonHeader

@@ -54,7 +54,6 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          <div></div>
           <IonDatetime
             style={{
               width: `${innerViewWidth - 40}px`,
