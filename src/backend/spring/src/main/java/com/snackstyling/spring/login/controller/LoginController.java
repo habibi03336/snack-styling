@@ -9,12 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +24,7 @@ public class LoginController {
     private String googleRedirect;
     @ApiOperation(value="회원가입",notes = "<strong>이메일과 패스워드를 입력받아 회원 가입을 진행한다.</strong>")
     @RequestMapping(value="/api/v1/accounts/register", method = RequestMethod.POST)
-    public ResponseEntity<AuthResponse> userRegister(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<LoginResponse> userRegister(@RequestBody AuthRequest authRequest){
         return ResponseEntity.ok().body(joinService.joinUser(authRequest));
     }
 
@@ -72,16 +66,9 @@ public class LoginController {
         mailService.checkMail(compareRequest);
         return ResponseEntity.ok().build();
     }
-    @ApiOperation(value="구글 로그인 url",notes = "<strong>구글 로그인 url 전송</strong>")
-    @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.POST)
-    public String loginUrlGoogle(){
-        String reqUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId
-                + "&redirect_uri=" + googleRedirect+"&response_type=code&scope=email%20profile%20openid&access_type=offline";
-        return reqUrl;
-    }
     @ApiOperation(value="구글 로그인",notes = "<strong>구글로 로그인을 진행한다.</strong>")
     @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.GET)
-    public Object loginGoogle(@RequestParam(value = "code") String authCode){
-        return loginService.googleLogin(authCode);
+    public ResponseEntity<Object> loginGoogle(@RequestParam(value = "code") String authCode){
+        return ResponseEntity.ok().body(loginService.googleLogin(authCode));
     }
 }
