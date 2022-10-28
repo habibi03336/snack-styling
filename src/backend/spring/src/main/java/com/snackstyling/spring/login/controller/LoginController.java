@@ -67,8 +67,8 @@ public class LoginController {
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="구글 로그인",notes = "<strong>구글로 로그인을 진행한다.</strong>")
-    @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.GET)
-    public ResponseEntity<Object> loginGoogle(@RequestParam(value = "code") String authCode){
-        return ResponseEntity.ok().body(loginService.googleLogin(authCode));
+    @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.POST)
+    public ResponseEntity<Object> loginGoogle(@RequestBody AuthCodeRequest authCodeRequest){
+        return ResponseEntity.ok().body(loginService.googleLogin(authCodeRequest));
     }
 }

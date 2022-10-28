@@ -62,13 +62,13 @@ public class LoginService {
     public Login selectLogin(Long id){ return loginRepository.findById(id).orElse(null);}
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }
     public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
-    public Object googleLogin(String authCode){
+    public Object googleLogin(AuthCodeRequest authCodeRequest){
         RestTemplate restTemplate = new RestTemplate();
         GoogleRequest googleOAuthRequestParam = GoogleRequest
                 .builder()
                 .clientId(googleClientId)
                 .clientSecret(googleClientPw)
-                .code(authCode)
+                .code(authCodeRequest.getCode())
                 .redirectUri(googleRedirect)
                 .grantType("authorization_code").build();
         ResponseEntity<GoogleResponse> resultEntity = restTemplate.postForEntity("https://oauth2.googleapis.com/token",
