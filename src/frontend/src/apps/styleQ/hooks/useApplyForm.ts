@@ -9,6 +9,8 @@ interface tpoTagSelection {
   [key: string]: boolean;
 }
 
+const dateToCompareNumber = (date: string) => Number(date.split("-").join(""));
+
 const defaultTpos: tpoTagSelection = {
   데일리: false,
   소개팅: false,
@@ -29,6 +31,7 @@ const useApplyForm = (updateId?: number) => {
   const [date, setDate] = useState<string>("");
   const [tpos, setTpos] = useState<tpoTagSelection>(defaultTpos);
   const [description, setDescription] = useState<string>("");
+  const [notification, setNotification] = useState<string>("");
 
   useOnMount(() => {
     if (!updateId) return;
@@ -60,6 +63,19 @@ const useApplyForm = (updateId?: number) => {
 
   const uploadStyleQ = new Observable<number>((subscriber) => {
     const selectedTpo = Object.keys(tpos).find((key) => tpos[key]) || "";
+    if (
+      dateToCompareNumber(date) <
+      dateToCompareNumber(new Date().toJSON().slice(0, 10))
+    ) {
+      setNotification("오늘 이전 날짜로는 설정할 수 없습니다.");
+      return;
+    }
+
+    if (selectedTpo === "") {
+      setNotification("TPO를 선택하여 주세요");
+      return;
+    }
+
     (async () => {
       const body = {
         endDate: date,
@@ -86,6 +102,7 @@ const useApplyForm = (updateId?: number) => {
     description,
     setDescription,
     uploadStyleQ,
+    notification,
   };
 };
 
