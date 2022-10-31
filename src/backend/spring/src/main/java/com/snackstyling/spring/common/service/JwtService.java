@@ -30,14 +30,14 @@ public class JwtService {
     private Long refreshExpired=Duration.ofDays(7).toMillis(); //1주
     private final TokenRepository tokenRepository;
     private final LoginRepository loginRepository;
-    public String createJsonWebToken( Map<String, Object> headers,  Map<String, Object> payloads,Long expired){
+    public String createJsonWebToken(Map<String, Object> headers,  Map<String, Object> payloads,Long expired, String secret_key){
         Date now = new Date();
         return Jwts.builder()
                 .setHeader(headers)
                 .setClaims(payloads)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+refreshExpired))
-                .signWith(SignatureAlgorithm.HS256,re_secret_key)
+                .setExpiration(new Date(now.getTime()+expired))
+                .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
     }
     public TokenDto createToken(Login member) {
@@ -49,8 +49,8 @@ public class JwtService {
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("Key", member.getId());
         payloads.put("Email",member.getEmail());
-        String refresh=createJsonWebToken(headers,payloads, refreshExpired);
-        String access=createJsonWebToken(headers,payloads, accessExpired);
+        String refresh=createJsonWebToken(headers,payloads, refreshExpired, re_secret_key);
+        String access=createJsonWebToken(headers,payloads, accessExpired,ac_secret_key);
         tokenRepository.save(new Token(member.getEmail(),refresh));
         return new TokenDto(refresh,access);
     }
@@ -94,6 +94,6 @@ public class JwtService {
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("Key", user.getId());
         payloads.put("Email",email);
-        return new AcTokenResponse(createJsonWebToken(headers,payloads,accessExpired));
+        return new AcTokenResponse(createJsonWebToken(headers,payloads,accessExpired,ac_secret_key));
     }
 }
