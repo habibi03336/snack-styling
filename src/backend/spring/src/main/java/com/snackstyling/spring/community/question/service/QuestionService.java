@@ -133,7 +133,7 @@ public class QuestionService {
         questionResponse.setComments(question.getComments());
         questionResponse.setAnsCount(answerRepository.countByAnswer(question));
 
-        List<Answer> answer=answerRepository.findByQuestionOrderByAdoptDescPostDateAsc(question);
+        List<Answer> answer=answerRepository.findByQuestionAndUsedOrderByAdoptDescPostDateAsc(question,1);
         RestTemplate restTemplate=new RestTemplate();
         List<AnswerResponse> answerResponses=new ArrayList<>();
 

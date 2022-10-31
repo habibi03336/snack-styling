@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer,Long> {
-    List<Answer> findByQuestionOrderByAdoptDescPostDateAsc(Question question);
+    List<Answer> findByQuestionAndUsedOrderByAdoptDescPostDateAsc(Question question, Integer used);
     @Query("SELECT COUNT(*) FROM Answer a WHERE a.question=:question")
     Long countByAnswer(@Param("question") Question question);
 
