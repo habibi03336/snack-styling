@@ -17,6 +17,7 @@ import BottomButton from "../../common/components/BottomButton";
 import RowFiller from "../../common/components/RowFiller";
 import Label from "../../common/components/Label";
 import Button from "../../common/components/Button";
+import Notification from "../../common/components/Notification";
 
 const Signin = () => {
   const history = useHistory();
@@ -43,6 +44,11 @@ const Signin = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+
+            if (verification !== 1) {
+              setErrorMessage("이메일 인증을 진행해 주세요");
+              return;
+            }
 
             if (!validEmail(id)) {
               setErrorMessage("이메일 형식이 맞지 않습니다");
@@ -91,6 +97,7 @@ const Signin = () => {
               <>
                 <IonRow>
                   <IonInput
+                    type="number"
                     onIonChange={(e) => setCode(Number(e.detail.value!))}
                     value={code}
                     disabled={verification === 1}
@@ -103,11 +110,17 @@ const Signin = () => {
                   </IonButton>
                 </IonRow>
                 <IonLabel>
-                  {verification === 0 &&
-                    "* 이메일로 전송된 인증번호를 입력해주세요"}
-                  {verification === 1 && "* 이메일 인증이 성공했습니다."}
-                  {verification === 2 &&
-                    "* 이메일 인증이 실패했습니다. 다시 시도해주세요"}
+                  <Notification
+                    text={
+                      verification === 0
+                        ? "* 이메일로 전송된 인증번호를 입력해주세요"
+                        : verification === 1
+                        ? "* 이메일 인증이 성공했습니다."
+                        : verification === 2
+                        ? "* 이메일 인증이 실패했습니다. 다시 시도해주세요"
+                        : ""
+                    }
+                  />
                 </IonLabel>
               </>
             )}
@@ -141,9 +154,11 @@ const Signin = () => {
             </IonItem>
           </IonList>
           <BottomButton>
-            <Button type="submit">회원가입</Button>
+            <Button activated={verification === 1} type="submit">
+              회원가입
+            </Button>
           </BottomButton>
-          <p>{errorMessage}</p>
+          <Notification text={errorMessage} />
         </form>
       </IonContent>
     </IonPage>
