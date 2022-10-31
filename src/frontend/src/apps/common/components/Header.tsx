@@ -4,9 +4,10 @@ import {
   IonButtons,
   IonButton,
   IonImg,
-  IonRouterLink,
+  IonIcon,
 } from "@ionic/react";
-import { useHistory } from "react-router";
+import { refreshOutline } from "ionicons/icons";
+
 import { useRecoilState } from "recoil";
 
 import styled from "styled-components";
@@ -80,6 +81,16 @@ const Header = ({ text, type }: IHeader) => {
         ) : (
           ""
         )}
+        <IonButtons slot="end">
+          <IonButton
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            {" "}
+            <IonIcon src={refreshOutline} />{" "}
+          </IonButton>
+        </IonButtons>
       </IonToolbar>
     </IonHeader>
   );
