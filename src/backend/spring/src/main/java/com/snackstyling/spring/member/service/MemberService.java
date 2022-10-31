@@ -34,6 +34,7 @@ public class MemberService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final SuggestionRepository suggestionRepository;
+
     public void memberInsert(Long id,MemberRequest memberRequest){
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
@@ -49,12 +50,25 @@ public class MemberService {
         member.setHeight(memberRequest.getHeight());
         memberRepository.save(member);
     }
+    public void memberUpdate(Long id,MemberRequest memberRequest){
+        if(memberRepository.existsByNickname(memberRequest.getNickname())){
+            throw new DuplicateNameException("닉네임이 중복되었습니다.");
+        }
+        Member member=memberRepository.findById(id).orElse(null);
+        member.setAge(memberRequest.getAge());
+        member.setNickname(memberRequest.getNickname());
+        member.setGender(memberRequest.getGender());
+        member.setWeight(memberRequest.getWeight());
+        member.setHeight(memberRequest.getHeight());
+        memberRepository.save(member);
+    }
     public Member memberSelect(Long id){
         return memberRepository.findById(id).orElse(null);
     }
     public MemberInfResponse memberMyPage(Long id){
         Member member=memberSelect(id);
-        return new MemberInfResponse(member.getNickname(),member.getAdoptCnt());
+        return new MemberInfResponse(member.getNickname(), member.getGender(),member.getAge(),
+                member.getWeight(),member.getHeight(),member.getAdoptCnt());
     }
     public QuestionsResponse memberQuestions(Long id){
         Member member=memberSelect(id);
