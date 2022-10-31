@@ -8,6 +8,7 @@ import Label from "../../common/components/Label";
 import RowFiller from "../../common/components/RowFiller";
 import TPOButton from "../components/TPOButton";
 import Button from "../../common/components/Button";
+import Notification from "../../common/components/Notification";
 
 import BottomButton from "../../common/components/BottomButton";
 
@@ -26,6 +27,7 @@ const ApplyForm = ({ match }: IApplyForm) => {
     setDescription,
     uploadStyleQ,
     clearTpoSelection,
+    notification,
   } = useApplyForm(
     match.params.type === "update" ? Number(match.params.qid) : undefined
   );
@@ -84,6 +86,7 @@ const ApplyForm = ({ match }: IApplyForm) => {
           value={description}
           onIonChange={(e) => setDescription(e.detail.value!)}
         ></IonTextarea>
+        <Notification text={notification} />
         <div
           style={{
             position: "absolute",
