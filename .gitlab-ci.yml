@@ -3,19 +3,12 @@ default:
     - snack-test
 
 stages:
-  - build-prejob
   - build
   - test
   - package
   - deploy-backend
   - deploy-frontend
-
-
-build-prejob:
-  stage: build-prejob
-  script: 
-    - docker system prune -a -y
-
+  
 # Build task
 build-spring:
   stage: build
