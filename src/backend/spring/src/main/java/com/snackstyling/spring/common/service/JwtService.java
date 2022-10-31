@@ -70,12 +70,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("Key").toString());
-        Login login=loginRepository.findById(accId).orElse(null);
-        Member member=memberRepository.findByLogin(login);
-        if(member==null) return accId;
-        else {
-            return member.getId();
-        }
+        return accId;
     }
     public void validateToken(String token){
         try {
