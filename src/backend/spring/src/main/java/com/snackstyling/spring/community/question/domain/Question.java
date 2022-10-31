@@ -23,7 +23,9 @@ public class Question {
     @JoinColumn(name="memberId")
     private Member member;
     private LocalDateTime postDate;
+    @Column(nullable = false)
     private LocalDate endDate;
+    @Column(nullable = false)
     private Integer tpo;
     @Column(length = 1000)
     private String comments;
