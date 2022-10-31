@@ -30,47 +30,35 @@ public class JwtService {
     private Long refreshExpired=Duration.ofDays(7).toMillis(); //1주
     private final TokenRepository tokenRepository;
     private final LoginRepository loginRepository;
-    private final MemberRepository memberRepository;
-    public TokenDto createToken(Login member) {
-        Map<String, Object> headers=new HashMap<>();
-        headers.put("typ","JWT");
-        headers.put("alg","HS256");
-
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("Key", member.getId());
-        payloads.put("Email",member.getEmail());
-
+    public String createJsonWebToken( Map<String, Object> headers,  Map<String, Object> payloads,Long expired){
         Date now = new Date();
-        String refresh=Jwts.builder()
+        return Jwts.builder()
                 .setHeader(headers)
                 .setClaims(payloads)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime()+refreshExpired))
                 .signWith(SignatureAlgorithm.HS256,re_secret_key)
                 .compact();
-        String access= Jwts.builder()
-                .setHeader(headers)
-                .setClaims(payloads)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+accessExpired))
-                .signWith(SignatureAlgorithm.HS256,ac_secret_key)
-                .compact();
-
+    }
+    public TokenDto createToken(Login member) {
+        /*jwt-header setting*/
+        Map<String, Object> headers=new HashMap<>();
+        headers.put("typ","JWT");
+        headers.put("alg","HS256");
+        /*jwt-header payload(pk,email)*/
+        Map<String, Object> payloads = new HashMap<>();
+        payloads.put("Key", member.getId());
+        payloads.put("Email",member.getEmail());
+        String refresh=createJsonWebToken(headers,payloads, refreshExpired);
+        String access=createJsonWebToken(headers,payloads, accessExpired);
         tokenRepository.save(new Token(member.getEmail(),refresh));
         return new TokenDto(refresh,access);
     }
-    public String getUser(String token){
-        return Jwts.parser().setSigningKey(ac_secret_key)
-                .parseClaimsJws(token)
-                .getBody()
-                .get("Email").toString();
-    }
     public Long getMemberId(String token){
-        Long accId=Long.parseLong(Jwts.parser().setSigningKey(ac_secret_key)
+        return Long.parseLong(Jwts.parser().setSigningKey(ac_secret_key)
                 .parseClaimsJws(token)
                 .getBody()
                 .get("Key").toString());
-        return accId;
     }
     public void validateToken(String token){
         try {
@@ -99,23 +87,13 @@ public class JwtService {
         if(!temp.getRefreshToken().equals(token)){
             throw new TokenMatchException("Invalid token");
         }
+        Login user=loginRepository.findByEmail(email);
         Map<String, Object> headers=new HashMap<>();
         headers.put("typ","JWT");
         headers.put("alg","HS256");
-
-        Login user=loginRepository.findByEmail(email);
-        Member member=memberRepository.findByLogin(user);
-
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put("Key", member.getId());
+        payloads.put("Key", user.getId());
         payloads.put("Email",email);
-        Date now = new Date();
-        return new AcTokenResponse(Jwts.builder()
-                .setHeader(headers)
-                .setClaims(payloads)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+accessExpired))
-                .signWith(SignatureAlgorithm.HS256,ac_secret_key)
-                .compact());
+        return new AcTokenResponse(createJsonWebToken(headers,payloads,accessExpired));
     }
 }

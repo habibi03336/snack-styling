@@ -59,9 +59,7 @@ public class LoginService {
         loginResponse.setTokens(tokens);
         return loginResponse;
     }
-    public Login selectLogin(Long id){ return loginRepository.findById(id).orElse(null);}
     public Login loginUser(String email){ return loginRepository.findByEmail(email); }
-    public Member findMemberId(Login login){return memberRepository.findByLogin(login);}
     public Object googleLogin(AuthCodeRequest authCodeRequest){
         RestTemplate restTemplate = new RestTemplate();
         GoogleRequest googleOAuthRequestParam = GoogleRequest
@@ -100,6 +98,4 @@ public class LoginService {
             return joinService.joinUser(authRequest);
         }
     }
-
-
 }

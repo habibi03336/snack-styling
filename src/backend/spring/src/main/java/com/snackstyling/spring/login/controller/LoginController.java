@@ -12,63 +12,50 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/accounts")
 public class LoginController {
     private final JoinService joinService;
     private final LoginService loginService;
     private final MailService mailService;
-    @Value("${google.client.id}")
-    private String googleClientId;
-    @Value("${google.client.pw}")
-    private String googleClientPw;
-    @Value("${google.client.redirect}")
-    private String googleRedirect;
     @ApiOperation(value="회원가입",notes = "<strong>이메일과 패스워드를 입력받아 회원 가입을 진행한다.</strong>")
-    @RequestMapping(value="/api/v1/accounts/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public ResponseEntity<LoginResponse> userRegister(@RequestBody AuthRequest authRequest){
         return ResponseEntity.ok().body(joinService.joinUser(authRequest));
     }
-
     @ApiOperation(value="로그인",notes = "<strong>이메일과 패스워드를 입력받아 성공 여부를 알린다.</strong>")
-    @RequestMapping(value="/api/v1/accounts", method = RequestMethod.POST)
+    @PostMapping("")
     public ResponseEntity<LoginResponse> userLogin(@RequestBody AuthRequest authRequest){
         return ResponseEntity.ok().body(loginService.checkUser(authRequest));
     }
-
     @ApiOperation(value="회원탈퇴",notes = "<strong>회원 탈퇴</strong>")
-    @RequestMapping(value="/api/v1/accounts", method = RequestMethod.DELETE)
+    @DeleteMapping("")
     public ResponseEntity userDelete(@RequestBody AuthRequest authRequest){
         //비밀번호를 한 번 더 입력해서 맞다면 삭제를 시켜준다.
         joinService.outUser(authRequest);
         return ResponseEntity.ok().build();
     }
-
     @ApiOperation(value="비밀번호수정",notes = "<strong>회원수정</strong>")
-    @RequestMapping(value="/api/v1/accounts", method = RequestMethod.PATCH)
+    @PatchMapping("")
     public ResponseEntity userUpdate(@RequestBody AuthRequest authRequest){
         joinService.updateUser(authRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="이메일 중복 확인",notes = "<strong>이메일 중복은 가입 앙대영~</strong>")
-    @RequestMapping(value="/api/v1/accounts/duplication", method = RequestMethod.GET)
+    @GetMapping("/duplication")
     public ResponseEntity dupUser(@RequestParam("email") String email){
         joinService.dupUser(email);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 전송",notes = "<strong>인증메일전송</strong>")
-    @RequestMapping(value="/api/v1/accounts/mail/send", method = RequestMethod.POST)
+    @PostMapping("/mail/send")
     public ResponseEntity checkUser(@RequestBody ConfirmRequest confirmRequest){
         mailService.sendMail(confirmRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 확인",notes = "<strong>인증메일확인</strong>")
-    @RequestMapping(value="/api/v1/accounts/mail/confirm", method = RequestMethod.POST)
+    @PostMapping("/mail/confirm")
     public ResponseEntity confirmUser(@RequestBody CompareRequest compareRequest){
         mailService.checkMail(compareRequest);
         return ResponseEntity.ok().build();
-    }
-    @ApiOperation(value="구글 로그인",notes = "<strong>구글로 로그인을 진행한다.</strong>")
-    @RequestMapping(value="/api/v1/oauth2/google", method = RequestMethod.POST)
-    public ResponseEntity<Object> loginGoogle(@RequestBody AuthCodeRequest authCodeRequest){
-        return ResponseEntity.ok().body(loginService.googleLogin(authCodeRequest));
     }
 }

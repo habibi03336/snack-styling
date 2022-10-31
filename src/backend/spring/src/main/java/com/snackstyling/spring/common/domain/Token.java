@@ -6,7 +6,6 @@ import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @RedisHash(value = "token", timeToLive = 604800)
-
 public class Token {
     @Id
     private String email;
