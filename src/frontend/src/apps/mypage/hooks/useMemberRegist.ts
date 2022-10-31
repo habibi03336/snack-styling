@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
 import { PATCH_MEMBER_DETAIL, IMemberInfo } from "../../../lib/api/user";
+import useOnMount from "../../common/hooks/useOnMount";
 import user from "../../common/state/user";
 
 const defaultFeatures: IMemberInfo = {

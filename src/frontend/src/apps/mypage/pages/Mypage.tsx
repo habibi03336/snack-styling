@@ -2,6 +2,8 @@ import {
   IonButton,
   IonContent,
   IonIcon,
+  IonItem,
+  IonList,
   IonPage,
   IonRouterLink,
 } from "@ionic/react";
@@ -84,6 +86,21 @@ const Mypage = () => {
             </div>
           </IonRouterLink> */}
         </div>
+        <RowFiller px={50} />
+        <hr />
+        <IonList style={{ paddingRight: "30%", paddingLeft: "7%" }}>
+          <RoutingLink routerLink={"/memberDetailRegist"}>
+            <div
+              style={{
+                borderBottom: "solid lightgray 1px",
+                paddingBottom: "5px",
+                color: "gray",
+              }}
+            >
+              📑 &nbsp; 회원정보 수정하기
+            </div>
+          </RoutingLink>
+        </IonList>
       </IonContent>
       <div style={{ position: "absolute", right: 10, bottom: 20 }}>
         <div onClick={onClickLogOut}>
