@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name="member")
 public class Member {
-    @Id @GeneratedValue
+    @Id
     @Column(name="memberId")
     private Long id;
     @OneToOne
