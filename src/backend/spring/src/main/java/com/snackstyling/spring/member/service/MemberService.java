@@ -39,7 +39,9 @@ public class MemberService {
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
         }
         Member member=new Member();
-        member.setLogin(loginRepository.findById(id).orElse(null));
+        Login login=loginRepository.findById(id).orElse(null);
+        member.setId(login.getId());
+        member.setLogin(login);
         member.setAge(memberRequest.getAge());
         member.setNickname(memberRequest.getNickname());
         member.setGender(memberRequest.getGender());
