@@ -23,6 +23,7 @@ const useSignin = () => {
   const [verification, setVerification] = useState<-1 | 0 | 1 | 2>(-1);
 
   const postSignin = new Observable((subscriber) => {
+    if (verification !== 1) return;
     (async () => {
       const res = await AUTH_SIGNIN({ email: id, pwd: pwd });
       if (res.status === 200) {
