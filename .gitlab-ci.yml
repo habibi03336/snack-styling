@@ -14,7 +14,7 @@ stages:
 build-prejob:
   stage: build-prejob
   script: 
-    - docker system prune -a
+    - docker system prune -a -y
 
 # Build task
 build-spring:
