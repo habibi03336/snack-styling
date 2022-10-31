@@ -32,8 +32,8 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
     setStyleQs((state) =>
       state.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
     );
-    history.push("/styleQ");
-    setRouteContextState(() => ["/styleQ"]);
+    history.push("/styleQList");
+    setRouteContextState(() => ["/styleQList"]);
   };
 
   const adoptAns = async (aid: number) => {
