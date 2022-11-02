@@ -28,12 +28,14 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
   const { id } = useRecoilValue(userAtom);
   const removeQ = async () => {
     if (!styleQDetailData?.que.qid) return;
-    await DELETE_QUESTION(styleQDetailData?.que.qid);
-    setStyleQs((state) =>
-      state.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
-    );
-    history.push("/styleQList");
-    setRouteContextState(() => ["/styleQList"]);
+    const res = await DELETE_QUESTION(styleQDetailData?.que.qid);
+    if (res.status === 200) {
+      setStyleQs((state) =>
+        state.filter((elem) => elem.qid !== styleQDetailData?.que.qid)
+      );
+      history.push("/styleQList");
+      setRouteContextState(() => ["/styleQList"]);
+    }
   };
 
   const adoptAns = async (aid: number) => {
