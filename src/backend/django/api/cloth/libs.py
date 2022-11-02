@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 from PIL.Image import Image as PILImage
 from rembg.bg import (alpha_matting_cutout, get_concat_v_multi, naive_cutout,
                       post_process)
@@ -85,8 +85,9 @@ def remove(
 def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     if settings.DEBUG == True:
         return raw_img
-
+    
     pil_img = Image.open(raw_img).convert('RGBA')
+    pil_img = ImageOps.exif_transpose(pil_img)
 
     max_value = max(pil_img.width, pil_img.height)
     div_value = max(max_value // 1000, 1)
