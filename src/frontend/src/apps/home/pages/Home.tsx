@@ -16,7 +16,7 @@ import useHome from "../hooks/useHome";
 import WeatherBox from "../components/WeatherBox";
 import RowFiller from "../../common/components/RowFiller";
 import CodiCard from "../../closet/components/CodiCard";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useCodis from "../../common/hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
 import { POST_CODIPLAN } from "../../../lib/api/codiplan";
@@ -25,11 +25,8 @@ import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 const Home = () => {
   const { setDate, date, codiSelected, setCodiplan, codiplan } = useHome();
-  const modal = useRef<HTMLIonModalElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { codis, loadMore, loadDone } = useCodis();
-  function dismiss() {
-    modal.current?.dismiss();
-  }
 
   const codiplanning = async (codiId: number, date: string) => {
     try {
@@ -41,7 +38,7 @@ const Home = () => {
     } catch {
       console.log("error");
     }
-    dismiss();
+    setIsModalOpen(false);
   };
   return (
     <IonPage>
@@ -52,12 +49,10 @@ const Home = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <IonDatetime
-            style={{
-              width: `${innerViewWidth - 40}px`,
-            }}
             mode="ios"
             value={date.toISOString().split("T")[0]}
             color="primary"
@@ -67,9 +62,7 @@ const Home = () => {
               setDate(selectedDate);
             }}
           ></IonDatetime>
-          <RowFiller px={10} />
-          <WeatherBox />
-          <RowFiller px={10} />
+
           <div>
             <div
               style={{
@@ -87,32 +80,50 @@ const Home = () => {
                 }}
               ></div>
             </div>
-            {true && <strong>{date.toDateString()}</strong>}
-            {codiSelected && (
-              <CodiCard
-                type="big"
-                codi={codiSelected}
-                comment={""}
-                onCodiClick={function (): void {
-                  1 + 1;
-                }}
-              />
-            )}
-            <div style={{ display: codiSelected ? "none" : "block" }}>
-              <div>등록된 코디가 없습니다.</div>
-
-              <IonButton id="open-home-modal" expand="block">
-                코디 등록하기
-              </IonButton>
+            <div>
+              {true && (
+                <strong style={{ position: "absolute", padding: "10px" }}>
+                  {date.toDateString()}
+                </strong>
+              )}
+              {codiSelected && (
+                <CodiCard
+                  type="big"
+                  codi={codiSelected}
+                  comment={""}
+                  onCodiClick={function (): void {
+                    1 + 1;
+                  }}
+                />
+              )}
+              {!codiSelected && (
+                <div
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
+                    borderRadius: "15px",
+                    width: `${innerViewWidth * 0.9}px`,
+                    height: `${innerViewWidth * 0.9}px`,
+                    backgroundColor: "lightgray",
+                    color: "gray",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  탭하여 일정에 코디 등록하기.
+                </div>
+              )}
             </div>
           </div>
 
-          <IonModal ref={modal} trigger="open-home-modal">
+          <IonModal isOpen={isModalOpen}>
             <IonHeader>
               <IonToolbar>
                 <IonTitle>코디 옷장</IonTitle>
                 <IonButtons slot="end">
-                  <IonButton onClick={dismiss}>Close</IonButton>
+                  <IonButton onClick={() => setIsModalOpen(false)}>
+                    Close
+                  </IonButton>
                 </IonButtons>
               </IonToolbar>
             </IonHeader>

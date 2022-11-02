@@ -11,8 +11,13 @@ const useTags = () => {
       const res = await GET_TAGS();
       const data: I.Tag[] = res.data;
       const tagsData: I.Tags = {};
+
       data.forEach((tag) => {
-        tagsData[tag.name] = { id: tag.id, selected: false };
+        tagsData[tag.name] = {
+          id: tag.id,
+          selected: false,
+          categoryId: tag.category_id,
+        };
       });
       setTags(tagsData);
     })();

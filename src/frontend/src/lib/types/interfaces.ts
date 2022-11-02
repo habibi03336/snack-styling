@@ -6,12 +6,12 @@ export interface Cloth {
 }
 
 export interface Tags {
-  [key: string]: { id: number; selected: boolean };
+  [key: string]: { id: number; selected: boolean; categoryId?: number };
 }
 export interface Tag {
   name: string;
   id: number;
-  categori_id?: number;
+  category_id?: number;
   select?: boolean;
 }
 
