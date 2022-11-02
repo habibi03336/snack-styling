@@ -20,8 +20,9 @@ interface IHeader {
   text?: string;
   routeTo?: string;
   onHeaderClick?: () => void;
+  refreshButton?: boolean;
 }
-const Header = ({ text, type }: IHeader) => {
+const Header = ({ text, type, refreshButton }: IHeader) => {
   const [routeContext, setRouteContextState] = useRecoilState(routeContextAtom);
   return (
     <IonHeader
@@ -81,16 +82,18 @@ const Header = ({ text, type }: IHeader) => {
         ) : (
           ""
         )}
-        <IonButtons slot="end">
-          <IonButton
-            onClick={() => {
-              window.location.reload();
-            }}
-          >
-            {" "}
-            <IonIcon src={refreshOutline} />{" "}
-          </IonButton>
-        </IonButtons>
+        {refreshButton !== false && (
+          <IonButtons slot="end">
+            <IonButton
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              {" "}
+              <IonIcon src={refreshOutline} />{" "}
+            </IonButton>
+          </IonButtons>
+        )}
       </IonToolbar>
     </IonHeader>
   );
