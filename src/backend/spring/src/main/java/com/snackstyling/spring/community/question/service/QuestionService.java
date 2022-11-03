@@ -6,7 +6,6 @@ import com.snackstyling.spring.community.answer.dto.AnswerResponse;
 import com.snackstyling.spring.community.answer.dto.AnswersResponse;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.ClothDto;
-import com.snackstyling.spring.community.common.dto.CodiDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.*;
@@ -149,7 +148,7 @@ public class QuestionService {
                 answerResponse.setMid(temp.getMember().getId());
                 answerResponse.setAid(temp.getId());
                 answerResponse.setCodi(result.getBody());
-                answerResponse.setComments(temp.getComments());
+                answerResponse.setComments(result.getBody().getComments());
                 answerResponse.setAdopt(temp.getAdopt());
                 answerResponse.setPostDate(temp.getPostDate());
                 answerResponses.add(answerResponse);

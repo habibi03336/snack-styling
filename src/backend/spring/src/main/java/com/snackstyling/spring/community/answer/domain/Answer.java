@@ -5,6 +5,8 @@ import com.snackstyling.spring.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,8 +27,6 @@ public class Answer {
     private Question question;
     private LocalDateTime postDate;
     private Long codi;
-    @Column(length = 1000)
-    private String comments;
     private Integer adopt=0;
     private Integer used=1;
 }

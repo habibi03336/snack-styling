@@ -46,19 +46,17 @@ public class AnswerService {
         Answer answer= new Answer();
         Member member=memberService.memberSelect(jwtService.getMemberId(token));
         Question question=questionService.questionSelect(answerRequest.getQid());
-        // 알람 추가 코드
 
-        // 끝
         answer.setMember(member);
         answer.setQuestion(question);
         answer.setPostDate(LocalDateTime.now());
-        answer.setComments(answerRequest.getComments());
 
         Map<String, Object> map=new HashMap<>();
         map.put("top",answerRequest.getCodi().getTop());
         map.put("bottom", answerRequest.getCodi().getBottom());
         map.put("cap", answerRequest.getCodi().getCap());
         map.put("footwear",answerRequest.getCodi().getFootwear());
+        map.put("comments",answerRequest.getComments());
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization", token);
 
@@ -97,13 +95,13 @@ public class AnswerService {
         if(question.getAdopt()==1){
             throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
         }
-        answer.setComments(answerRequest.getComments());
 
         Map<String, Object> map=new HashMap<>();
         map.put("top",answerRequest.getCodi().getTop());
         map.put("bottom", answerRequest.getCodi().getBottom());
         map.put("cap", answerRequest.getCodi().getCap());
         map.put("footwear",answerRequest.getCodi().getFootwear());
+        map.put("comments",answerRequest.getComments());
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
