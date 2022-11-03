@@ -62,6 +62,7 @@ public class MemberService {
         member.setHeight(memberRequest.getHeight());
         memberRepository.save(member);
     }
+
     public Member memberSelect(Long id){
         return memberRepository.findById(id).orElse(null);
     }
@@ -85,7 +86,7 @@ public class MemberService {
             questionResponse.setEndDate(temp.getEndDate());
             questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
             questionResponse.setComments(temp.getComments());
-            questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
+            questionResponse.setAnsCount(answerRepository.countByAnswer(temp, 1));
             questionResponses.add(questionResponse);
         }
         return new QuestionsResponse(questionResponses,0,0);
@@ -109,7 +110,7 @@ public class MemberService {
             questionResponse.setEndDate(temp.getEndDate());
             questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
             questionResponse.setComments(temp.getComments());
-            questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
+            questionResponse.setAnsCount(answerRepository.countByAnswer(temp, 1));
             questionResponses.add(questionResponse);
         }
         return new QuestionsResponse(questionResponses,0,0);
