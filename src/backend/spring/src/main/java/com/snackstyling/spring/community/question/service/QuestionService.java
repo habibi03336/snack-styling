@@ -82,7 +82,7 @@ public class QuestionService {
             questionResponse.setEndDate(temp.getEndDate());
             questionResponse.setTpo(new OccasionDto().getTpo(temp.getTpo()));
             questionResponse.setComments(temp.getComments());
-            questionResponse.setAnsCount(answerRepository.countByAnswer(temp));
+            questionResponse.setAnsCount(answerRepository.countByAnswer(temp, 1));
             questionResponses.add(questionResponse);
         }
 
@@ -94,7 +94,7 @@ public class QuestionService {
         if(question.getAdopt()==1){
             throw new AdoptQueException("채택된 질문으로 삭제할 수 없습니다.");
         }
-        if(answerRepository.countByAnswer(question)!=0){
+        if(answerRepository.countByAnswer(question, 1)!=0){
             throw new ExistAnsException("답변이 존재하는 질문으로 삭제할 수 없습니다.");
         }
         question.setUsed(0);
@@ -105,7 +105,7 @@ public class QuestionService {
         if(question.getAdopt()==1){
             throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
         }
-        if(answerRepository.countByAnswer(question)!=0){
+        if(answerRepository.countByAnswer(question, 1)!=0){
             throw new ExistAnsException("답변이 존재하는 질문으로 수정할 수 없습니다.");
         }
         question.setTpo(questionRequest.getTpo());
@@ -131,11 +131,11 @@ public class QuestionService {
         questionResponse.setEndDate(question.getEndDate());
         questionResponse.setTpo(new OccasionDto().getTpo(question.getTpo()));
         questionResponse.setComments(question.getComments());
-        questionResponse.setAnsCount(answerRepository.countByAnswer(question));
-
+        questionResponse.setAnsCount(answerRepository.countByAnswer(question, 1));
         List<Answer> answer=answerRepository.findByQuestionAndUsedOrderByAdoptDescPostDateAsc(question,1);
         RestTemplate restTemplate=new RestTemplate();
         List<AnswerResponse> answerResponses=new ArrayList<>();
+
 
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization",token);

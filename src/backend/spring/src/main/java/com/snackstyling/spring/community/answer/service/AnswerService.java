@@ -90,6 +90,7 @@ public class AnswerService {
         answer.setUsed(0);
         answerRepository.save(answer);
     }
+
     public void updateAnswer(Long id, AnswerRequest answerRequest, String token){
         Answer answer=answerRepository.findById(id).orElse(null);
         Question question=answer.getQuestion();
