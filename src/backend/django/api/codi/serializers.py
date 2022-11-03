@@ -11,19 +11,19 @@ from model.codimodel.models import Codi
 class CodiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
 
 
 class CodiUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear', 'comments']
 
 
 class CodiCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -35,7 +35,7 @@ class CodiCreateSerializer(serializers.ModelSerializer):
 class CodiUserCreateSerializer(CodiCreateSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'userId', 'top', 'bottom', 'cap', 'footwear', 'comments']
 
 
 class CodiListSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class CodiListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear']
+        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_top(self, obj):
