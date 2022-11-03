@@ -22,7 +22,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
   const setRouteContextState = useSetRecoilState(routeContextAtom);
   const setStyleQs = useSetRecoilState(styleQState);
   const history = useHistory();
-  const { styleQDetailData, removeAnswer } = useStyleQDetail(
+  const { styleQDetailData, removeAnswer, error } = useStyleQDetail(
     Number(match.params.id)
   );
   const { id } = useRecoilValue(userAtom);
@@ -51,7 +51,8 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
     <IonPage>
       <IonContent>
         <Header type="back" routeTo="/styleQ" />
-
+        {styleQDetailData?.que === undefined && !error && <div>loading</div>}
+        {error && <div>찾는 페이지가 없습니다.</div>}
         {id === styleQDetailData?.que.mid &&
         styleQDetailData.ans.length === 0 ? (
           <div style={{ display: "flex", flexDirection: "row-reverse" }}>
