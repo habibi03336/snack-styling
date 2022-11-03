@@ -93,7 +93,7 @@ public class MemberService {
     }
     public QuestionsResponse memberAnswers(Long id){
         Member member=memberSelect(id);
-        List<Answer> answers=answerRepository.findByMember(member);
+        List<Answer> answers=answerRepository.findByMemberAndUsed(member, 1);
         List<QuestionResponse> questionResponses=new ArrayList<>();
         List<Long> duplicate=new ArrayList<>();
         for(Answer ans :answers){
