@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from api.cloth.serializers import ClothTagSerializer
 
@@ -36,6 +36,8 @@ CLOTHUSER_SCHEMA_CREATE = extend_schema(
 CLOTHUSER_SCHEMA_LIST = extend_schema(
     summary="userId 기반 옷 리스트 출력",
     tags=["Cloth/User"],
+    parameters=[OpenApiParameter(name='category', type=str, required=False)]
+
 )
 
 # Example Schemas
