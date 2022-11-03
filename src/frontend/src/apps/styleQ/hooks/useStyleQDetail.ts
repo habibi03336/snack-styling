@@ -6,32 +6,38 @@ import * as I from "../../../lib/types/interfaces";
 
 const useStyleQDetail = (styleQId: number) => {
   const [styleQDetailData, setStyleQDetailData] = useState<I.StyleQDetail>();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     (async () => {
       const res = await GET_STYLEQ(styleQId);
-      const styleQ = res.data.question;
-      const styleAns = res.data.answers.answerResponses.map(
-        (ans: I.StyleAns) => {
-          return {
-            ...ans,
-            codiTemplate: makeCodiTemplate(
-              [
-                {
-                  top: ans.codi.top ? ans.codi.top : null,
-                  bottom: ans.codi.bottom ? ans.codi.bottom : null,
-                  cap: ans.codi.cap ? ans.codi.cap : null,
-                  footwear: ans.codi.footwear ? ans.codi.footwear : null,
-                  id: ans.mid,
-                },
-              ],
-              defaultTemplate
-            )[0],
-          };
-        }
-      );
+      if (res.status === 200) {
+        const styleQ = res.data.question;
+        const styleAns = res.data.answers.answerResponses.map(
+          (ans: I.StyleAns) => {
+            return {
+              ...ans,
+              codiTemplate: makeCodiTemplate(
+                [
+                  {
+                    top: ans.codi.top ? ans.codi.top : null,
+                    bottom: ans.codi.bottom ? ans.codi.bottom : null,
+                    cap: ans.codi.cap ? ans.codi.cap : null,
+                    footwear: ans.codi.footwear ? ans.codi.footwear : null,
+                    id: ans.mid,
+                  },
+                ],
+                defaultTemplate
+              )[0],
+            };
+          }
+        );
 
-      setStyleQDetailData({ que: styleQ, ans: styleAns });
+        setStyleQDetailData({ que: styleQ, ans: styleAns });
+      }
+      if (res.status === 404) {
+        setError(true);
+      }
     })();
   }, [styleQId]);
 
@@ -44,7 +50,7 @@ const useStyleQDetail = (styleQId: number) => {
     });
   };
 
-  return { styleQDetailData, removeAnswer };
+  return { styleQDetailData, removeAnswer, error };
 };
 
 export default useStyleQDetail;
