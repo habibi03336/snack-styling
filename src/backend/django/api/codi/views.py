@@ -91,3 +91,11 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         if self.action == 'list':
             return CodiListSerializer
         return self.serializer_class
+
+
+class CodiExampleView(mixins.ListModelMixin,
+                       GenericViewSet):
+    serializer_class = CodiListSerializer
+
+    def get_queryset(self):
+        return Codi.objects.all().order_by('-id')[:10]

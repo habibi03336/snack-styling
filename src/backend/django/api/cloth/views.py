@@ -12,7 +12,6 @@ from api.cloth.serializers import (ClothCreateSerializer,
                                    ClothRetrieveUpdateSerializer,
                                    ClothSerializer, ClothTagSerializer,
                                    ClothUserCreateSerializer)
-from api.libs import getUserIdFromJWT, isSelfRequest
 from api.permissions import UserAccessPermission
 from model.clothmodel.models import Cloth
 
@@ -93,3 +92,11 @@ class ClothUserViewSet(mixins.ListModelMixin,
         if self.action == 'list':
             return ClothDetailSerializer
         return self.serializer_class
+
+
+class ClothExampleView(mixins.ListModelMixin,
+                       GenericViewSet):
+    serializer_class = ClothDetailSerializer
+
+    def get_queryset(self):
+        return Cloth.objects.all().order_by('-id')[:10]
