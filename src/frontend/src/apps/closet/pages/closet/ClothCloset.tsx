@@ -174,7 +174,7 @@ const ClothCloset = () => {
         <IonFabButton>
           <IonIcon icon={shirtOutline} style={{ position: "absolute" }} />
           <input
-            style={{ opacity: 0 }}
+            style={{ opacity: 0, height: "56px" }}
             onInput={onSelectImages}
             id="image-input"
             type="file"
