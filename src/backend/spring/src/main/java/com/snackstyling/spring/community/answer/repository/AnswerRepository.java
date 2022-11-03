@@ -16,6 +16,6 @@ public interface AnswerRepository extends JpaRepository<Answer,Long> {
     @Query("SELECT COUNT(*) FROM Answer a WHERE a.question=:question and a.used=:used")
     Long countByAnswer(@Param("question") Question question, @Param("used") Integer used);
 
-    List<Answer> findByMember(Member member);
+    List<Answer> findByMemberAndUsed(Member member, Integer used);
 
 }
