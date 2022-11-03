@@ -1,11 +1,16 @@
 import * as I from "../../../lib/types/interfaces";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedTagsState, tagState } from "../state/tag";
+import {
+  selectedCategoryState,
+  selectedTagsState,
+  tagState,
+} from "../state/tag";
 import produce from "immer";
 
 const useClosetClothTags = () => {
   const [tags, setTags] = useRecoilState<I.Tags>(tagState);
   const selectedTags = useRecoilValue(selectedTagsState);
+  const selectedCategory = useRecoilValue(selectedCategoryState);
 
   const selectTag = (tagName: string) => {
     const newTagState = produce(tags, (draft) => {
@@ -46,6 +51,7 @@ const useClosetClothTags = () => {
     toggleTag,
     clearAndSelect,
     selectedTags,
+    selectedCategory,
   };
 };
 

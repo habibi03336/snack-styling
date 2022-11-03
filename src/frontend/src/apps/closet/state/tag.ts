@@ -12,12 +12,27 @@ export const tagState = atom<I.Tags>({
         const data: I.Tag[] = res.data;
         const tagsData: I.Tags = {};
         data.forEach((tag) => {
-          tagsData[tag.name] = { id: tag.id, selected: false };
+          tagsData[tag.name] = {
+            id: tag.id,
+            selected: false,
+            categoryId: tag.category_id,
+          };
         });
         setSelf(tagsData);
       })();
     },
   ],
+});
+
+export const selectedCategoryState = selector({
+  key: "Closet/selectedCategory",
+  get: ({ get }) => {
+    const tags: I.Tags = get(tagState);
+
+    return Object.keys(tags).filter(
+      (tagName) => tags[tagName].categoryId === 100 && tags[tagName].selected
+    );
+  },
 });
 
 export const selectedTagsState = selector({

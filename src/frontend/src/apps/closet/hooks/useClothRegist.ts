@@ -2,10 +2,8 @@ import { POST_CLOTHS, PATCH_CLOTHS } from "../../../lib/api/cloth";
 import { useRecoilState } from "recoil";
 import { processClothesState, IProcessClothes } from "../state/processCloth";
 import { Observable } from "rxjs";
-import user from "../../common/state/user";
 
 const useClothRegist = () => {
-  const [userState, _] = useRecoilState(user);
   const [processClothes, setProcessClothes] =
     useRecoilState(processClothesState);
 

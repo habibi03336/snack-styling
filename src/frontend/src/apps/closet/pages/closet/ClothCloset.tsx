@@ -12,7 +12,6 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { shirtOutline, trashOutline } from "ionicons/icons";
 import { useState } from "react";
@@ -40,10 +39,12 @@ const ClothCloset = () => {
   const [showTags, setShowTags] = useState<boolean>(false);
   const [selectedCloth, setSelectedCloth] = useState<I.Cloth | null>(null);
 
-  const { tags, toggleTag, clearAndSelect, selectTag, selectedTags } =
+  const { tags, toggleTag, clearAndSelect, selectedTags, selectedCategory } =
     useClosetClothTags();
-
-  const { clothes, deleteCloth, loadMore, loadDone } = useClothes();
+  const { clothes, deleteCloth, loadMore, loadDone } = useClothes(
+    undefined,
+    selectedCategory.length > 0 ? selectedCategory[0] : undefined
+  );
 
   const { uploadClothes } = useClothRegist();
   const history = useHistory();

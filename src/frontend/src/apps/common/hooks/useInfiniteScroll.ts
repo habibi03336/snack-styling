@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { infiniteScrollCallBackType } from "../../../lib/types/infiniteScroll";
-import useOnMount from "./useOnMount";
 
-const useInfiniteScroll = (apiCallback: infiniteScrollCallBackType) => {
+const useInfiniteScroll = (
+  apiCallback: infiniteScrollCallBackType,
+  dependency?: any
+) => {
   const [elems, setElems] = useState([]);
   const [page, setPage] = useState<number>(0);
   const [loadDone, setLoadDone] = useState<boolean>(false);
 
-  useOnMount(() => {
-    loadData();
-  });
+  useEffect(() => {
+    loadData(true);
+  }, [dependency]);
 
-  const loadData = async () => {
-    const [additionalList, isDone] = await apiCallback(page + 1);
-    if (isDone) setLoadDone(true);
-    setElems([...elems, ...additionalList]);
-    setPage(page + 1);
+  const loadData = async (refresh = false) => {
+    if (refresh) {
+      const [additionalList, isDone] = await apiCallback(1);
+      if (isDone) setLoadDone(true);
+      else setLoadDone(false);
+      setElems([...additionalList]);
+      setPage(1);
+    } else {
+      const [additionalList, isDone] = await apiCallback(page + 1);
+      if (isDone) setLoadDone(true);
+      setElems([...elems, ...additionalList]);
+      setPage(page + 1);
+    }
   };
 
   const loadMore = (ev: any) => {
@@ -26,7 +36,7 @@ const useInfiniteScroll = (apiCallback: infiniteScrollCallBackType) => {
     }, 500);
   };
 
-  return { elems, loadDone, loadMore };
+  return { elems, loadDone, loadMore, setElems, setLoadDone, setPage };
 };
 
 export default useInfiniteScroll;

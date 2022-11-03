@@ -53,6 +53,13 @@ const useTags = () => {
     return Object.keys(tags).filter((tagName) => tags[tagName].selected);
   };
 
+  const selectedCategory = () => {
+    const category = Object.keys(tags).filter(
+      (tagName) => tags[tagName].categoryId === 100 && tags[tagName].selected
+    );
+    return category.length > 0 ? category[0] : undefined;
+  };
+
   return {
     tags,
     selectTag,
@@ -60,6 +67,7 @@ const useTags = () => {
     toggleTag,
     clearSelection,
     useSelectedTags,
+    selectedCategory,
   };
 };
 

@@ -32,7 +32,6 @@ const useCodiRegist = (
     if (type === "update" && id) {
       const { data } = await GET_CODI(id);
       const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
-      console.log(defaultCodi);
       const codiTemp = defaultCodi.clothes.map((elem, idx) => {
         if (elem.image === null) return codiTemplate.clothes[idx];
         else return elem;
@@ -88,8 +87,9 @@ const useCodiRegist = (
       let res;
       if (type === "update" && id) {
         res = await PATCH_CODI(id, codiData);
-      } else if (type === "own") res = await POST_CODI(codiData);
-      else if (type === "answer" && questionId !== undefined) {
+      } else if (type === "own") {
+        res = await POST_CODI(codiData);
+      } else if (type === "answer" && questionId !== undefined) {
         const answerData = {
           codi: {
             top: null,
