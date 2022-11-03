@@ -4,11 +4,18 @@ import address from "./address";
 
 const baseURL = address["imgAPI"];
 
-export const GET_CLOTHS = (userId?: number, page = 0) => {
+export const GET_CLOTHS = (
+  userId?: number,
+  page = 0,
+  selectedCategory?: string
+) => {
   // assert(type === "other" && userId === undefined ? false : true);
-
+  console.log(selectedCategory);
   return client.get(
-    baseURL + `/cloth/user/?page=${page}` + (userId ? `&id=${userId}` : "")
+    baseURL +
+      `/cloth/user/?page=${page}` +
+      (userId ? `&id=${userId}` : "") +
+      (selectedCategory ? `&category=${selectedCategory}` : "")
   );
 };
 

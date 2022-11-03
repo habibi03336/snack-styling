@@ -33,12 +33,14 @@ type ICodiShowCase = RouteComponentProps<{
 }>;
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
+  const setRouteContext = useSetRecoilState(routeContextAtom);
+  const { selectTag, clearSelection, useSelectedTags, selectedCategory } =
+    useTags();
   const isSelfCodi = Number(match.params.qid) === -1;
   const { clothes, loadMore, loadDone } = useClothes(
-    isSelfCodi ? undefined : Number(match.params.mid)
+    isSelfCodi ? undefined : Number(match.params.mid),
+    selectedCategory()
   ); //
-  const setRouteContext = useSetRecoilState(routeContextAtom);
-  const { selectTag, clearSelection, useSelectedTags } = useTags();
   const selectedTags = useSelectedTags();
   const {
     codiTemplate,
