@@ -99,15 +99,19 @@ const Mypage = () => {
               📑 &nbsp; 회원정보 수정하기
             </div>
           </RoutingLink>
+          <RowFiller px={10} />
+          <div
+            onClick={onClickLogOut}
+            style={{
+              borderBottom: "solid lightgray 1px",
+              paddingBottom: "5px",
+              color: "gray",
+            }}
+          >
+            👋 &nbsp; 로그아웃
+          </div>
         </IonList>
       </IonContent>
-      <div style={{ position: "absolute", right: 10, bottom: 20 }}>
-        <div onClick={onClickLogOut}>
-          <span style={{ color: "black", textDecoration: "underline" }}>
-            로그아웃
-          </span>
-        </div>
-      </div>
     </IonPage>
   );
 };

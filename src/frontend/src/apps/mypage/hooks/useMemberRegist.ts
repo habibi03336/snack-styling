@@ -33,7 +33,7 @@ const userMemeberRegist = () => {
     })();
   }, []);
 
-  const postSignin = new Observable((subscriber) => {
+  const updateMemberDetail = new Observable((subscriber) => {
     (async () => {
       const res = await PATCH_MEMBER_DETAIL({
         ...features,
@@ -52,7 +52,7 @@ const userMemeberRegist = () => {
     errorMessage,
     features,
     setFeatures,
-    postSignin,
+    updateMemberDetail,
   };
 };
 

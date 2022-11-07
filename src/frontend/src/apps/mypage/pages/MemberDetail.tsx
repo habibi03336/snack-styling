@@ -18,7 +18,9 @@ import RowFiller from "../../common/components/RowFiller";
 import Notification from "../../common/components/Notification";
 
 const MemberDetailRegist = () => {
-  const { features, setFeatures, postSignin, errorMessage } = useMemberRegist();
+  const { features, setFeatures, updateMemberDetail, errorMessage } =
+    useMemberRegist();
+
   return (
     <IonPage>
       <Header type="back" text="정보입력" />
@@ -27,7 +29,7 @@ const MemberDetailRegist = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            postSignin.subscribe({
+            updateMemberDetail.subscribe({
               complete() {
                 window.location.href = "/mypage";
               },
@@ -39,8 +41,12 @@ const MemberDetailRegist = () => {
             <Label text="별명" />
             <IonInput
               value={features.nickname}
-              onIonInput={(e) => {
-                setFeatures({ ...features, nickname: e.detail.data! });
+              onIonChange={(e) => {
+                if (features.nickname === e.detail.value) return;
+                setFeatures({
+                  ...features,
+                  nickname: e.detail.value!,
+                });
               }}
             />
             <RowFiller px={25} />
@@ -48,8 +54,7 @@ const MemberDetailRegist = () => {
             <IonRadioGroup
               value={features.gender}
               onIonChange={(e) => {
-                if (features.gender === null) return;
-
+                if (features.age === null) return;
                 setFeatures({ ...features, gender: e.detail.value! });
               }}
             >
@@ -78,10 +83,11 @@ const MemberDetailRegist = () => {
               type="number"
               value={features.age}
               placeholder="나이"
-              onIonInput={(e) => {
+              onIonChange={(e) => {
+                if (features.age === e.detail.value) return;
                 setFeatures({
                   ...features,
-                  age: parseInt(e.detail.data!),
+                  age: parseInt(e.detail.value!),
                 });
               }}
               clearInput
@@ -95,10 +101,11 @@ const MemberDetailRegist = () => {
               type="number"
               value={features.height}
               placeholder="키"
-              onIonInput={(e) => {
+              onIonChange={(e) => {
+                if (features.height === e.detail.value) return;
                 setFeatures({
                   ...features,
-                  height: parseInt(e.detail.data!),
+                  height: parseInt(e.detail.value!),
                 });
               }}
               clearInput
@@ -112,10 +119,11 @@ const MemberDetailRegist = () => {
               type="number"
               value={features.weight}
               placeholder="몸무게"
-              onIonInput={(e) => {
+              onIonChange={(e) => {
+                if (features.weight === e.detail.value) return;
                 setFeatures({
                   ...features,
-                  weight: parseInt(e.detail.data!),
+                  weight: parseInt(e.detail.value!),
                 });
               }}
               clearInput
@@ -125,7 +133,7 @@ const MemberDetailRegist = () => {
         <IonItem>
           <IonRadioGroup
             value={features.shape}
-            onIonInput={(e) =>
+            onIonChange={(e) =>
               setFeatures({ ...features, shape: e.detail.value })
             }
           >

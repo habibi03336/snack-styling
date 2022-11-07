@@ -19,7 +19,7 @@ const useHome = () => {
       const newCodiplan: { [key: string]: number } = {};
       data.forEach((elem: I.Codiplan) => {
         const day = elem["plan_date"].split("-")[2] as string;
-        newCodiplan[day] = elem.codi;
+        newCodiplan[Number(day)] = elem.codi;
       });
       setCodiplan(newCodiplan);
     })();

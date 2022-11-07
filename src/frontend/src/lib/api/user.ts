@@ -14,7 +14,7 @@ export interface IMemberInfo {
 export const GET_MEMBER_DETAIL = () => client.get(baseURL);
 
 export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
-  client.post(baseURL, memberInfo);
+  client.patch(baseURL, memberInfo);
 
 export const GET_USER_QUESTIONS = () => client.get(baseURL + "/questions");
 
