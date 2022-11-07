@@ -42,12 +42,12 @@ public class JoinService {
         //login inf save
         Matcher passMatcher=passPatten.matcher(authRequest.getPwd());
         if(type==0){
-            if(!passMatcher.find())
-                throw new ConflictException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
             Certification certification=certificationRepository.findById(authRequest.getEmail()).orElse(null);
             if(certification==null || certification.getCheck()==0){
                 throw new ConflictException("유효하지 않은 회원가입 요청입니다.");
             }
+            if(!passMatcher.find())
+                throw new ConflictException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
         }
         LoginResponse loginResponse=new LoginResponse();
         loginResponse.setIsMember(false);
