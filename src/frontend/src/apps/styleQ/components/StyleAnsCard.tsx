@@ -81,7 +81,9 @@ const StyleAnsCard = ({
               clothWidth: innerViewWidth * 0.3,
               clothHeight: innerViewWidth * 0.3,
             }}
-            onBoardImgClick={() => console.log("style ans codi board clicked")}
+            onBoardImgClick={() => {
+              1 + 1;
+            }}
           />
         </CodiBoardDiv>
         <div style={{ padding: "10px 20px", fontSize: "16px" }}>

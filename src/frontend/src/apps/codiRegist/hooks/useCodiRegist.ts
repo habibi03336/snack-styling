@@ -101,7 +101,6 @@ const useCodiRegist = (
           qid: questionId,
           comments: comment,
         };
-        console.log(answerData.codi);
 
         if (type === "answer") {
           res = await POST_STYLE_ANSWER(answerData);

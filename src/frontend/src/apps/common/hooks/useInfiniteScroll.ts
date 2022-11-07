@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { infiniteScrollCallBackType } from "../../../lib/types/infiniteScroll";
 
 const useInfiniteScroll = (
@@ -9,7 +9,8 @@ const useInfiniteScroll = (
   const [page, setPage] = useState<number>(0);
   const [loadDone, setLoadDone] = useState<boolean>(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setPage(1);
     loadData(true);
   }, [dependency]);
 
@@ -19,7 +20,6 @@ const useInfiniteScroll = (
       if (isDone) setLoadDone(true);
       else setLoadDone(false);
       setElems([...additionalList]);
-      setPage(1);
     } else {
       const [additionalList, isDone] = await apiCallback(page + 1);
       if (isDone) setLoadDone(true);

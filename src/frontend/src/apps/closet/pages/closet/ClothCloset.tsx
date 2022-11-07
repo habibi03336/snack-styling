@@ -138,8 +138,6 @@ const ClothCloset = () => {
 
       <CardLayout
         cardComponents={clothes.map((cloth) => {
-          if (!selectedTags.every((tagName) => cloth.tags.has(tagName)))
-            return false;
           return (
             <div
               onClick={() => {

@@ -87,7 +87,6 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
       <IonContent>
         <CardLayout
           cardComponents={clothes.map((cloth) => {
-            if (!cloth.tags.has(selectedTags[0])) return false;
             return (
               <div
                 onClick={() => {
