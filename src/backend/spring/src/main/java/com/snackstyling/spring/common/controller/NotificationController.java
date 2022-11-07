@@ -22,13 +22,13 @@ public class NotificationController {
     }
     @ApiOperation(value="알람 읽음",notes = "<strong>답변 알람에 대한 정보</strong>")
     @PatchMapping("/{id}")
-    public ResponseEntity notifyRead(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Void> notifyRead(@PathVariable(value = "id") Long id){
         notificationService.readNotification(id);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="알람 모두 읽음",notes = "<strong>답변 알람에 대한 정보</strong>")
     @PatchMapping("")
-    public ResponseEntity notifyAllRead(@RequestHeader("Authorization") String token){
+    public ResponseEntity<Void> notifyAllRead(@RequestHeader("Authorization") String token){
         notificationService.readAllNotification(jwtService.getMemberId(token));
         return ResponseEntity.ok().build();
     }
