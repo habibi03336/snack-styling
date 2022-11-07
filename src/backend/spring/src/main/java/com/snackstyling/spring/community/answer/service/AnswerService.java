@@ -1,16 +1,15 @@
 package com.snackstyling.spring.community.answer.service;
 
 import com.snackstyling.spring.common.domain.Notification;
-import com.snackstyling.spring.common.repository.NotificationRepository;
+import com.snackstyling.spring.common.exception.NotAcceptableException;
+import com.snackstyling.spring.common.exception.ServerException;
 import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.common.service.NotificationService;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerNumResponse;
 import com.snackstyling.spring.community.answer.dto.AnswerRequest;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
-import com.snackstyling.spring.community.common.dto.CoordinationDto;
 import com.snackstyling.spring.community.question.domain.Question;
-import com.snackstyling.spring.community.question.exception.AdoptQueException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.community.question.service.QuestionService;
 import com.snackstyling.spring.community.common.dto.CodiDto;
@@ -20,11 +19,9 @@ import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -67,7 +64,7 @@ public class AnswerService {
             ResponseEntity<CodiDto> result = restTemplate.postForEntity(url,entity, CodiDto.class);
             answer.setCodi(result.getBody().getId());
         }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+            throw new ServerException("장고 서버와 통신에 실패했습니다.");
         }
         answerRepository.save(answer);
         Notification notify= new Notification();
@@ -83,7 +80,7 @@ public class AnswerService {
         Answer answer=answerRepository.findById(id).orElse(null);
         Question question=answer.getQuestion();
         if(question.getAdopt()==1){
-            throw new AdoptQueException("채택된 질문으로 삭제할 수 없습니다.");
+            throw new NotAcceptableException("채택된 질문으로 수정이 불가능 합니다.");
         }
         answer.setUsed(0);
         answerRepository.save(answer);
@@ -93,7 +90,7 @@ public class AnswerService {
         Answer answer=answerRepository.findById(id).orElse(null);
         Question question=answer.getQuestion();
         if(question.getAdopt()==1){
-            throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
+            throw new NotAcceptableException("채택된 질문으로 수정이 불가능 합니다.");
         }
         Map<String, Object> map=new HashMap<>();
         map.put("top",answerRequest.getCodi().getTop());
@@ -112,7 +109,7 @@ public class AnswerService {
             ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,entity, CodiDto.class);
             answer.setCodi(result.getBody().getId());
         }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+            throw new ServerException("장고 서버와 통신에 실패했습니다.");
         }
         answerRepository.save(answer);
     }
@@ -134,7 +131,7 @@ public class AnswerService {
         try {
             restTemplate.postForEntity(url,entity,String.class);
         }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+            throw new ServerException("장고 서버와 통신에 실패했습니다.");
         }
         answer.getMember().setAdoptCnt(answer.getMember().getAdoptCnt()+1);
         answerRepository.save(answer);
