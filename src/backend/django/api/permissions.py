@@ -1,7 +1,7 @@
 import requests
 from rest_framework import permissions, status
 
-from api.exceptions import AccessTokenExpired, AuthServerConnectionError
+from api.exceptions import AccessTokenExpired, AuthServerConnectionError, AlreadyAdopted
 from api.libs import decodeJWTPayload, mutableCheck
 from django.conf import settings
 
@@ -28,9 +28,16 @@ class UserAccessPermission(permissions.BasePermission):
 
         return False
 
+    def isAdoptCodi(self, method, obj):
+        if method == 'GET':
+            return True
+        if hasattr(obj, 'islock') and obj.islock == True:
+            raise AlreadyAdopted
+        return True
+
     def has_object_permission(self, request, view, obj):
         if obj.userId == 1:
-            return True
+            return self.isAdoptCodi(request.method, obj)
 
         token = request.META.get('HTTP_AUTHORIZATION')
 

@@ -5,10 +5,10 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 import api.codi.schemas as CodiSchema
 from api.codi.paginations import CodiListPagination
-from api.codi.serializers import (CodiCreateSerializer,
-                                  CodiDuplicateSerializer, CodiListSerializer,
-                                  CodiSerializer, CodiUserCreateSerializer,
-                                  CodiUserSerializer)
+from api.codi.serializers import (CodiCreateSerializer, CodiDetailSerializer,
+                                  CodiDuplicateSerializer, CodiSerializer,
+                                  CodiUpdateSerializer,
+                                  CodiUserCreateSerializer, CodiUserSerializer)
 from api.libs import isSelfRequest
 from api.permissions import UserAccessPermission
 from model.codimodel.models import Codi
@@ -28,13 +28,6 @@ class CodiViewSet(ModelViewSet):
     pagination_class = CodiListPagination
     permission_classes = [UserAccessPermission]
 
-    # def get_serializer_context(self):
-    #     return {
-    #         'request': None,
-    #         'format': self.format_kwarg,
-    #         'view': self
-    #     }
-
     def get_serializer_class(self):
         if hasattr(self, 'action') == False:
             return self.serializer_class
@@ -42,21 +35,21 @@ class CodiViewSet(ModelViewSet):
         if self.action == 'create':
             return CodiCreateSerializer
         if self.action == 'retrieve':
-            return CodiListSerializer
+            return CodiDetailSerializer
         if self.action == 'partial_update':
-            return CodiSerializer
+            return CodiUpdateSerializer
         if self.action == 'destroy':
             return CodiSerializer
         if self.action == 'list':
-            return CodiListSerializer
+            return CodiDetailSerializer
         if self.action == 'dup_create':
             return CodiDuplicateSerializer
         return self.serializer_class
 
     @action(detail=True, methods=['post'], url_path='dup')
     def dup_create(self, request, *args, **kwargs):
-        # setattr(request.data, '_mutable', True)
         request.data['id'] = self.kwargs['pk']
+        super().partial_update(request, *args, **kwargs)
         return super().create(request, *args, **kwargs)
 
 
@@ -71,13 +64,6 @@ class CodiUserViewSet(mixins.CreateModelMixin,
     pagination_class = CodiListPagination
     permission_classes = [UserAccessPermission]
 
-    def get_serializer_context(self):
-        return {
-            'request': None,
-            'format': self.format_kwarg,
-            'view': self
-        }
-
     def get_queryset(self):
         pk = self.request.data['userId']
         return Codi.objects.filter(userId=pk)
@@ -89,13 +75,13 @@ class CodiUserViewSet(mixins.CreateModelMixin,
         if self.action == 'create':
             return CodiUserCreateSerializer
         if self.action == 'list':
-            return CodiListSerializer
+            return CodiDetailSerializer
         return self.serializer_class
 
 
 class CodiExampleView(mixins.ListModelMixin,
-                       GenericViewSet):
-    serializer_class = CodiListSerializer
+                      GenericViewSet):
+    serializer_class = CodiDetailSerializer
 
     def get_queryset(self):
         return Codi.objects.all().order_by('-id')[:10]
