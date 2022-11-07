@@ -53,7 +53,7 @@ const useTags = () => {
     return Object.keys(tags).filter((tagName) => tags[tagName].selected);
   };
 
-  const selectedCategory = () => {
+  const getSelectedCategory = () => {
     const category = Object.keys(tags).filter(
       (tagName) => tags[tagName].categoryId === 100 && tags[tagName].selected
     );
@@ -67,7 +67,7 @@ const useTags = () => {
     toggleTag,
     clearSelection,
     useSelectedTags,
-    selectedCategory,
+    getSelectedCategory,
   };
 };
 

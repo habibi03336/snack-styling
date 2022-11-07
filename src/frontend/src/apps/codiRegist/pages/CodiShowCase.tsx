@@ -16,7 +16,6 @@ import useCodiRegist from "../hooks/useCodiRegist";
 import CodiBoard from "../../common/components/CodiBoard";
 import useTags from "../../common/hooks/useTags";
 import { RouteComponentProps } from "react-router-dom";
-import { SwiperSlide, Swiper } from "swiper/react";
 
 import BottomButton from "../../common/components/BottomButton";
 import { useRef } from "react";
@@ -34,11 +33,12 @@ type ICodiShowCase = RouteComponentProps<{
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
   const setRouteContext = useSetRecoilState(routeContextAtom);
-  const { selectTag, clearSelection, selectedCategory } = useTags();
+  const { selectTag, clearSelection, getSelectedCategory } = useTags();
+  const selectedCategory = getSelectedCategory();
   const isSelfCodi = Number(match.params.qid) === -1;
   const { clothes, loadMore, loadDone } = useClothes(
     isSelfCodi ? undefined : Number(match.params.mid),
-    selectedCategory()
+    selectedCategory
   );
 
   const codiContext =
@@ -71,7 +71,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
   };
 
   const onBoardImgClick = (category: string) => {
-    if (category === selectedCategory()) deleteCodiCloth(selectedCategory()!);
+    if (category === selectedCategory) deleteCodiCloth(selectedCategory!);
     else {
       clearSelection();
       selectTag(category);
@@ -88,22 +88,21 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
       />
 
       <IonContent>
-        {selectedCategory() !== undefined && (
-          <CardLayout
-            cardComponents={clothes.map((cloth) => {
-              return (
-                <div
-                  onClick={() => {
-                    putCodiCloth(cloth);
-                  }}
-                  key={cloth.id}
-                >
-                  <ClothCard cloth={cloth} type="small" />
-                </div>
-              );
-            })}
-          />
-        )}
+        <CardLayout
+          cardComponents={clothes.map((cloth) => {
+            if (cloth.category !== selectedCategory) return false;
+            return (
+              <div
+                onClick={() => {
+                  putCodiCloth(cloth);
+                }}
+                key={cloth.id}
+              >
+                <ClothCard cloth={cloth} type="small" />
+              </div>
+            );
+          })}
+        />
 
         <IonInfiniteScroll
           onIonInfinite={loadMore}
