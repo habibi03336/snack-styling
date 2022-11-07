@@ -1,5 +1,6 @@
 package com.snackstyling.spring.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -7,10 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,PATCH";
+    @Value("${web.allow.origin}")
+    private String allowOrigin;
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://www.snackstyling.com")
+                .allowedOrigins(allowOrigin)
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","));
         /*
         addMapping : 해당 설정을 적요할 API 범위 선택 =-> /** 전체 적용
