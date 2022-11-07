@@ -1,16 +1,14 @@
 package com.snackstyling.spring.login.service;
 
+import com.snackstyling.spring.common.exception.ConflictException;
 import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.AuthRequest;
 import com.snackstyling.spring.login.dto.LoginResponse;
-import com.snackstyling.spring.login.exception.DuplicateEmailException;
-import com.snackstyling.spring.login.exception.NonePwdException;
 import com.snackstyling.spring.login.repository.LoginRepository;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class JoinService {
         //login inf save
         Matcher passMatcher=passPatten.matcher(authRequest.getPwd());
         if(!passMatcher.find()){
-            throw new NonePwdException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
+            throw new ConflictException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
         }
         LoginResponse loginResponse=new LoginResponse();
         loginResponse.setIsMember(false);
@@ -73,13 +71,13 @@ public class JoinService {
     }
     public void dupUser(String email){
         if(loginRepository.existsByEmail(email)){
-            throw new DuplicateEmailException("아이디가 중복되었습니다.");
+            throw new ConflictException("아이디가 중복되었습니다.");
         }
     }
     public void outUser(AuthRequest authRequest){
         Login user=loginRepository.findByEmail(authRequest.getEmail());
         if(!passwordEncoder.matches(authRequest.getPwd(),user.getPassword())){
-            throw new NonePwdException("패스워드가 불일치합니다.");
+            throw new ConflictException("패스워드가 불일치합니다.");
         }
         user.setUsed(0);
         loginRepository.save(user);

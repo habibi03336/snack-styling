@@ -1,5 +1,6 @@
 package com.snackstyling.spring.member.service;
 
+import com.snackstyling.spring.common.exception.ConflictException;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.repository.AnswerRepository;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
@@ -7,16 +8,12 @@ import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.QuestionResponse;
 import com.snackstyling.spring.community.question.dto.QuestionsResponse;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
-import com.snackstyling.spring.login.domain.Login;
-import com.snackstyling.spring.login.repository.LoginRepository;
-import com.snackstyling.spring.login.service.LoginService;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.domain.Suggestion;
 import com.snackstyling.spring.member.dto.MemberRequest;
 import com.snackstyling.spring.member.dto.MemberInfResponse;
 import com.snackstyling.spring.member.dto.RankResponse;
 import com.snackstyling.spring.member.dto.RanksResponse;
-import com.snackstyling.spring.member.exception.DuplicateNameException;
 import com.snackstyling.spring.member.repository.MemberRepository;
 import com.snackstyling.spring.member.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +25,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    private final LoginService loginService;
-    private final LoginRepository loginRepository;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -38,10 +33,10 @@ public class MemberService {
     public void memberInsert(Long id,MemberRequest memberRequest){
         Integer len=memberRequest.getNickname().length();
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
-            throw new DuplicateNameException("닉네임이 중복되었습니다.");
+            throw new ConflictException("닉네임이 중복되었습니다.");
         }
         if(len<3 || len>8){
-            throw new DuplicateNameException("이름은 3글자 이상 8글자 이하만 가능합니다.");
+            throw new ConflictException("이름은 3글자 이상 8글자 이하만 가능합니다.");
         }
         Member member=memberRepository.findById(id).orElse(null);
         member.setAge(memberRequest.getAge());
@@ -53,7 +48,7 @@ public class MemberService {
     }
     public void memberUpdate(Long id,MemberRequest memberRequest){
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
-            throw new DuplicateNameException("닉네임이 중복되었습니다.");
+            throw new ConflictException("닉네임이 중복되었습니다.");
         }
         Member member=memberRepository.findById(id).orElse(null);
         member.setAge(memberRequest.getAge());

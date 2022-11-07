@@ -1,5 +1,8 @@
 package com.snackstyling.spring.community.question.service;
 
+import com.snackstyling.spring.common.exception.NotAcceptableException;
+import com.snackstyling.spring.common.exception.NotFoundException;
+import com.snackstyling.spring.common.exception.ServerException;
 import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.community.answer.domain.Answer;
 import com.snackstyling.spring.community.answer.dto.AnswerResponse;
@@ -9,9 +12,6 @@ import com.snackstyling.spring.community.common.dto.ClothDto;
 import com.snackstyling.spring.community.common.dto.OccasionDto;
 import com.snackstyling.spring.community.question.domain.Question;
 import com.snackstyling.spring.community.question.dto.*;
-import com.snackstyling.spring.community.question.exception.AdoptQueException;
-import com.snackstyling.spring.community.question.exception.DelQueException;
-import com.snackstyling.spring.community.question.exception.ExistAnsException;
 import com.snackstyling.spring.community.question.repository.QuestionRepository;
 import com.snackstyling.spring.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -91,10 +90,10 @@ public class QuestionService {
     public void questionDelete(Long id){
         Question question=questionSelect(id);
         if(question.getAdopt()==1){
-            throw new AdoptQueException("채택된 질문으로 삭제할 수 없습니다.");
+            throw new NotAcceptableException("채택된 질문으로 삭제가 불가능 합니다.");
         }
         if(answerRepository.countByAnswer(question, 1)!=0){
-            throw new ExistAnsException("답변이 존재하는 질문으로 삭제할 수 없습니다.");
+            throw new NotAcceptableException("답변이 존재하는 질문으로 삭제가 불가능 합니다.");
         }
         question.setUsed(0);
         questionRepository.save(question);
@@ -102,10 +101,10 @@ public class QuestionService {
     public void questionUpdate(Long id, QuestionRequest questionRequest){
         Question question=questionRepository.findById(id).orElse(null);
         if(question.getAdopt()==1){
-            throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
+            throw new NotAcceptableException("채택된 질문으로 수정이 불가능 합니다.");
         }
         if(answerRepository.countByAnswer(question, 1)!=0){
-            throw new ExistAnsException("답변이 존재하는 질문으로 수정할 수 없습니다.");
+            throw new NotAcceptableException("답변이 존재하는 질문은 수정이 불가능 합니다.");
         }
         question.setTpo(questionRequest.getTpo());
         question.setEndDate(questionRequest.getEndDate());
@@ -118,7 +117,7 @@ public class QuestionService {
     public QuestionDetailResponse questionDetail(Long id, String token){
         Question question=questionRepository.findByIdAndUsed(id,1);
         if(question==null){
-            throw new DelQueException("삭제된 질문입니다!");
+            throw new NotFoundException("삭제 되었거나 없는 질문입니다.");
         }
         QuestionResponse questionResponse=new QuestionResponse();
         questionResponse.setQid(question.getId());
@@ -153,7 +152,7 @@ public class QuestionService {
                 answerResponse.setPostDate(temp.getPostDate());
                 answerResponses.add(answerResponse);
             }catch(Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "django service connection error");
+                throw new ServerException("장고 서버와 통신에 실패했습니다.");
             }
         }
         return new QuestionDetailResponse(questionResponse,new AnswersResponse(answerResponses));

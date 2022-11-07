@@ -63,16 +63,10 @@ public class JwtService {
     public void validateToken(String token){
         try {
             Jwts.parser().setSigningKey(ac_secret_key).parseClaimsJws(token);
-        } catch (SignatureException e){
-            throw new TokenSignatureException("Invalid token signature");
-        } catch (MalformedJwtException e){
-            throw new TokenMatchException("Invalid token");
-        } catch (UnsupportedJwtException e){
-            throw new TokenSupportException("Unsupported token");
-        } catch (IllegalArgumentException e){
-            throw new ClaimEmptyException("Token claims string is empty");
         } catch (ExpiredJwtException e){
-            throw new TokenExpiredException("Token has expired");
+            throw new NotUpgradeException("토큰이 만료되었습니다.");
+        } catch (Exception e){
+            throw new UnauthorizedException("정상적으로 발급된 토큰이 아닙니다.");
         }
     }
     public AcTokenResponse refreshCompare(String token){
@@ -82,10 +76,10 @@ public class JwtService {
                 .get("Email").toString();
         Token temp=tokenRepository.findById(email).orElse(null);
         if(temp.getRefreshToken()==null){
-            throw new TokenExpiredException("Token has expired");
+            throw new NotUpgradeException("토큰이 만료되었습니다.");
         }
         if(!temp.getRefreshToken().equals(token)){
-            throw new TokenMatchException("Invalid token");
+            throw new UnauthorizedException("정상적으로 발급된 토큰이 아닙니다.");
         }
         Login user=loginRepository.findByEmail(email);
         Map<String, Object> headers=new HashMap<>();

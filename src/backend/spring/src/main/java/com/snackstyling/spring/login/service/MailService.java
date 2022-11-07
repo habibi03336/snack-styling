@@ -1,9 +1,10 @@
 package com.snackstyling.spring.login.service;
 
+import com.snackstyling.spring.common.exception.ConflictException;
+import com.snackstyling.spring.common.exception.ServerException;
 import com.snackstyling.spring.login.domain.Mail;
 import com.snackstyling.spring.login.dto.CompareRequest;
 import com.snackstyling.spring.login.dto.ConfirmRequest;
-import com.snackstyling.spring.login.exception.NonePwdException;
 import com.snackstyling.spring.login.repository.MailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,13 +43,13 @@ public class MailService {
             messageHelper.setFrom(email,"커피스타일링");
             mailSender.send(message);
         }catch(Exception e){
-            e.printStackTrace();
+            throw new ServerException("메일 서버와 통신에 실패했습니다.");
         }
     }
     public void checkMail(CompareRequest compareRequest){
         Mail mailNumber=mailRepository.findById(compareRequest.getEmail()).orElse(null);
         if(!mailNumber.getNumber().equals(compareRequest.getNumber())){
-            throw new NonePwdException("인증번호가 일치하지 않습니다.");
+            throw new ConflictException("인증번호가 일치하지 않습니다.");
         }
     }
 }
