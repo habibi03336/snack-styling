@@ -7,7 +7,7 @@ class Codi(models.Model):
     bottom = models.ForeignKey('clothmodel.Cloth', on_delete=models.SET_NULL, blank=True, null=True, related_name='bottom_cloth_req')
     cap = models.ForeignKey('clothmodel.Cloth', on_delete=models.SET_NULL, blank=True, null=True, related_name='cap_cloth_req')
     footwear = models.ForeignKey('clothmodel.Cloth', on_delete=models.SET_NULL, blank=True, null=True, related_name='footwear_cloth_req')
-    comments = models.CharField(max_length=200, default="")
+    comments = models.CharField(max_length=200, default="", blank=True)
     islock = models.BooleanField(default=False)
     
     class Meta:
