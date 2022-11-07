@@ -1,13 +1,11 @@
 package com.snackstyling.spring.login.service;
 
 import com.snackstyling.spring.common.dto.TokenDto;
+import com.snackstyling.spring.common.exception.ConflictException;
+import com.snackstyling.spring.common.exception.NotFoundException;
 import com.snackstyling.spring.common.service.JwtService;
 import com.snackstyling.spring.login.domain.Login;
 import com.snackstyling.spring.login.dto.*;
-import com.snackstyling.spring.login.exception.NoneEmailException;
-import com.snackstyling.spring.login.exception.NoneMemberException;
-import com.snackstyling.spring.login.exception.NonePwdException;
-import com.snackstyling.spring.login.exception.WithdrawException;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.login.repository.LoginRepository;
 import com.snackstyling.spring.member.repository.MemberRepository;
@@ -39,14 +37,14 @@ public class LoginService {
     public LoginResponse checkUser(AuthRequest authRequest){
         LoginResponse loginResponse=new LoginResponse();
         if(!loginRepository.existsByEmail(authRequest.getEmail())){
-            throw new NoneEmailException("존재하지 않는 아이디입니다.");
+            throw new ConflictException("존재하지 않는 아이디입니다.");
         }
         Login user=loginRepository.findByEmail(authRequest.getEmail());
         if(!passwordEncoder.matches(authRequest.getPwd(),user.getPassword())){
-            throw new NonePwdException("패스워드가 불일치합니다.");
+            throw new ConflictException("패스워드가 불일치합니다.");
         }
         if(user.getUsed()==0){
-            throw new WithdrawException("회원탈퇴한 유저입니다.");
+            throw new NotFoundException("회원탈퇴한 유저입니다.");
         }
         Member member=memberRepository.findByLogin(user);
         if(member==null){
