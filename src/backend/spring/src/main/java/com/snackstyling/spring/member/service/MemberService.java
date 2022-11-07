@@ -30,27 +30,15 @@ public class MemberService {
     private final AnswerRepository answerRepository;
     private final SuggestionRepository suggestionRepository;
 
-    public void memberInsert(Long id,MemberRequest memberRequest){
+    public void memberUpdate(Long id,MemberRequest memberRequest){
+        Member member=memberRepository.findById(id).orElse(null);
         Integer len=memberRequest.getNickname().length();
-        if(memberRepository.existsByNickname(memberRequest.getNickname())){
+        if(!member.getNickname().equals(memberRequest.getNickname())
+                && memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new ConflictException("닉네임이 중복되었습니다.");
         }
         if(len<3 || len>8){
             throw new ConflictException("이름은 3글자 이상 8글자 이하만 가능합니다.");
-        }
-        Member member=memberRepository.findById(id).orElse(null);
-        member.setAge(memberRequest.getAge());
-        member.setNickname(memberRequest.getNickname());
-        member.setGender(memberRequest.getGender());
-        member.setWeight(memberRequest.getWeight());
-        member.setHeight(memberRequest.getHeight());
-        memberRepository.save(member);
-    }
-    public void memberUpdate(Long id,MemberRequest memberRequest){
-        Member member=memberRepository.findById(id).orElse(null);
-        if(!member.getNickname().equals(memberRequest.getNickname())
-                && memberRepository.existsByNickname(memberRequest.getNickname())){
-            throw new ConflictException("닉네임이 중복되었습니다.");
         }
         member.setAge(memberRequest.getAge());
         member.setNickname(memberRequest.getNickname());

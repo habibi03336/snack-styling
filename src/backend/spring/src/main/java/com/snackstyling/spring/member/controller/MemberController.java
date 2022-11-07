@@ -20,13 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
     private final JwtService jwtService;
-    @ApiOperation(value="맴버정보 입력",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장</strong>")
-    @PostMapping("")
-    public ResponseEntity<Void> inputMember(@RequestHeader("Authorization") String token, @RequestBody MemberRequest memberRequest){
-        jwtService.validateToken(token);
-        memberService.memberInsert(jwtService.getMemberId(token),memberRequest);
-        return ResponseEntity.ok().build();
-    }
+
     @ApiOperation(value="멤버정보 확인",notes = "<strong>마이페이지로 회원 정보를 제공한다.</strong>")
     @GetMapping("")
     public ResponseEntity<MemberInfResponse> inquiryMember(@RequestHeader("Authorization") String token){
