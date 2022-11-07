@@ -127,9 +127,15 @@ const ClothRegist: React.FC = () => {
                     />
                   )}
                 </IonCard>
-                <div>{categoryChips}</div>
-                <RowFiller px={10} />
-                <div>{tagChips}</div>
+                {processClothes.every(
+                  (cloth) => cloth.imageUpdated === true
+                ) && (
+                  <>
+                    <div>{categoryChips}</div>
+                    <RowFiller px={10} />
+                    <div>{tagChips}</div>
+                  </>
+                )}
               </SwiperSlide>
             );
           })}

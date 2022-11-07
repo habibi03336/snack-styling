@@ -98,13 +98,15 @@ const useCodiRegist = (
 
         codiData[categoryName] = cloth.id;
       });
-      codiData["comments"] = comment;
+      if (comment !== "") {
+        codiData["comments"] = comment;
+      }
+
+      if (type === "own") res = await POST_CODI(codiData);
 
       if (type === "update" && cid) {
         res = await PATCH_CODI(cid, codiData);
       }
-
-      if (type === "own") res = await POST_CODI(codiData);
 
       if (questionId) {
         const answerData = {
