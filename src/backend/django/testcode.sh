@@ -9,6 +9,6 @@ python manage.py loaddata data.json --settings=coffProject.settings.local
 echo "[Test] Running Test code..."
 python manage.py test --settings=coffProject.settings.local
 
-ecgo "[DB] Apply changes to Service DB..."
+echo "[DB] Apply changes to Service DB..."
 python manage.py makemigrations --settings=coffProject.settings.prod
 python manage.py migrate --settings=coffProject.settings.prod
