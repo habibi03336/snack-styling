@@ -40,7 +40,7 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, secret_key)
                 .compact();
     }
-    public TokenDto createToken(Login member) {
+    public TokenDto createToken(Member member) {
         /*jwt-header setting*/
         Map<String, Object> headers=new HashMap<>();
         headers.put("typ","JWT");
@@ -48,10 +48,10 @@ public class JwtService {
         /*jwt-header payload(pk,email)*/
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("Key", member.getId());
-        payloads.put("Email",member.getEmail());
+        payloads.put("Email",member.getLogin().getEmail());
         String refresh=createJsonWebToken(headers,payloads, refreshExpired, re_secret_key);
         String access=createJsonWebToken(headers,payloads, accessExpired,ac_secret_key);
-        tokenRepository.save(new Token(member.getEmail(),refresh));
+        tokenRepository.save(new Token(member.getLogin().getEmail(),refresh));
         return new TokenDto(refresh,access);
     }
     public Long getMemberId(String token){

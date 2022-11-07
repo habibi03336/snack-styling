@@ -55,7 +55,7 @@ public class LoginService {
         else{
             loginResponse.setIsMember(true);
         }
-        TokenDto tokens=jwtService.createToken(user);
+        TokenDto tokens=jwtService.createToken(member);
         loginResponse.setTokens(tokens);
         return loginResponse;
     }
@@ -88,7 +88,7 @@ public class LoginService {
                 loginResponse.setIsMember(true);
             }
 
-            loginResponse.setTokens(jwtService.createToken(user));
+            loginResponse.setTokens(jwtService.createToken(member));
             return loginResponse;
         }
         else{
