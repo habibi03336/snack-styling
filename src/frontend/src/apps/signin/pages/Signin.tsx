@@ -21,7 +21,7 @@ import Notification from "../../common/components/Notification";
 
 const Signin = () => {
   const history = useHistory();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorEmailMessage, setErrorEmailMessage] = useState("");
   const {
     id,
     setId,
@@ -35,31 +35,32 @@ const Signin = () => {
     emailSend,
     emailConfirm,
     postSignin,
+    errorMessage,
   } = useSignin();
 
   return (
     <IonPage>
-      <Header type="back" text="회원가입" routeTo="/emailLogin" />
+      <Header type="back" text="회원가입" />
       <IonContent>
         <form
           onSubmit={(e) => {
             e.preventDefault();
 
             if (verification !== 1) {
-              setErrorMessage("이메일 인증을 진행해 주세요");
+              setErrorEmailMessage("이메일 인증을 진행해 주세요");
               return;
             }
 
             if (!validEmail(id)) {
-              setErrorMessage("이메일 형식이 맞지 않습니다");
+              setErrorEmailMessage("이메일 형식이 맞지 않습니다");
               return;
             }
             if (!validPwd(pwd)) {
-              setErrorMessage("비밀번호 형식이 맞지 않습니다.");
+              setErrorEmailMessage("비밀번호 형식이 맞지 않습니다.");
               return;
             }
             if (pwd !== pwd2) {
-              setErrorMessage("비밀번호가 서로 다르게 입력되었습니다.");
+              setErrorEmailMessage("비밀번호가 서로 다르게 입력되었습니다.");
               return;
             }
             postSignin.subscribe({
@@ -68,7 +69,7 @@ const Signin = () => {
               },
             });
 
-            setErrorMessage("");
+            setErrorEmailMessage("");
           }}
         >
           <IonList>
@@ -158,6 +159,7 @@ const Signin = () => {
               회원가입
             </Button>
           </BottomButton>
+          <Notification text={errorEmailMessage} />
           <Notification text={errorMessage} />
         </form>
       </IonContent>

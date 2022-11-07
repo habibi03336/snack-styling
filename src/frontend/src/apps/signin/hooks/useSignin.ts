@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Observable } from "rxjs";
 import { AUTH_SIGNIN, EMAIL_CONFIRM, EMAIL_SEND } from "../../../lib/api/auth";
+import { validEmail } from "../../../lib/utils/validation";
 import { userAtom } from "../../common/state/user";
 import storeToken from "../../login/lib/storeToken";
 
@@ -21,6 +22,7 @@ const useSignin = () => {
   const [user, setUser] = useRecoilState(userAtom);
   // -1 : 시도 X, 0: 인증코드 전송, 1: 인증 성공, 2: 인증 실패
   const [verification, setVerification] = useState<-1 | 0 | 1 | 2>(-1);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const postSignin = new Observable((subscriber) => {
     if (verification !== 1) return;
@@ -36,13 +38,19 @@ const useSignin = () => {
           window.location.href = "/memberDetailRegist";
           return;
         }
+        subscriber.complete();
+      } else {
+        setErrorMessage(res.data.message);
       }
-      subscriber.complete();
     })();
   });
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const emailSend = async () => {
+    if (!validEmail(id)) {
+      setErrorMessage("이메일을 형식에 맞춰 입력해 주세요");
+      return;
+    }
     const res = await EMAIL_SEND(id);
     if (res.status === 200) setVerification(0);
   };
@@ -71,6 +79,7 @@ const useSignin = () => {
     emailSend,
     emailConfirm,
     postSignin,
+    errorMessage,
   };
 };
 

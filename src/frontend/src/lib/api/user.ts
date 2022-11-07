@@ -5,12 +5,13 @@ const baseURL = address["api"] + "/profile";
 
 export interface IMemberInfo {
   age: number | null;
-  gender: 1 | 2 | null;
+  gender: number | null;
   height: number | null;
-  id: number;
   nickname: string | null;
   weight: number | null;
 }
+
+export const GET_MEMBER_DETAIL = () => client.get(baseURL);
 
 export const PATCH_MEMBER_DETAIL = (memberInfo: IMemberInfo) =>
   client.post(baseURL, memberInfo);

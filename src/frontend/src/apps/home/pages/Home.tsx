@@ -19,7 +19,7 @@ import CodiCard from "../../closet/components/CodiCard";
 import { useRef, useState } from "react";
 import useCodis from "../../common/hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
-import { POST_CODIPLAN } from "../../../lib/api/codiplan";
+import { POST_CODIPLAN, PATCH_CODIPLAN } from "../../../lib/api/codiplan";
 import Header from "../../common/components/Header";
 import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
@@ -29,17 +29,22 @@ const Home = () => {
   const { codis, loadMore, loadDone } = useCodis();
 
   const codiplanning = async (codiId: number, date: string) => {
-    try {
+    if (codiplan[date.split("-")[2]] === undefined) {
       await POST_CODIPLAN(codiId, date);
       setCodiplan({
         ...codiplan,
         [date.split("-")[2]]: codiId,
       });
-    } catch {
-      console.log("error");
+    } else {
+      await PATCH_CODIPLAN(codiId, date);
+      setCodiplan({
+        ...codiplan,
+        [date.split("-")[2]]: codiId,
+      });
     }
     setIsModalOpen(false);
   };
+
   return (
     <IonPage>
       <Header type="title" text="스낵 스타일링" />
@@ -92,9 +97,7 @@ const Home = () => {
                   type="big"
                   codi={codiSelected}
                   comment={""}
-                  onCodiClick={function (): void {
-                    1 + 1;
-                  }}
+                  onCodiClick={() => setIsModalOpen(true)}
                 />
               )}
               {!codiSelected && (

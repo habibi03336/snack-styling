@@ -54,14 +54,12 @@ const StyleAnsCard = ({
             </div>
           </div>
         </div>
-        {owner ? (
+        {owner && !adopted && (
           <div style={{ display: "flex", flexDirection: "row", color: "gray" }}>
             <span onClick={onClickUpdate}>수정</span>
             <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <span onClick={onClickDelete}>삭제</span>
           </div>
-        ) : (
-          false
         )}
         {showAdopt ? (
           <div style={{ display: "flex", flexDirection: "row", color: "gray" }}>

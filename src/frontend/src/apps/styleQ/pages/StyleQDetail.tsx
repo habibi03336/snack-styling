@@ -53,8 +53,7 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
         <Header type="back" routeTo="/styleQ" />
         {styleQDetailData?.que === undefined && !error && <div>loading</div>}
         {error && <div>찾는 페이지가 없습니다.</div>}
-        {id === styleQDetailData?.que.mid &&
-        styleQDetailData.ans.length === 0 ? (
+        {id === styleQDetailData?.que.mid && styleQDetailData.ans.length === 0 && (
           <div style={{ display: "flex", flexDirection: "row-reverse" }}>
             <span onClick={removeQ}> 삭제하기 </span> &nbsp; | &nbsp;{" "}
             <IonRouterLink
@@ -63,8 +62,6 @@ const StyleQDetail = ({ match }: IStyleQDetail) => {
               <span> 수정하기 </span>
             </IonRouterLink>
           </div>
-        ) : (
-          false
         )}
         <StyleQCardDetail styleQ={styleQDetailData?.que} />
 

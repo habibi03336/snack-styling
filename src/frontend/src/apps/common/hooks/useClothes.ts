@@ -6,12 +6,12 @@ import useInfiniteScroll from "../../common/hooks/useInfiniteScroll";
 import infiniteCloths from "../../common/lib/infiniteCloths";
 
 const useCloths = (userId?: number, selectedCategory?: string) => {
-  const userState = useRecoilValue(user);
+  const { id } = useRecoilValue(user);
 
   const { elems, loadMore, loadDone } = useInfiniteScroll((page: number) => {
     return infiniteCloths(
       page,
-      userId ? userId : userState.id,
+      userId ? userId : id,
       selectedCategory ? selectedCategory : undefined
     );
   }, selectedCategory);
