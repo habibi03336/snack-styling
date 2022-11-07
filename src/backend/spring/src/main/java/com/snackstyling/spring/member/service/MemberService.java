@@ -47,10 +47,11 @@ public class MemberService {
         memberRepository.save(member);
     }
     public void memberUpdate(Long id,MemberRequest memberRequest){
-        if(memberRepository.existsByNickname(memberRequest.getNickname())){
+        Member member=memberRepository.findById(id).orElse(null);
+        if(!member.getNickname().equals(memberRequest.getNickname())
+                && memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new ConflictException("닉네임이 중복되었습니다.");
         }
-        Member member=memberRepository.findById(id).orElse(null);
         member.setAge(memberRequest.getAge());
         member.setNickname(memberRequest.getNickname());
         member.setGender(memberRequest.getGender());
