@@ -4,7 +4,7 @@ const validEmail = (email: string) => {
 };
 
 const validPwd = (pwd: string) => {
-  return pwd.length > 7;
+  return pwd.length > 2;
 };
 
 export { validEmail, validPwd };

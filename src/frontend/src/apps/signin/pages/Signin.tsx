@@ -40,7 +40,7 @@ const Signin = () => {
 
   return (
     <IonPage>
-      <Header type="back" text="회원가입" routeTo="/emailLogin" />
+      <Header type="back" text="회원가입" />
       <IonContent>
         <form
           onSubmit={(e) => {
