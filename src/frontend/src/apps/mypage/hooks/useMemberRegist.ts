@@ -1,12 +1,10 @@
 import { useLayoutEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { Observable } from "rxjs";
 import {
   PATCH_MEMBER_DETAIL,
   IMemberInfo,
   GET_MEMBER_DETAIL,
 } from "../../../lib/api/user";
-import useOnMount from "../../common/hooks/useOnMount";
 
 const defaultFeatures: IMemberInfo = {
   age: null,
@@ -18,6 +16,7 @@ const defaultFeatures: IMemberInfo = {
 
 const userMemeberRegist = () => {
   const [features, setFeatures] = useState(defaultFeatures);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useLayoutEffect(() => {
     (async () => {
@@ -40,11 +39,17 @@ const userMemeberRegist = () => {
         ...features,
       });
 
+      if (res.status !== 200) {
+        setErrorMessage(res.data.message);
+        return;
+      }
+
       subscriber.complete();
     })();
   });
 
   return {
+    errorMessage,
     features,
     setFeatures,
     postSignin,

@@ -15,9 +15,10 @@ import Label from "../../common/components/Label";
 import BottomButton from "../../common/components/BottomButton";
 import Header from "../../common/components/Header";
 import RowFiller from "../../common/components/RowFiller";
+import Notification from "../../common/components/Notification";
 
 const MemberDetailRegist = () => {
-  const { features, setFeatures, postSignin } = useMemberRegist();
+  const { features, setFeatures, postSignin, errorMessage } = useMemberRegist();
   return (
     <IonPage>
       <Header type="back" text="정보입력" />
@@ -154,7 +155,7 @@ const MemberDetailRegist = () => {
           </IonRadioGroup>
         </IonItem> */}
           </IonList>
-
+          <Notification text={errorMessage} />
           <BottomButton>
             <IonButton type="submit" expand="block">
               정보 입력하기

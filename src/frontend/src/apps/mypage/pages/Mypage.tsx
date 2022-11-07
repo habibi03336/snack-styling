@@ -5,7 +5,6 @@ import {
   IonItem,
   IonList,
   IonPage,
-  IonRouterLink,
 } from "@ionic/react";
 import { useRecoilValue } from "recoil";
 import IDCard from "../components/IDCard";
