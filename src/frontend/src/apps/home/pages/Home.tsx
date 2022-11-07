@@ -81,11 +81,12 @@ const Home = () => {
               ></div>
             </div>
             <div>
-              {true && (
-                <strong style={{ position: "absolute", padding: "10px" }}>
-                  {date.toDateString()}
-                </strong>
-              )}
+              <strong
+                style={{ position: "absolute", padding: "10px", zIndex: 20 }}
+              >
+                {date.toDateString()}
+              </strong>
+
               {codiSelected && (
                 <CodiCard
                   type="big"
@@ -101,9 +102,10 @@ const Home = () => {
                   onClick={() => setIsModalOpen(true)}
                   style={{
                     borderRadius: "15px",
+                    margin: "8px 8px",
                     width: `${innerViewWidth * 0.9}px`,
                     height: `${innerViewWidth * 0.9}px`,
-                    backgroundColor: "lightgray",
+                    backgroundColor: "#fafafa",
                     color: "gray",
                     display: "flex",
                     justifyContent: "center",

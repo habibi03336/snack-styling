@@ -17,7 +17,7 @@ import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
 const useCodiRegist = (
   type: "own" | "answer" | "update",
-  id?: number,
+  cid?: number,
   questionId?: number
 ) => {
   // if type is answer questionId must exist
@@ -28,15 +28,17 @@ const useCodiRegist = (
   );
 
   useOnMount(async () => {
-    if (type === "update" && id) {
-      const { data } = await GET_CODI(id);
+    if (type.slice(0, 6) === "update" && cid) {
+      const { data } = await GET_CODI(cid);
       const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
 
       const codiTemp = defaultCodi.clothes.map((elem, idx) => {
         if (elem.image === null) return codiTemplate.clothes[idx];
         else return elem;
       });
+
       setCodiTemplate({ ...defaultCodi, clothes: codiTemp });
+      setComment(data.comments);
     }
   });
 
@@ -74,8 +76,8 @@ const useCodiRegist = (
 
   const uploadCodi = new Observable((subscriber) => {
     (async () => {
+      let res;
       const codiData: ICodiData = {};
-      codiTemplate.clothes.forEach((elem) => console.log(elem));
       codiTemplate.clothes.forEach((cloth) => {
         const categoryName = categoryMap.get(cloth.category);
         if (cloth.id === undefined) return;
@@ -83,24 +85,27 @@ const useCodiRegist = (
 
         codiData[categoryName] = cloth.id;
       });
+      codiData["comments"] = comment;
 
-      let res;
-      if (type === "update" && id) {
-        res = await PATCH_CODI(id, codiData);
-      } else if (type === "own") res = await POST_CODI(codiData);
-      else if (type === "answer" && questionId !== undefined) {
+      if (type === "update" && cid) {
+        res = await PATCH_CODI(cid, codiData);
+      }
+
+      if (type === "own") res = await POST_CODI(codiData);
+
+      if (questionId) {
         const answerData = {
           codi: {
-            top: null,
-            bottom: null,
-            footwear: null,
-            cap: null,
             ...codiData,
           },
           qid: questionId,
           comments: comment,
         };
-        res = await POST_STYLE_ANSWER(answerData);
+        console.log(answerData.codi);
+
+        if (type === "answer") {
+          res = await POST_STYLE_ANSWER(answerData);
+        }
       }
       //postStyleAns({ ...codiData, qid: 3 });
       else throw "not available state: type 'answer' should have questionId";

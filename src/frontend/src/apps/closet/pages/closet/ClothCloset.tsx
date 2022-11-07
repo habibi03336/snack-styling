@@ -163,8 +163,6 @@ const ClothCloset = () => {
           loadingText="Loading more data..."
         />
       </IonInfiniteScroll>
-
-      {!loadDone && <RowFiller px={300} />}
       <IonFab
         vertical="bottom"
         horizontal="end"

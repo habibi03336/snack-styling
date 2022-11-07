@@ -29,7 +29,7 @@ type ICodiShowCase = RouteComponentProps<{
   type: "create" | "update";
   mid: string;
   qid: string;
-  id: string;
+  cid: string;
 }>;
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
@@ -42,6 +42,8 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     selectedCategory()
   ); //
   const selectedTags = useSelectedTags();
+  const codiContext =
+    match.params.type === "update" ? "update" : isSelfCodi ? "own" : "answer";
   const {
     codiTemplate,
     putCodiCloth,
@@ -50,8 +52,8 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     comment,
     uploadCodi,
   } = useCodiRegist(
-    match.params.type === "update" ? "update" : isSelfCodi ? "own" : "answer",
-    Number(match.params.id),
+    codiContext,
+    Number(match.params.cid),
     Number(match.params.qid)
   );
 
@@ -60,7 +62,6 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
       complete() {
         setRouteContext((context) => {
           const newContext = [...context];
-          newContext.pop();
           return newContext;
         });
         if (match.params.mid === "-1") window.location.href = "/closet/codi";
