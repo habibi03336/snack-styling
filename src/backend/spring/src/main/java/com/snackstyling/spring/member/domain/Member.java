@@ -13,13 +13,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name="member")
 public class Member {
-    @Id
+    @Id @GeneratedValue
     @Column(name="memberId")
     private Long id;
     @OneToOne
     @JoinColumn(name="userId")
     private Login login;
-    @Column(unique = true, length = 7)
+    @Column(unique = true, length = 8)
     private String nickname;
     private Integer gender;
     // Int null 허용
