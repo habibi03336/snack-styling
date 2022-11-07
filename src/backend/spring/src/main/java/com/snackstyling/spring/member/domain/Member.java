@@ -19,7 +19,7 @@ public class Member {
     @OneToOne
     @JoinColumn(name="userId")
     private Login login;
-    @Column(unique = true)
+    @Column(unique = true, length = 7)
     private String nickname;
     private Integer gender;
     // Int null 허용
