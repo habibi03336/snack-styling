@@ -22,7 +22,7 @@ public class MemberController {
     private final JwtService jwtService;
     @ApiOperation(value="맴버정보 입력",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 저장</strong>")
     @PostMapping("")
-    public ResponseEntity inputMember(@RequestHeader("Authorization") String token, @RequestBody MemberRequest memberRequest){
+    public ResponseEntity<Void> inputMember(@RequestHeader("Authorization") String token, @RequestBody MemberRequest memberRequest){
         jwtService.validateToken(token);
         memberService.memberInsert(jwtService.getMemberId(token),memberRequest);
         return ResponseEntity.ok().build();
@@ -47,7 +47,7 @@ public class MemberController {
     }
     @ApiOperation(value="건의 사항",notes = "<strong>익명인척 하면서 맴버 정보까지 저장해버리기~</strong>")
     @PostMapping("/suggestions")
-    public ResponseEntity suggestion(@RequestHeader("Authorization") String token, @RequestBody SuggestionResquest suggestionResquest){
+    public ResponseEntity<Void> suggestion(@RequestHeader("Authorization") String token, @RequestBody SuggestionResquest suggestionResquest){
         jwtService.validateToken(token);
         memberService.memberSuggestion(jwtService.getMemberId(token), suggestionResquest.getContents());
         return ResponseEntity.ok().build();
@@ -61,7 +61,7 @@ public class MemberController {
 
     @ApiOperation(value="맴버정보 수정",notes = "<strong>회원가입 된 회원들의 정보를 입력받아 수정한다.</strong>")
     @PatchMapping("")
-    public ResponseEntity UpdateUsers(@RequestHeader("Authorization") String token,  @RequestBody MemberRequest memberRequest){
+    public ResponseEntity<Void> UpdateUsers(@RequestHeader("Authorization") String token,  @RequestBody MemberRequest memberRequest){
         jwtService.validateToken(token);
         memberService.memberUpdate(jwtService.getMemberId(token),memberRequest);
         return ResponseEntity.ok().build();
