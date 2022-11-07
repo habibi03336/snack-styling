@@ -10,7 +10,7 @@ export const GET_CLOTHS = (
   selectedCategory?: string
 ) => {
   // assert(type === "other" && userId === undefined ? false : true);
-  console.log(selectedCategory);
+
   return client.get(
     baseURL +
       `/cloth/user/?page=${page}` +
