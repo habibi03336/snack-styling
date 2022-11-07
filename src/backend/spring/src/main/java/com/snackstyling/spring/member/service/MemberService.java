@@ -40,13 +40,10 @@ public class MemberService {
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
         }
-        if(len<3 || len>7){
-            throw new DuplicateNameException("이름은 3글자 이상 7글자 이하만 가능합니다.");
+        if(len<3 || len>8){
+            throw new DuplicateNameException("이름은 3글자 이상 8글자 이하만 가능합니다.");
         }
-        Member member=new Member();
-        Login login=loginRepository.findById(id).orElse(null);
-        member.setId(login.getId());
-        member.setLogin(login);
+        Member member=memberRepository.findById(id).orElse(null);
         member.setAge(memberRequest.getAge());
         member.setNickname(memberRequest.getNickname());
         member.setGender(memberRequest.getGender());
