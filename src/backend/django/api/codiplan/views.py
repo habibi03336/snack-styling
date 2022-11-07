@@ -2,7 +2,7 @@ from drf_spectacular.utils import extend_schema_view
 from rest_framework.viewsets import ModelViewSet
 
 import api.codiplan.schemas as CodiplanSchema
-from api.codiplan.serializers import (CodiPlanRetrieveSerializer, CodiPlanUpdateDestroySerializer,
+from api.codiplan.serializers import (CodiPlanRetrieveSerializer,
                                       CodiPlanSerializer)
 from api.permissions import UserAccessPermission
 from model.codiplanmodel.models import CodiPlan
@@ -24,8 +24,8 @@ class CodiPlanViewSet(ModelViewSet):
 @extend_schema_view(
     create=CodiplanSchema.CODIPLANUSER_SCHEMA_CREATE,
     list=CodiplanSchema.CODIPLANUSER_SCHEMA_LIST,
-    update=CodiplanSchema.CODIPLAN_SCHEMA_DEFAULT,
-    destroy=CodiplanSchema.CODIPLAN_SCHEMA_DELETE,
+    partial_update=CodiplanSchema.CODIPLANUSER_SCHEMA_UPDATE,
+    destroy=CodiplanSchema.CODIPLANUSER_SCHEMA_DELETE,
 )
 class CodiPlanUserViewSet(ModelViewSet):
     serializer_class = CodiPlanSerializer
@@ -49,9 +49,9 @@ class CodiPlanUserViewSet(ModelViewSet):
         if self.action == 'list':
             return CodiPlanRetrieveSerializer
         if self.action == 'partial_update':
-            return CodiPlanUpdateDestroySerializer
+            return CodiPlanSerializer
         if self.action == 'destroy':
-            return CodiPlanUpdateDestroySerializer
+            return CodiPlanSerializer
         return self.serializer_class
 
     def find_by_userid_and_date(self, request):
