@@ -126,7 +126,7 @@ const App: React.FC = () => {
             <Route exact path="/mypage" component={Mypage} />
             <Route path="/clothRegist" component={ClothRegist} />
             <Route
-              path="/codiShowcase/:type/:mid/:qid/:id"
+              path="/codiShowcase/:type/:mid/:qid/:cid"
               component={CodiShowCase}
             />
             <Route path="/apply/:type/:qid" component={ApplyForm} />

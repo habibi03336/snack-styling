@@ -22,6 +22,7 @@ import * as I from "../../../../lib/types/interfaces";
 import { selectedCodiIdAtom } from "../../state/codi";
 import { useRecoilState } from "recoil";
 import RoutingLink from "../../../common/components/RoutingLink";
+import BottomButton from "../../../common/components/BottomButton";
 
 const CodiCloset = () => {
   const { codis, deleteCodi, loadDone, loadMore } = useCodis();
@@ -91,15 +92,19 @@ const CodiCloset = () => {
               />
             </IonContent>
 
-            <RoutingLink
-              onClick={() => {
-                setSelectedCodi(modalDetail.id!);
-                setModalDetail(null);
-              }}
-              routerLink={`/codiShowcase/update/-1/-1/${modalDetail.id}`}
-            >
-              <>수정하기</>
-            </RoutingLink>
+            <BottomButton>
+              <IonButton expand="full">
+                <RoutingLink
+                  onClick={() => {
+                    setSelectedCodi(modalDetail.id!);
+                    setModalDetail(null);
+                  }}
+                  routerLink={`/codiShowcase/update/-1/-1/${modalDetail.id}`}
+                >
+                  <span style={{ color: "white" }}>수정하기</span>
+                </RoutingLink>
+              </IonButton>
+            </BottomButton>
           </>
         )}
       </IonModal>

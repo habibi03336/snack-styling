@@ -29,10 +29,10 @@ export const POST_STYLEQ = (styleQData: StyleQData) =>
 interface StyleAnsData {
   qid: number;
   codi: {
-    top: number | null;
-    bottom: number | null;
-    cap: number | null;
-    footwear: number | null;
+    top?: number | null;
+    bottom?: number | null;
+    cap?: number | null;
+    footwear?: number | null;
   };
   comments?: string;
 }
@@ -45,6 +45,7 @@ export const POST_STYLE_ANSWER = (styleAnsData: StyleAnsData) =>
 
 export const ADOPT_ANSWER = (answerId: number) =>
   client.patch(baseURL + `/answer/adopt/${answerId}`);
+
 export const DELETE_QUESTION = (qid: number) =>
   client.delete(baseURL + `/question/${qid}`);
 
