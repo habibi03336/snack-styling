@@ -40,14 +40,14 @@ public class QuestionController {
     }
     @ApiOperation(value="질문 삭제",notes = "<strong>질문을 삭제한다.</strong>")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteQuestion(@PathVariable(value="id") Long id){
+    public ResponseEntity<Void> deleteQuestion(@PathVariable(value="id") Long id){
         questionService.questionDelete(id);
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value="질문 수정",notes = "<strong>질문을 수정한다.</strong>")
     @PatchMapping("/{id}")
-    public ResponseEntity updateQuestion(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody QuestionRequest questionRequest){
+    public ResponseEntity<Void> updateQuestion(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody QuestionRequest questionRequest){
         jwtService.validateToken(token);
         questionService.questionUpdate(id, questionRequest);
         return ResponseEntity.ok().build();
