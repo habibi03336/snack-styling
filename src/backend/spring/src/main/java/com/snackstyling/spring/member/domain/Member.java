@@ -22,7 +22,6 @@ public class Member {
     @Column(unique = true, length = 8)
     private String nickname;
     private Integer gender;
-    // Int null 허용
     private Integer age;
     private Integer weight;
     private Integer height;
