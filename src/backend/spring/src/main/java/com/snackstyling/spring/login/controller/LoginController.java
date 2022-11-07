@@ -20,7 +20,7 @@ public class LoginController {
     @ApiOperation(value="회원가입",notes = "<strong>이메일과 패스워드를 입력받아 회원 가입을 진행한다.</strong>")
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> userRegister(@RequestBody AuthRequest authRequest){
-        return ResponseEntity.ok().body(joinService.joinUser(authRequest));
+        return ResponseEntity.ok().body(joinService.joinUser(authRequest, 0));
     }
     @ApiOperation(value="로그인",notes = "<strong>이메일과 패스워드를 입력받아 성공 여부를 알린다.</strong>")
     @PostMapping("")

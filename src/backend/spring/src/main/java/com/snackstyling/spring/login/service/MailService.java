@@ -2,9 +2,11 @@ package com.snackstyling.spring.login.service;
 
 import com.snackstyling.spring.common.exception.ConflictException;
 import com.snackstyling.spring.common.exception.ServerException;
+import com.snackstyling.spring.login.domain.Certification;
 import com.snackstyling.spring.login.domain.Mail;
 import com.snackstyling.spring.login.dto.CompareRequest;
 import com.snackstyling.spring.login.dto.ConfirmRequest;
+import com.snackstyling.spring.login.repository.CertificationRepository;
 import com.snackstyling.spring.login.repository.MailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ import java.util.Random;
 public class MailService {
    private final JavaMailSender mailSender;
    private final MailRepository mailRepository;
+   private final CertificationRepository certificationRepository;
    @Value("${spring.mail.username}")
    private String email;
     public void sendMail(ConfirmRequest confirmRequest){
@@ -51,5 +54,6 @@ public class MailService {
         if(!mailNumber.getNumber().equals(compareRequest.getNumber())){
             throw new ConflictException("인증번호가 일치하지 않습니다.");
         }
+        certificationRepository.save(new Certification(compareRequest.getEmail(),1));
     }
 }

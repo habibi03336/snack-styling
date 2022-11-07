@@ -93,7 +93,7 @@ public class LoginService {
             AuthRequest authRequest=new AuthRequest();
             authRequest.setEmail(email);
             authRequest.setPwd(resultEntity2.getBody().getAt_hash());
-            return joinService.joinUser(authRequest);
+            return joinService.joinUser(authRequest, 1);
         }
     }
 }

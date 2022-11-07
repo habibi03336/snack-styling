@@ -2,9 +2,12 @@ package com.snackstyling.spring.login.service;
 
 import com.snackstyling.spring.common.exception.ConflictException;
 import com.snackstyling.spring.common.service.JwtService;
+import com.snackstyling.spring.login.domain.Certification;
 import com.snackstyling.spring.login.domain.Login;
+import com.snackstyling.spring.login.domain.Mail;
 import com.snackstyling.spring.login.dto.AuthRequest;
 import com.snackstyling.spring.login.dto.LoginResponse;
+import com.snackstyling.spring.login.repository.CertificationRepository;
 import com.snackstyling.spring.login.repository.LoginRepository;
 import com.snackstyling.spring.member.domain.Member;
 import com.snackstyling.spring.member.repository.MemberRepository;
@@ -24,6 +27,7 @@ public class JoinService {
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final CertificationRepository certificationRepository;
     // 비밀번호 포맷 확인(영문, 특수문자, 숫자 포함 8자 이상)
     private Pattern passPatten=Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
     private List<String> adjective=List.of("행복한","놀라운","흥겨운", "즐거운", "기쁜",
@@ -34,11 +38,16 @@ public class JoinService {
     private List<String> names=new ArrayList<>();
     private Integer num=0;
 
-    public LoginResponse joinUser(AuthRequest authRequest){
+    public LoginResponse joinUser(AuthRequest authRequest, Integer type){
         //login inf save
         Matcher passMatcher=passPatten.matcher(authRequest.getPwd());
-        if(!passMatcher.find()){
-            throw new ConflictException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
+        if(type==0){
+            if(!passMatcher.find())
+                throw new ConflictException("비밀번호는 영문, 특수문자, 숫자를 포함해서 8자 이상입니다.");
+            Certification certification=certificationRepository.findById(authRequest.getEmail()).orElse(null);
+            if(certification==null || certification.getCheck()==0){
+                throw new ConflictException("유효하지 않은 회원가입 요청입니다.");
+            }
         }
         LoginResponse loginResponse=new LoginResponse();
         loginResponse.setIsMember(false);
