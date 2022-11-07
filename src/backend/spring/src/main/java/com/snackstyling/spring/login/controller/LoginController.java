@@ -29,32 +29,32 @@ public class LoginController {
     }
     @ApiOperation(value="회원탈퇴",notes = "<strong>회원 탈퇴</strong>")
     @DeleteMapping("")
-    public ResponseEntity userDelete(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<Void> userDelete(@RequestBody AuthRequest authRequest){
         //비밀번호를 한 번 더 입력해서 맞다면 삭제를 시켜준다.
         joinService.outUser(authRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="비밀번호수정",notes = "<strong>회원수정</strong>")
     @PatchMapping("")
-    public ResponseEntity userUpdate(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<Void> userUpdate(@RequestBody AuthRequest authRequest){
         joinService.updateUser(authRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="이메일 중복 확인",notes = "<strong>이메일 중복은 가입 앙대영~</strong>")
     @GetMapping("/duplication")
-    public ResponseEntity dupUser(@RequestParam("email") String email){
+    public ResponseEntity<Void> dupUser(@RequestParam("email") String email){
         joinService.dupUser(email);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 전송",notes = "<strong>인증메일전송</strong>")
     @PostMapping("/mail/send")
-    public ResponseEntity checkUser(@RequestBody ConfirmRequest confirmRequest){
+    public ResponseEntity<Void> checkUser(@RequestBody ConfirmRequest confirmRequest){
         mailService.sendMail(confirmRequest);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="인증 메일 확인",notes = "<strong>인증메일확인</strong>")
     @PostMapping("/mail/confirm")
-    public ResponseEntity confirmUser(@RequestBody CompareRequest compareRequest){
+    public ResponseEntity<Void> confirmUser(@RequestBody CompareRequest compareRequest){
         mailService.checkMail(compareRequest);
         return ResponseEntity.ok().build();
     }
