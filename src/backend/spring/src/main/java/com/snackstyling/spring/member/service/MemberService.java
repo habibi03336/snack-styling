@@ -36,8 +36,12 @@ public class MemberService {
     private final SuggestionRepository suggestionRepository;
 
     public void memberInsert(Long id,MemberRequest memberRequest){
+        Integer len=memberRequest.getNickname().length();
         if(memberRepository.existsByNickname(memberRequest.getNickname())){
             throw new DuplicateNameException("닉네임이 중복되었습니다.");
+        }
+        if(len<3 || len>7){
+            throw new DuplicateNameException("이름은 3글자 이상 7글자 이하만 가능합니다.");
         }
         Member member=new Member();
         Login login=loginRepository.findById(id).orElse(null);
