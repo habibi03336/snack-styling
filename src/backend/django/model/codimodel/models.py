@@ -8,3 +8,8 @@ class Codi(models.Model):
     cap = models.ForeignKey('clothmodel.Cloth', on_delete=models.SET_NULL, blank=True, null=True, related_name='cap_cloth_req')
     footwear = models.ForeignKey('clothmodel.Cloth', on_delete=models.SET_NULL, blank=True, null=True, related_name='footwear_cloth_req')
     comments = models.CharField(max_length=200, default="")
+    islock = models.BooleanField(default=False)
+    
+    class Meta:
+        app_label = "codimodel"
+        ordering = ('id',)
