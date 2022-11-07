@@ -7,8 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberRequest {
-    @ApiModelProperty(value = "고유번호", example = "34", required = true)
-    private Long id;
     @ApiModelProperty(value = "별명", example = "킹명주", required = true)
     private String nickname;
     @ApiModelProperty(value = "나이", example = "35", required = true)
