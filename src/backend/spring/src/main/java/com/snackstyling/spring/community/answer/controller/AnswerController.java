@@ -23,7 +23,7 @@ public class AnswerController {
     }
    @ApiOperation(value="답변 삭제",notes = "<strong>답변을 삭제합니다.</strong>")
    @DeleteMapping("/{id}")
-    public ResponseEntity deleteAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id){
+    public ResponseEntity<Void> deleteAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id){
         jwtService.validateToken(token);
         answerService.deleteAnswer(id);
         return ResponseEntity.ok().build();
@@ -31,14 +31,14 @@ public class AnswerController {
 
     @ApiOperation(value="답변 수정",notes = "<strong>답변을 수정합니다.</strong>")
     @PatchMapping("/{id}")
-    public ResponseEntity updateAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody AnswerRequest answerRequest){
+    public ResponseEntity<Void> updateAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody AnswerRequest answerRequest){
         jwtService.validateToken(token);
-        answerService.updateAnswer(id,answerRequest,token);
+        //answerService.updateAnswer(id,answerRequest,token);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="답변 채택",notes = "<strong>답변을 채택합니다.</strong>")
     @PatchMapping("/adopt/{id}")
-    public ResponseEntity adoptAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id){
+    public ResponseEntity<Void> adoptAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id){
         jwtService.validateToken(token);
         answerService.adoptAnswer(id, token);
         return ResponseEntity.ok().build();

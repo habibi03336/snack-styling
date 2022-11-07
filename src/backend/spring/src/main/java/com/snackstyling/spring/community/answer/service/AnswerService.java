@@ -95,19 +95,19 @@ public class AnswerService {
         if(question.getAdopt()==1){
             throw new AdoptQueException("채택된 질문으로 수정할 수 없습니다.");
         }
-
         Map<String, Object> map=new HashMap<>();
         map.put("top",answerRequest.getCodi().getTop());
         map.put("bottom", answerRequest.getCodi().getBottom());
         map.put("cap", answerRequest.getCodi().getCap());
         map.put("footwear",answerRequest.getCodi().getFootwear());
         map.put("comments",answerRequest.getComments());
+
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
 
         RestTemplate restTemplate=new RestTemplate();
-        String url="http://django-server:8000/api/v1/codi/";
+        String url="http://django-server:8000/api/v1/codi/"+answer.getCodi();
         try {
             ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,entity, CodiDto.class);
             answer.setCodi(result.getBody().getId());
