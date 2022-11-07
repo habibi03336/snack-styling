@@ -64,6 +64,19 @@ const useCodiRegist = (
     setCodiTemplate(newTemplate);
   };
 
+  const deleteCodiCloth = (category: string) => {
+    const categoryIndex = codiTemplate.clothes.findIndex(
+      (codiCloth) => codiCloth.category === category
+    );
+    const newTemplate = produce(codiTemplate, (draft) => {
+      draft.clothes[categoryIndex] = deepcopy(
+        defaultTemplate.clothes[categoryIndex]
+      );
+    });
+
+    setCodiTemplate(newTemplate);
+  };
+
   const categoryMap = new Map<
     "하의" | "상의" | "신발" | "모자",
     "top" | "bottom" | "footwear" | "cap"
@@ -120,6 +133,7 @@ const useCodiRegist = (
     uploadCodi,
     comment,
     setComment,
+    deleteCodiCloth,
   };
 };
 

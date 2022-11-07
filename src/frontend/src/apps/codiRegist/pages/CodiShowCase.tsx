@@ -34,14 +34,13 @@ type ICodiShowCase = RouteComponentProps<{
 
 const CodiShowCase = ({ match }: ICodiShowCase) => {
   const setRouteContext = useSetRecoilState(routeContextAtom);
-  const { selectTag, clearSelection, useSelectedTags, selectedCategory } =
-    useTags();
+  const { selectTag, clearSelection, selectedCategory } = useTags();
   const isSelfCodi = Number(match.params.qid) === -1;
   const { clothes, loadMore, loadDone } = useClothes(
     isSelfCodi ? undefined : Number(match.params.mid),
     selectedCategory()
-  ); //
-  const selectedTags = useSelectedTags();
+  );
+
   const codiContext =
     match.params.type === "update" ? "update" : isSelfCodi ? "own" : "answer";
   const {
@@ -51,6 +50,7 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
     setComment,
     comment,
     uploadCodi,
+    deleteCodiCloth,
   } = useCodiRegist(
     codiContext,
     Number(match.params.cid),
@@ -71,8 +71,11 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
   };
 
   const onBoardImgClick = (category: string) => {
-    clearSelection();
-    selectTag(category);
+    if (category === selectedCategory()) deleteCodiCloth(selectedCategory()!);
+    else {
+      clearSelection();
+      selectTag(category);
+    }
   };
 
   return (
@@ -85,20 +88,22 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
       />
 
       <IonContent>
-        <CardLayout
-          cardComponents={clothes.map((cloth) => {
-            return (
-              <div
-                onClick={() => {
-                  putCodiCloth(cloth);
-                }}
-                key={cloth.id}
-              >
-                <ClothCard cloth={cloth} type="small" />
-              </div>
-            );
-          })}
-        />
+        {selectedCategory() !== undefined && (
+          <CardLayout
+            cardComponents={clothes.map((cloth) => {
+              return (
+                <div
+                  onClick={() => {
+                    putCodiCloth(cloth);
+                  }}
+                  key={cloth.id}
+                >
+                  <ClothCard cloth={cloth} type="small" />
+                </div>
+              );
+            })}
+          />
+        )}
 
         <IonInfiniteScroll
           onIonInfinite={loadMore}
