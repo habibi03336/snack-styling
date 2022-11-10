@@ -93,17 +93,17 @@ const CodiCloset = () => {
             </IonContent>
 
             <BottomButton>
-              <IonButton expand="full">
-                <RoutingLink
-                  onClick={() => {
-                    setSelectedCodi(modalDetail.id!);
-                    setModalDetail(null);
-                  }}
-                  routerLink={`/codiShowcase/update/-1/-1/${modalDetail.id}`}
-                >
-                  <span style={{ color: "white" }}>수정하기</span>
-                </RoutingLink>
-              </IonButton>
+              <RoutingLink
+                onClick={() => {
+                  setSelectedCodi(modalDetail.id!);
+                  setModalDetail(null);
+                }}
+                routerLink={`/codiShowcase/update/-1/-1/${modalDetail.id}`}
+              >
+                <IonButton expand="full" style={{ color: "white" }}>
+                  수정하기
+                </IonButton>
+              </RoutingLink>
             </BottomButton>
           </>
         )}

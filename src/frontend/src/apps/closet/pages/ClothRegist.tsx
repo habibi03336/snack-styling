@@ -41,22 +41,15 @@ const ClothRegist: React.FC = () => {
                   key={tagName}
                   tagName={tagName}
                   onTagClick={() => {
-                    const newTags = [...cloth.tags];
-                    const tagIndex = newTags.findIndex(
-                      (item) => item === tagId
-                    );
-                    if (tagIndex !== -1) newTags.splice(tagIndex, 1);
-                    else newTags.push(tagId);
-
                     const newProcessClothes = [...processClothes];
                     newProcessClothes[idx] = {
                       ...newProcessClothes[idx],
-                      tags: newTags,
+                      category: tagId,
                     };
 
                     setProcessClothes(newProcessClothes);
                   }}
-                  isSelected={cloth.tags.includes(tagId)}
+                  isSelected={cloth.category === tagId}
                 />
               );
             });
@@ -140,6 +133,7 @@ const ClothRegist: React.FC = () => {
             );
           })}
         </Swiper>
+        <RowFiller px={70} />
         <BottomButton>
           {isEnd && (
             <IonButton
