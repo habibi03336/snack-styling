@@ -34,17 +34,18 @@ const Home = () => {
 
   const codiplanning = async (codiId: number) => {
     const dateString = date.toISOString().split("T")[0];
-    if (codiplan[dateString.split("-")[2]] === undefined) {
+    const day = Number(dateString.split("-")[2]);
+    if (codiplan[day] === undefined) {
       await POST_CODIPLAN(codiId, dateString);
       setCodiplan({
         ...codiplan,
-        [dateString.split("-")[2]]: codiId,
+        [day]: codiId,
       });
     } else {
       await PATCH_CODIPLAN(codiId, dateString);
       setCodiplan({
         ...codiplan,
-        [dateString.split("-")[2]]: codiId,
+        [day]: codiId,
       });
     }
     setIsModalOpen(false);

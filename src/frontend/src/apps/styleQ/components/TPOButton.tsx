@@ -14,7 +14,7 @@ const TPOButton = ({
     <IonItem
       onClick={onClick}
       style={{
-        width: `${(innerViewWidth - 40) / 2 - 5}px`,
+        width: `${(innerViewWidth - 40) / 2 - 10}px`,
         border: "1px solid #eeeeee",
         margin: "5px 0",
       }}
