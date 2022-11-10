@@ -25,7 +25,7 @@ export const makeCodiTemplate = (codis: I.Codi[], template: I.CodiTemplate) => {
       const clothData: I.CodiCloth = {
         ...template.clothes[categoryIdx],
         category: cate,
-        image: elem[1],
+        image: elem[1] ? elem[1] : template.clothes[categoryIdx].image,
       };
       theCodi.clothes.push(clothData);
     });

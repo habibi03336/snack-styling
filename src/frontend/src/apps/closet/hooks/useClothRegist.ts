@@ -47,7 +47,10 @@ const useClothRegist = () => {
 
       processClothes.forEach((cloth) => {
         if (cloth.id === undefined) return;
-        clothes.push({ id: cloth.id, tags: cloth.tags });
+        clothes.push({
+          id: cloth.id,
+          tags: cloth.category ? cloth.tags.concat(cloth.category) : cloth.tags,
+        });
       });
 
       const res = await PATCH_CLOTHS(clothes);

@@ -32,12 +32,7 @@ const useCodiRegist = (
       const { data } = await GET_CODI(cid);
       const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
 
-      const codiTemp = defaultCodi.clothes.map((elem, idx) => {
-        if (elem.image === null) return codiTemplate.clothes[idx];
-        else return elem;
-      });
-
-      setCodiTemplate({ ...defaultCodi, clothes: codiTemp });
+      setCodiTemplate({ ...defaultCodi });
       setComment(data.comments);
     }
   });

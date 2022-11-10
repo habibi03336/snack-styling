@@ -5,6 +5,7 @@ export interface IProcessClothes {
   imageFile: File;
   tags: number[];
   imageUpdated: boolean;
+  category?: number;
   imgSrc?: string;
 }
 
