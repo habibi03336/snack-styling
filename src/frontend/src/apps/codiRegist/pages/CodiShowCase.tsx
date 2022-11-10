@@ -62,6 +62,9 @@ const CodiShowCase = ({ match }: ICodiShowCase) => {
       complete() {
         setRouteContext((context) => {
           const newContext = [...context];
+          if (context.length > 1) {
+            newContext.pop();
+          }
           return newContext;
         });
         if (match.params.mid === "-1") window.location.href = "/closet/codi";
