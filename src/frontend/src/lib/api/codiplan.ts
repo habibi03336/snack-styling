@@ -11,3 +11,9 @@ export const PATCH_CODIPLAN = (codi: number, date: string) =>
 
 export const POST_CODIPLAN = (codi: number, date: string) =>
   client.post(baseURL + "/codiplan/user/", { codi, plan_date: date });
+
+export const DELETE_CODIPLAN = (codi: number, date: string) =>
+  client.delete(baseURL + "/codiplan/user/", {
+    data: { codi, plan_date: date },
+    withCredentials: true,
+  });

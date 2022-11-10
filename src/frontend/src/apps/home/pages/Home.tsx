@@ -56,11 +56,11 @@ const Home = () => {
       return;
     } else {
       const codiId = codiplan[dateString.split("-")[2]];
+      const date = dateString.split("-")[2];
       await DELETE_CODIPLAN(codiId, dateString);
-      setCodiplan({
-        ...codiplan,
-        [codiId]: undefined,
-      });
+      const newCodiPlans = { ...codiplan };
+      delete newCodiPlans[date];
+      setCodiplan(newCodiPlans);
       setIsModalOpen(false);
     }
   };
@@ -81,13 +81,14 @@ const Home = () => {
   codiCards.unshift(
     <div
       onClick={deleteCodi}
+      key={-1}
       style={{
         borderRadius: "15px",
         margin: "8px 8px",
         width: `${(innerViewWidth - 40) / 2 - 7.5}px`,
         height: `${(innerViewWidth - 40) / 2 - 7.5}px`,
         backgroundColor: "#fafafa",
-        color: "color",
+        color: "tomato",
         fontSize: "24px",
         display: "flex",
         justifyContent: "center",
