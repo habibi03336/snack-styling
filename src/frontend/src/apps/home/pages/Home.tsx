@@ -19,7 +19,11 @@ import CodiCard from "../../closet/components/CodiCard";
 import { useRef, useState } from "react";
 import useCodis from "../../common/hooks/useCodis";
 import CardLayout from "../../closet/components/CardLayout";
-import { POST_CODIPLAN, PATCH_CODIPLAN } from "../../../lib/api/codiplan";
+import {
+  POST_CODIPLAN,
+  PATCH_CODIPLAN,
+  DELETE_CODIPLAN,
+} from "../../../lib/api/codiplan";
 import Header from "../../common/components/Header";
 import innerViewWidth from "../../../lib/constants/innerViewWidth";
 
@@ -28,22 +32,72 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { codis, loadMore, loadDone } = useCodis();
 
-  const codiplanning = async (codiId: number, date: string) => {
-    if (codiplan[date.split("-")[2]] === undefined) {
-      await POST_CODIPLAN(codiId, date);
+  const codiplanning = async (codiId: number) => {
+    const dateString = date.toISOString().split("T")[0];
+    if (codiplan[dateString.split("-")[2]] === undefined) {
+      await POST_CODIPLAN(codiId, dateString);
       setCodiplan({
         ...codiplan,
-        [date.split("-")[2]]: codiId,
+        [dateString.split("-")[2]]: codiId,
       });
     } else {
-      await PATCH_CODIPLAN(codiId, date);
+      await PATCH_CODIPLAN(codiId, dateString);
       setCodiplan({
         ...codiplan,
-        [date.split("-")[2]]: codiId,
+        [dateString.split("-")[2]]: codiId,
       });
     }
     setIsModalOpen(false);
   };
+
+  const deleteCodi = async () => {
+    const dateString = date.toISOString().split("T")[0];
+    if (codiplan[dateString.split("-")[2]] === undefined) {
+      return;
+    } else {
+      const codiId = codiplan[dateString.split("-")[2]];
+      await DELETE_CODIPLAN(codiId, dateString);
+      setCodiplan({
+        ...codiplan,
+        [codiId]: undefined,
+      });
+      setIsModalOpen(false);
+    }
+  };
+
+  const codiCards = codis.map((codi) => {
+    return (
+      <CodiCard
+        key={codi.id}
+        codi={codi}
+        comment={""}
+        onCodiClick={() => {
+          if (!codi.id) return;
+          codiplanning(codi.id);
+        }}
+      />
+    );
+  });
+  codiCards.unshift(
+    <div
+      onClick={deleteCodi}
+      style={{
+        borderRadius: "15px",
+        margin: "8px 8px",
+        width: `${(innerViewWidth - 40) / 2 - 7.5}px`,
+        height: `${(innerViewWidth - 40) / 2 - 7.5}px`,
+        backgroundColor: "#fafafa",
+        color: "color",
+        fontSize: "24px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {" "}
+      X{" "}
+    </div>
+  );
 
   return (
     <IonPage>
@@ -133,21 +187,7 @@ const Home = () => {
               </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-              <CardLayout
-                cardComponents={codis.map((codi) => {
-                  return (
-                    <CodiCard
-                      key={codi.id}
-                      codi={codi}
-                      comment={""}
-                      onCodiClick={() => {
-                        if (!codi.id) return;
-                        codiplanning(codi.id, date.toISOString().split("T")[0]);
-                      }}
-                    />
-                  );
-                })}
-              />
+              <CardLayout cardComponents={codiCards} />
               <IonInfiniteScroll
                 onIonInfinite={loadMore}
                 threshold="100px"
