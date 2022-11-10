@@ -51,6 +51,7 @@ const ApplyForm = ({ match }: IApplyForm) => {
           placeholder="날짜 선택"
         />
 
+        <RowFiller px={20} />
         <Label type="big" text="TPO를 선택해주세요" />
         <RowFiller px={16} />
         <div
@@ -75,16 +76,18 @@ const ApplyForm = ({ match }: IApplyForm) => {
         <RowFiller px={40} />
         <Label type="big" text="간단한 설명을 입력해주세요" />
         <RowFiller px={16} />
-        <IonTextarea
+        <textarea
           style={{
             height: "120px",
             border: "0.5px solid #eeeeee",
             padding: "16px 20px",
+            width: "100%",
+            fontSize: "16px",
           }}
           placeholder="간단한 설명을 입력해주세요"
           value={description}
-          onIonChange={(e) => setDescription(e.detail.value!)}
-        ></IonTextarea>
+          onChange={(e) => setDescription(e.target.value!)}
+        />
         <Notification text={notification} />
         <RowFiller px={70} />
         <div
