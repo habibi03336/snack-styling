@@ -12,20 +12,22 @@ from model.codimodel.models import Codi
 class CodiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
+        fields = ['id', 'top', 'bottom', 'cap',
+                  'footwear', 'bag', 'outer', 'comments']
 
 
 class CodiUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
         fields = ['id', 'userId', 'top', 'bottom',
-                  'cap', 'footwear', 'comments']
+                  'cap', 'footwear', 'bag', 'outer', 'comments']
 
 
 class CodiCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
+        fields = ['id', 'top', 'bottom', 'cap',
+                  'footwear', 'bag', 'outer', 'comments']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -38,7 +40,7 @@ class CodiUserCreateSerializer(CodiCreateSerializer):
     class Meta:
         model = Codi
         fields = ['id', 'userId', 'top', 'bottom',
-                  'cap', 'footwear', 'comments']
+                  'cap', 'footwear', 'bag', 'outer', 'comments']
 
 
 class CodiDetailSerializer(serializers.ModelSerializer):
@@ -46,10 +48,13 @@ class CodiDetailSerializer(serializers.ModelSerializer):
     bottom = serializers.SerializerMethodField()
     cap = serializers.SerializerMethodField()
     footwear = serializers.SerializerMethodField()
+    bag = serializers.SerializerMethodField()
+    outer = serializers.SerializerMethodField()
 
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
+        fields = ['id', 'top', 'bottom', 'cap',
+                  'footwear', 'bag', 'outer', 'comments']
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_top(self, obj):
@@ -67,11 +72,19 @@ class CodiDetailSerializer(serializers.ModelSerializer):
     def get_footwear(self, obj):
         return isNoneCloth(obj.footwear)
 
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_bag(self, obj):
+        return isNoneCloth(obj.bag)
+
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_outer(self, obj):
+        return isNoneCloth(obj.outer)
+
 
 class CodiUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Codi
-        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'comments']
+        fields = ['id', 'top', 'bottom', 'cap', 'footwear', 'bag', 'outer', 'comments']
 
     def update(self, instance, validated_data):
         if instance.islock == True:

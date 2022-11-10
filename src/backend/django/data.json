@@ -62,5 +62,21 @@
             "category_id": 100,
             "name": "신발"
         }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 9,
+        "fields": {
+            "category_id": 100,
+            "name": "아우터"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 10,
+        "fields": {
+            "category_id": 100,
+            "name": "가방"
+        }
     }
 ]
