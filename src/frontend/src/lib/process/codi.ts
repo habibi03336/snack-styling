@@ -7,7 +7,11 @@ const categoryMap = new Map([
   ["footwear", "신발"],
 ]);
 
-export const makeCodiTemplate = (codis: I.Codi[], template: I.CodiTemplate) => {
+export const makeCodiTemplate = (
+  codis: I.Codi[],
+  template: I.CodiTemplate,
+  type = "default"
+) => {
   const codiArray: I.CodiTemplate[] = [];
   codis.forEach((codi: I.Codi) => {
     const theCodi: I.CodiTemplate = { id: 0, clothes: [] };
@@ -22,10 +26,15 @@ export const makeCodiTemplate = (codis: I.Codi[], template: I.CodiTemplate) => {
         (codiCloth) => codiCloth.category === cate
       );
       if (categoryIdx === -1) return;
+
       const clothData: I.CodiCloth = {
         ...template.clothes[categoryIdx],
         category: cate,
-        image: elem[1] ? elem[1] : template.clothes[categoryIdx].image,
+        image: elem[1]
+          ? elem[1]
+          : type === "showcase"
+          ? template.clothes[categoryIdx].image
+          : null,
       };
       theCodi.clothes.push(clothData);
     });

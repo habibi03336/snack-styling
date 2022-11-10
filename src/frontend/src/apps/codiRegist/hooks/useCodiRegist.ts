@@ -30,7 +30,11 @@ const useCodiRegist = (
   useOnMount(async () => {
     if (type.slice(0, 6) === "update" && cid) {
       const { data } = await GET_CODI(cid);
-      const defaultCodi = makeCodiTemplate([data], defaultTemplate)[0];
+      const defaultCodi = makeCodiTemplate(
+        [data],
+        defaultTemplate,
+        "showcase"
+      )[0];
 
       setCodiTemplate({ ...defaultCodi });
       setComment(data.comments);
