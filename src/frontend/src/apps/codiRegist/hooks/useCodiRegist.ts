@@ -67,6 +67,7 @@ const useCodiRegist = (
     const categoryIndex = codiTemplate.clothes.findIndex(
       (codiCloth) => codiCloth.category === category
     );
+
     const newTemplate = produce(codiTemplate, (draft) => {
       draft.clothes[categoryIndex] = deepcopy(
         defaultTemplate.clothes[categoryIndex]
@@ -77,9 +78,11 @@ const useCodiRegist = (
   };
 
   const categoryMap = new Map<
-    "하의" | "상의" | "신발" | "모자",
-    "top" | "bottom" | "footwear" | "cap"
+    "아우터" | "가방" | "상의" | "하의" | "상의" | "신발" | "모자",
+    "outer" | "bag" | "top" | "bottom" | "footwear" | "cap"
   >([
+    ["아우터", "outer"],
+    ["가방", "bag"],
     ["상의", "top"],
     ["하의", "bottom"],
     ["신발", "footwear"],

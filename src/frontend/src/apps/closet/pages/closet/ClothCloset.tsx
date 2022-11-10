@@ -91,28 +91,30 @@ const ClothCloset = () => {
                   전체
                 </IonCard>
               </SwiperSlide>
-              {["상의", "하의", "신발", "모자"].map((cate) => (
-                <SwiperSlide key={cate}>
-                  <IonCard
-                    onClick={() => {
-                      clearAndSelect(cate);
-                    }}
-                    style={{
-                      height: "32px",
-                      width: "53px",
-                      fontSize: "16px",
-                      margin: "0px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "5px",
-                    }}
-                    color={selectedTags.includes(cate) ? "primary" : "medium"}
-                  >
-                    {cate}
-                  </IonCard>
-                </SwiperSlide>
-              ))}
+              {["상의", "하의", "아우터", "신발", "모자", "가방"].map(
+                (cate) => (
+                  <SwiperSlide key={cate}>
+                    <IonCard
+                      onClick={() => {
+                        clearAndSelect(cate);
+                      }}
+                      style={{
+                        height: "32px",
+                        width: "53px",
+                        fontSize: "16px",
+                        margin: "0px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "5px",
+                      }}
+                      color={selectedTags.includes(cate) ? "primary" : "medium"}
+                    >
+                      {cate}
+                    </IonCard>
+                  </SwiperSlide>
+                )
+              )}
             </Swiper>
           </div>
         </div>
@@ -121,7 +123,12 @@ const ClothCloset = () => {
       {showTags && (
         <TagDiv>
           {Object.keys(tags).map((tagName) => {
-            if (["상의", "하의", "신발", "모자"].includes(tagName)) return;
+            if (
+              ["상의", "하의", "신발", "모자", "아우터", "가방"].includes(
+                tagName
+              )
+            )
+              return;
             return (
               <TagChip
                 key={tagName}

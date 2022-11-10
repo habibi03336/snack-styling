@@ -1,6 +1,8 @@
 import * as I from "../types/interfaces";
 
 const categoryMap = new Map([
+  ["outer", "아우터"],
+  ["bag", "가방"],
   ["top", "상의"],
   ["bottom", "하의"],
   ["cap", "모자"],
