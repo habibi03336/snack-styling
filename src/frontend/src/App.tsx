@@ -64,7 +64,7 @@ const App: React.FC = () => {
     window.addEventListener("touchstart", (e) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       /* @ts-ignore */
-      if (e.pageX > 20 && e.pageX < window.innerWidth - 20) return;
+      if (e.pageX > 30 && e.pageX < window.innerWidth - 30) return;
       // prevent swipe to navigate back gesture
       e.preventDefault();
     });

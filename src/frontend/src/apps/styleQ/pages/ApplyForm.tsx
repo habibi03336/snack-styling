@@ -76,6 +76,7 @@ const ApplyForm = ({ match }: IApplyForm) => {
         <RowFiller px={40} />
         <Label type="big" text="간단한 설명을 입력해주세요" />
         <RowFiller px={16} />
+        <Notification text={notification} />
         <textarea
           style={{
             height: "120px",
@@ -88,7 +89,6 @@ const ApplyForm = ({ match }: IApplyForm) => {
           value={description}
           onChange={(e) => setDescription(e.target.value!)}
         />
-        <Notification text={notification} />
         <RowFiller px={70} />
         <div
           style={{
