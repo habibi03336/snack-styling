@@ -100,19 +100,13 @@ def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     pil_img = Image.open(raw_img).convert('RGBA')
     pil_img = ImageOps.exif_transpose(pil_img)
 
-    max_value = max(pil_img.width, pil_img.height)
-    div_value = max(max_value // 1000, 1)
-    pil_img = pil_img.resize((
-        int(pil_img.width/div_value),
-        int(pil_img.height/div_value),
-    ))
     start = time.time()
     pil_img = remove(pil_img)
+    pil_img = shapingToSquare(pil_img)
+    pil_img = pil_img.resize((1000,1000))
     end = time.time()
     print(f"Process Time: {end - start}s")
-
-    pil_img = shapingToSquare(pil_img)
-
+    
     new_img_io = BytesIO()
     pil_img.save(new_img_io, format='PNG')
     result = InMemoryUploadedFile(
