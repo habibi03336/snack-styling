@@ -22,6 +22,7 @@ const BottomButton = ({
         padding: "10px 20px",
         borderTop: "solid 1px #eeeeee",
         backgroundColor: "white",
+        zIndex: "200",
       }}
     >
       {/* <Button

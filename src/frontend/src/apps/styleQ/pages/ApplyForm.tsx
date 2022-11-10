@@ -1,4 +1,4 @@
-import { IonPage, IonTextarea, IonContent } from "@ionic/react";
+import { IonPage, IonTextarea, IonContent, IonDatetime } from "@ionic/react";
 import useApplyForm from "../hooks/useApplyForm";
 
 import Header from "../../common/components/Header";
@@ -32,9 +32,9 @@ const ApplyForm = ({ match }: IApplyForm) => {
     match.params.type === "update" ? Number(match.params.qid) : undefined
   );
 
-  const changeDate: ChangeEventHandler = (e) => {
+  const changeDate = (e: any) => {
     const target = e.target as HTMLInputElement;
-    setDate(target.value);
+    setDate(target.value.split("T")[0]);
   };
 
   return (
@@ -44,14 +44,13 @@ const ApplyForm = ({ match }: IApplyForm) => {
         <RowFiller px={10} />
         <Label type="big" text="날짜를 선택해주세요" />
         <RowFiller px={16} />
-        <input
-          style={{ height: "50px", width: "100%" }}
-          type="date"
+        <IonDatetime
+          presentation="date"
           value={date?.toString()}
-          onChange={changeDate}
+          onIonChange={changeDate}
           placeholder="날짜 선택"
         />
-        <RowFiller px={40} />
+
         <Label type="big" text="TPO를 선택해주세요" />
         <RowFiller px={16} />
         <div
@@ -87,6 +86,7 @@ const ApplyForm = ({ match }: IApplyForm) => {
           onIonChange={(e) => setDescription(e.detail.value!)}
         ></IonTextarea>
         <Notification text={notification} />
+        <RowFiller px={70} />
         <div
           style={{
             position: "absolute",
