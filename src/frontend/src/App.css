@@ -1,162 +1,174 @@
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 900;
-	font-display: swap;
-	src: local('Pretendard Black'), url('./assets/font/pretendard/Pretendard-Black.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-display: swap;
+  src: local("Pretendard Black"),
+    url("./assets/font/pretendard/Pretendard-Black.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 800;
-	font-display: swap;
-	src: local('Pretendard ExtraBold'), url('./assets/font/pretendard/Pretendard-ExtraBold.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-display: swap;
+  src: local("Pretendard ExtraBold"),
+    url("./assets/font/pretendard/Pretendard-ExtraBold.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 700;
-	font-display: swap;
-	src: local('Pretendard Bold'), url('./assets/font/pretendard/Pretendard-Bold.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: local("Pretendard Bold"),
+    url("./assets/font/pretendard/Pretendard-Bold.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 600;
-	font-display: swap;
-	src: local('Pretendard SemiBold'), url('./assets/font/pretendard/Pretendard-SemiBold.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: local("Pretendard SemiBold"),
+    url("./assets/font/pretendard/Pretendard-SemiBold.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 500;
-	font-display: swap;
-	src: local('Pretendard Medium'), url('./assets/font/pretendard/Pretendard-Medium.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: local("Pretendard Medium"),
+    url("./assets/font/pretendard/Pretendard-Medium.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 400;
-	font-display: swap;
-	src: local('Pretendard Regular'), url('./assets/font/pretendard/Pretendard-Regular.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: local("Pretendard Regular"),
+    url("./assets/font/pretendard/Pretendard-Regular.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 300;
-	font-display: swap;
-	src: local('Pretendard Light'), url('./assets/font/pretendard/Pretendard-Light.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-display: swap;
+  src: local("Pretendard Light"),
+    url("./assets/font/pretendard/Pretendard-Light.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 200;
-	font-display: swap;
-	src: local('Pretendard ExtraLight'), url('./assets/font/pretendard/Pretendard-ExtraLight.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-display: swap;
+  src: local("Pretendard ExtraLight"),
+    url("./assets/font/pretendard/Pretendard-ExtraLight.woff") format("woff");
 }
 
 @font-face {
-	font-family: 'Pretendard';
-	font-weight: 100;
-	font-display: swap;
-	src: local('Pretendard Thin'), url('./assets/font/pretendard/Pretendard-Thin.woff') format('woff');
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-display: swap;
+  src: local("Pretendard Thin"),
+    url("./assets/font/pretendard/Pretendard-Thin.woff") format("woff");
 }
 
 @media screen and (min-width: 400px) {
-	ion-app  {
-	  border-right: 0.5px solid black;
-	  border-left: 0.5px solid black;
-	}
+  ion-app {
+    border-right: 0.5px solid black;
+    border-left: 0.5px solid black;
+  }
 }
 
 html,
-body
-{
-    overflow: hidden;
+body {
+  overflow: hidden;
 }
 
 /*hide ionic scroll bar*/
 ion-content {
-	width: calc(100% + 30px);
+  width: calc(100% + 30px);
 }
 ion-content::part(scroll) {
-	padding-right: 30px;
+  padding-right: 30px;
+}
+
+textarea,
+select,
+input,
+button {
+  outline: none;
 }
 
 /*hide scroll bar*/
 body {
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {
-    display: none; /* for Chrome, Safari, and Opera */
-} 
+  display: none; /* for Chrome, Safari, and Opera */
+}
 
 ion-app {
-	margin: auto;
-	max-width: 430px;
+  margin: auto;
+  max-width: 430px;
 }
 
 .ion-page {
-	background-color: white;
-    padding: 0px 20px !important;
-	overflow-y: hidden !important;
+  background-color: white;
+  padding: 0px 20px !important;
+  overflow-y: hidden !important;
 }
 
 input {
-    padding: unset !important;
+  padding: unset !important;
 }
 
 * {
-    font-family: "Pretendard";
-	font-weight: 400;
+  font-family: "Pretendard";
+  font-weight: 400;
 }
 
 .icon-home {
-	background-image: url("./assets/tabbar/deactivate/home.svg");
+  background-image: url("./assets/tabbar/deactivate/home.svg");
 }
 
 .icon-community {
-	background-image: url("./assets/tabbar/deactivate/community.svg");
+  background-image: url("./assets/tabbar/deactivate/community.svg");
 }
 
 .icon-closet {
-	background-image: url("./assets/tabbar/deactivate/closet.svg");
+  background-image: url("./assets/tabbar/deactivate/closet.svg");
 }
 
 .icon-alarm {
-	background-image: url("./assets/tabbar/deactivate/alarm.svg");
+  background-image: url("./assets/tabbar/deactivate/alarm.svg");
 }
 
 .icon-mypage {
-	background-image: url("./assets/tabbar/deactivate/mypage.svg");
+  background-image: url("./assets/tabbar/deactivate/mypage.svg");
 }
 
-
-
 .tab-selected > .icon-home {
-	background-image: url("./assets/tabbar/activate/home.svg");
+  background-image: url("./assets/tabbar/activate/home.svg");
 }
 
 .tab-selected > .icon-community {
-	background-image: url("./assets/tabbar/activate/community.svg");
+  background-image: url("./assets/tabbar/activate/community.svg");
 }
 
 .tab-selected > .icon-closet {
-	background-image: url("./assets/tabbar/activate/closet.svg");
+  background-image: url("./assets/tabbar/activate/closet.svg");
 }
 
 .tab-selected > .icon-alarm {
-	background-image: url("./assets/tabbar/activate/alarm.svg");
+  background-image: url("./assets/tabbar/activate/alarm.svg");
 }
 
 .tab-selected > .icon-mypage {
-	background-image: url("./assets/tabbar/activate/mypage.svg");
+  background-image: url("./assets/tabbar/activate/mypage.svg");
 }
 
-
 textarea {
-	font-size: 20px;
-	font-weight: 200;
+  font-size: 20px;
+  font-weight: 200;
 }
