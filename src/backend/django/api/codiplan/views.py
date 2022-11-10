@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema_view
 from rest_framework.viewsets import ModelViewSet
 
@@ -54,14 +55,15 @@ class CodiPlanUserViewSet(ModelViewSet):
             return CodiPlanSerializer
         return self.serializer_class
 
-    def find_by_userid_and_date(self, request):
-        userId, plan_date = request.data['userId'], request.data['plan_date']
-        return CodiPlan.objects.get(userId=userId, plan_date=plan_date).id
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        lookup_url_kwarg = ('userId', 'plan_date')
+        values = (self.request.data[kwarg] for kwarg in lookup_url_kwarg)
 
-    def partial_update(self, request, *args, **kwargs):
-        self.kwargs['pk'] = self.find_by_userid_and_date(request)
-        return super().partial_update(request, *args, **kwargs)
+        filter_kwargs = dict(zip(lookup_url_kwarg, values))
+        obj = get_object_or_404(queryset, **filter_kwargs)
 
-    def destroy(self, request, *args, **kwargs):
-        self.kwargs['pk'] = self.find_by_userid_and_date(request)
-        return super().destroy(request, *args, **kwargs)
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
