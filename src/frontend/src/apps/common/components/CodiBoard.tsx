@@ -30,8 +30,8 @@ const CodiBoard = ({
             alt="cloth-img"
             style={{
               objectFit: "contain",
-              width: boardConfig.clothWidth,
-              height: boardConfig.clothHeight,
+              width: boardConfig.clothWidth * data.size,
+              height: boardConfig.clothHeight * data.size,
             }}
             onClick={() => {
               if (onBoardImgClick) onBoardImgClick(data.category);

@@ -35,7 +35,7 @@ export interface CodiTemplate {
   clothes: CodiCloth[];
 }
 
-export type category = "상의" | "하의" | "신발" | "모자";
+export type category = "상의" | "하의" | "신발" | "모자" | "가방" | "아우터";
 
 export interface CodiCloth {
   id?: number;
@@ -43,6 +43,7 @@ export interface CodiCloth {
   image: string;
   positionX: number;
   positionY: number;
+  size: number;
 }
 
 export interface StyleQ {

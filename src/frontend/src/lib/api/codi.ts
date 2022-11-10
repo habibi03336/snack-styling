@@ -8,6 +8,8 @@ export interface ICodiData {
   bottom?: number | null;
   footwear?: number | null;
   cap?: number | null;
+  outer?: number | null;
+  bag?: number | null;
   qid?: number;
   comments?: string;
 }
