@@ -53,6 +53,8 @@ public class AnswerService {
         map.put("bottom", answerRequest.getCodi().getBottom());
         map.put("cap", answerRequest.getCodi().getCap());
         map.put("footwear",answerRequest.getCodi().getFootwear());
+        map.put("outer",answerRequest.getCodi().getOuter());
+        map.put("bag",answerRequest.getCodi().getBag());
         map.put("comments",answerRequest.getComments());
         HttpHeaders headers=new HttpHeaders();
         headers.set("Authorization", token);
@@ -86,33 +88,6 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
-    public void updateAnswer(Long id, AnswerRequest answerRequest, String token){
-        Answer answer=answerRepository.findById(id).orElse(null);
-        Question question=answer.getQuestion();
-        if(question.getAdopt()==1){
-            throw new NotAcceptableException("채택된 질문으로 수정이 불가능 합니다.");
-        }
-        Map<String, Object> map=new HashMap<>();
-        map.put("top",answerRequest.getCodi().getTop());
-        map.put("bottom", answerRequest.getCodi().getBottom());
-        map.put("cap", answerRequest.getCodi().getCap());
-        map.put("footwear",answerRequest.getCodi().getFootwear());
-        map.put("comments",answerRequest.getComments());
-
-        HttpHeaders headers=new HttpHeaders();
-        headers.set("Authorization", token);
-        HttpEntity<Map<String, Object>> entity=new HttpEntity<>(map,headers);
-
-        RestTemplate restTemplate=new RestTemplate();
-        String url="http://django-server:8000/api/v1/codi/"+answer.getCodi();
-        try {
-            ResponseEntity<CodiDto> result=restTemplate.postForEntity(url,entity, CodiDto.class);
-            answer.setCodi(result.getBody().getId());
-        }catch(Exception e){
-            throw new ServerException("장고 서버와 통신에 실패했습니다.");
-        }
-        answerRepository.save(answer);
-    }
     public void adoptAnswer(Long id, String token){
         Answer answer=answerRepository.findById(id).orElse(null);
         answer.setAdopt(1);

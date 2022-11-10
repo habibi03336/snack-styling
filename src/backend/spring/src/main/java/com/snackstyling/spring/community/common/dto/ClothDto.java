@@ -11,5 +11,7 @@ public class ClothDto {
     private String bottom;
     private String cap;
     private String footwear;
+    private String outer;
+    private String bag;
     private String comments;
 }
