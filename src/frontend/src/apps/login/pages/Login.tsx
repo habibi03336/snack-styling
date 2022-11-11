@@ -1,5 +1,5 @@
 import Button from "../../common/components/Button";
-import Logo from "../../../assets/logo.svg";
+import Logo from "../../../assets/logo.png";
 import Google from "../../../assets/auth/google.svg";
 import Kakao from "../../../assets/auth/kakao.svg";
 import Naver from "../../../assets/auth/naver.svg";
@@ -40,7 +40,7 @@ const Login = () => {
     })();
   });
 
-  const ButtonBoxHeight = 200;
+  const ButtonBoxHeight = 250;
   return (
     <IonPage>
       <div
@@ -51,14 +51,14 @@ const Login = () => {
           height: `${window.innerHeight - ButtonBoxHeight}px`,
           width: innerViewWidth,
           flexDirection: "column",
-          background:
-            "url('https://www.ikea.com/kr/en/images/products/platsa-open-clothes-hanging-unit-white__0780262_pe759915_s5.jpg')",
+
           backgroundSize: "cover",
           filter: "grayscale(20%)",
           marginLeft: "-20px",
         }}
       >
-        <img style={{ width: "236px", height: "80px" }} src={Logo} />
+        <img src={Logo} />
+        <div>과자 먹듯 부담없는 스타일링이 필요할 땐</div>
       </div>
       <div
         style={{

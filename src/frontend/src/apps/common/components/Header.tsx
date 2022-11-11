@@ -38,7 +38,7 @@ const Header = ({ text, type, refreshButton }: IHeader) => {
         {["default", undefined].includes(type) ? (
           <IonButtons style={{ justifyContent: "center" }}>
             {" "}
-            &nbsp; <IonImg style={{ height: "25px" }} src={Logo} />
+            &nbsp; <IonImg style={{ height: "70px" }} src={Logo} />
           </IonButtons>
         ) : type === "back" ? (
           <>
