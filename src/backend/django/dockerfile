@@ -1,0 +1,34 @@
+FROM python:3.9
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# init image
+RUN apt-get update && apt-get install -y --no-install-recommends gcc
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+# RUN pip install pipenv gdown
+RUN pip install pipenv
+
+# User change
+RUN useradd --create-home appuser
+USER appuser
+WORKDIR /home/appuser
+
+RUN mkdir -p src/media/cloth
+
+# Download deeplearning model
+RUN mkdir -p ~/.u2net
+# RUN gdown https://drive.google.com/uc?id=1tCU5MM1LhRgGou5OpmpjBQbSrYIUoYab -O ~/.u2net/u2net.onnx
+
+# Copy data
+COPY ./Pipfile .
+COPY ./Pipfile.lock .
+RUN pipenv install --dev --system --deploy
+
+COPY . .
+RUN mv u2net.onnx ~/.u2net || echo 'models copy change'
+USER root
+RUN chmod 644 /home/appuser/.u2net/u2net.onnx
+USER appuser
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--settings=coffProject.settings.prod", "--nothreading"]

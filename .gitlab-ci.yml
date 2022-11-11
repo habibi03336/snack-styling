@@ -1,0 +1,191 @@
+default:
+  tags:
+    - snack-test
+
+stages:
+  - build
+  - test
+  - package
+  - deploy-backend
+  - deploy-frontend
+  
+# Build task
+build-spring:
+  stage: build
+  script:
+    - cd src/backend/spring
+    - ./gradlew clean
+    - ./gradlew build --exclude-task test
+  artifacts:
+    paths:
+      - src/backend/spring/build/libs/*.jar
+
+build-django:
+  stage: build
+  before_script:
+    - docker image prune --force
+    - docker container prune --force
+  script:
+    - cp ~/u2net.onnx ./src/backend/django
+    - cd src/backend/django
+    - docker build -t django-server .
+
+build-react:
+  stage: build
+  script:
+    - cd ./src/frontend
+    - docker build . -t frontenv
+    - mkdir result
+    - cd result
+    - docker run --rm -v "$(pwd):/src/frontend/result" frontenv
+  artifacts:
+    paths:
+      - ./src/frontend/result/front.tar
+
+build-nginx:
+  stage: build
+  script:
+    - cd ./src/nginx
+    - docker build -t nginx ./
+    - docker save -o nginx.tar nginx
+  artifacts:
+    paths:
+      - ./src/nginx/nginx.tar
+
+# Test Task
+test-spring:
+  stage: test
+  script:
+    - cd src/backend/spring
+    - ./gradlew test
+  dependencies:
+    - build-spring
+
+test-django:
+  stage: test
+  script:
+    - bash ./src/backend/django/buildenv.sh
+    - docker run --rm --name django-test
+      --env-file=.env
+      django-server sh testcode.sh
+  dependencies: []
+
+# Package task
+package-spring:
+  stage: package
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+  script:
+    - cd src/backend/spring
+    - docker build -t spring ./
+    - docker save -o spring.tar spring
+    - scp spring.tar ec2-user@${DEPLOY_IP}:/tmp
+  dependencies:
+    - build-spring
+  only:
+    refs:
+      - master
+      - develop
+
+package-django:
+  stage: package
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 600 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+  script:
+    - docker save -o django-server.tar django-server
+    - scp django-server.tar ec2-user@${DEPLOY_IP}:/tmp
+  dependencies: []
+  only:
+    refs:
+      - master
+      - develop
+
+# Deploy task
+deploy-prejob:
+  stage: deploy-backend
+  tags:
+    - snack-service
+  script:
+    - sudo docker network rm snack-net || true
+    - sudo docker network create snack-net || true
+  dependencies: []
+  only:
+    refs:
+      - master
+      - develop
+
+deploy-spring:
+  stage: deploy-backend
+  tags:
+    - snack-service
+  before_script:
+    - sudo docker stop spring-server || true
+    - sudo docker rm spring-server || true
+    - sudo docker image rm spring || true
+    - bash ./src/backend/spring/buildenv.sh
+  script:
+    - sudo docker load -i /tmp/spring.tar
+    - sudo docker run --net snack-net --env-file=.env_spring -d --name spring-server spring
+  dependencies:
+    - build-spring
+  only:
+    refs:
+      - master
+      - develop
+
+deploy-django:
+  stage: deploy-backend
+  tags:
+    - snack-service
+  before_script:
+    - sudo docker stop django-server || true
+    - sudo docker rm django-server || true
+    - sudo docker image rm django-server || true
+    - bash ./src/backend/django/buildenv.sh
+  script:
+    - sudo docker load -i /tmp/django-server.tar
+    - docker run -d --name django-server --net snack-net
+      --env-file=.env
+      django-server
+  dependencies: []
+  only:
+    refs:
+      - master
+      - develop
+
+deploy-frontend:
+  stage: deploy-frontend
+  tags:
+    - snack-service
+  script:
+    - sudo tar -xvf ./src/frontend/result/front.tar -C /snack-style/frontend
+  dependencies:
+    - build-react
+  only:
+    refs:
+      - master
+      - develop
+
+deploy-nginx:
+  stage: deploy-frontend
+  tags:
+    - snack-service
+  before_script:
+    - sudo docker stop nginx || true
+    - sudo docker rm nginx || true
+    - sudo docker image rm nginx || true
+  script:
+    - sudo docker load -i ./src/nginx/nginx.tar
+    - sudo docker run --net snack-net -d -v /snack-style/frontend/build:/frontend -v /etc/letsencrypt:/etc/letsencrypt --name nginx -p 80:80 -p 443:443 nginx
+  dependencies:
+    - build-nginx
+  only:
+    refs:
+      - master
+      - develop

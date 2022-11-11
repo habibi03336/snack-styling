@@ -1,0 +1,82 @@
+[
+    {
+        "model": "tagmodel.tag",
+        "pk": 1,
+        "fields": {
+            "category_id": 1,
+            "name": "봄"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 2,
+        "fields": {
+            "category_id": 1,
+            "name": "여름"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 3,
+        "fields": {
+            "category_id": 1,
+            "name": "가을"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 4,
+        "fields": {
+            "category_id": 1,
+            "name": "겨울"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 5,
+        "fields": {
+            "category_id": 100,
+            "name": "상의"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 6,
+        "fields": {
+            "category_id": 100,
+            "name": "하의"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 7,
+        "fields": {
+            "category_id": 100,
+            "name": "모자"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 8,
+        "fields": {
+            "category_id": 100,
+            "name": "신발"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 9,
+        "fields": {
+            "category_id": 100,
+            "name": "아우터"
+        }
+    },
+    {
+        "model": "tagmodel.tag",
+        "pk": 10,
+        "fields": {
+            "category_id": 100,
+            "name": "가방"
+        }
+    }
+]

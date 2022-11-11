@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+rembg = "*"
+pillow = "*"
+onnxruntime = "*"
+mysqlclient = "*"
+django-environ = "*"
+boto3 = "*"
+django-storages = "*"
+pyjwt = "*"
+requests = "*"
+
+[dev-packages]
+autopep8 = "*"
+django-cors-headers = "*"
+drf-spectacular = "*"
+
+[requires]
+python_version = "3.9"
