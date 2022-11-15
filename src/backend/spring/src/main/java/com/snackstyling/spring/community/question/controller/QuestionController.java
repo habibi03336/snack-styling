@@ -21,6 +21,7 @@ public class QuestionController {
     @ApiOperation(value="질문등록",notes = "<strong>질문을 등록한다.</strong>")
     @PostMapping("")
     public ResponseEntity<QuestionNumResponse> postQuestion(@RequestHeader("Authorization") String token, @RequestBody QuestionRequest questionRequest) {
+        jwtService.validateToken(token);
         return ResponseEntity.ok().body(questionService.questionPost(token, questionRequest));
     }
     @ApiOperation(value="질문 목록 불러오기",notes = "<strong>페이지네이션을 통해 부분적으로 질문을 불러온다.</strong>")
