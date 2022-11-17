@@ -33,7 +33,6 @@ public class AnswerController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateAnswer(@RequestHeader("Authorization") String token, @PathVariable(value="id") Long id, @RequestBody AnswerRequest answerRequest){
         jwtService.validateToken(token);
-        //answerService.updateAnswer(id,answerRequest,token);
         return ResponseEntity.ok().build();
     }
     @ApiOperation(value="답변 채택",notes = "<strong>답변을 채택합니다.</strong>")
