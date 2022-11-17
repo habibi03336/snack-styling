@@ -30,6 +30,7 @@ public class JwtService {
     private Long refreshExpired=Duration.ofDays(7).toMillis(); //1주
     private final TokenRepository tokenRepository;
     private final LoginRepository loginRepository;
+    private final MemberRepository memberRepository;
     public String createJsonWebToken(Map<String, Object> headers,  Map<String, Object> payloads,Long expired, String secret_key){
         Date now = new Date();
         return Jwts.builder()
@@ -82,11 +83,12 @@ public class JwtService {
             throw new UnauthorizedException("정상적으로 발급된 토큰이 아닙니다.");
         }
         Login user=loginRepository.findByEmail(email);
+        Member member=memberRepository.findByLogin(user);
         Map<String, Object> headers=new HashMap<>();
         headers.put("typ","JWT");
         headers.put("alg","HS256");
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put("Key", user.getId());
+        payloads.put("Key", member.getId());
         payloads.put("Email",email);
         return new AcTokenResponse(createJsonWebToken(headers,payloads,accessExpired,ac_secret_key));
     }
