@@ -74,6 +74,7 @@ export interface StyleAns {
     cap: string | null;
     footwear: string | null;
   };
+  postDate: string;
   comments: string;
   codiTemplate: CodiTemplate;
 }

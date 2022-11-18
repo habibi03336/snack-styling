@@ -61,7 +61,10 @@ const useApplyForm = (updateId?: number) => {
     setTpos(newTpos);
   };
 
+  let uploading = false;
   const uploadStyleQ = new Observable<number>((subscriber) => {
+    if (uploading) return;
+    uploading = true;
     const selectedTpo = Object.keys(tpos).find((key) => tpos[key]) || "";
     if (
       dateToCompareNumber(date) <
@@ -90,6 +93,7 @@ const useApplyForm = (updateId?: number) => {
       const data = res_.data;
       subscriber.next(updateId || data.qid);
       subscriber.complete();
+      uploading = false;
     })();
   });
 

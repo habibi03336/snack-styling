@@ -88,8 +88,10 @@ const useCodiRegist = (
     ["신발", "footwear"],
     ["모자", "cap"],
   ]);
-
+  let uploading = false;
   const uploadCodi = new Observable((subscriber) => {
+    if (uploading) return;
+    uploading = true;
     (async () => {
       let res;
       const codiData: ICodiData = {};
@@ -126,6 +128,7 @@ const useCodiRegist = (
       //postStyleAns({ ...codiData, qid: 3 });
       else throw "not available state: type 'answer' should have questionId";
 
+      uploading = false;
       subscriber.complete();
     })();
   });

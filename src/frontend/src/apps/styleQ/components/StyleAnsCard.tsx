@@ -25,7 +25,7 @@ const StyleAnsCard = ({
   showAdopt,
 }: IStyleAnsCard) => {
   const level: [0, 1, 2, 3] = [0, 1, 2, 3];
-
+  const date = new Date(styleAns.postDate);
   return (
     <Block>
       <div
@@ -50,7 +50,9 @@ const StyleAnsCard = ({
           >
             <div>{styleAns.nickname}님의 답변</div>
             <div style={{ fontSize: "12px", color: "lightgray" }}>
-              {`2021년 8월 ${Math.floor(Math.random() * 31 + 1)}일`}
+              {`${date.getFullYear()}년 ${
+                date.getMonth() + 1
+              }월 ${date.getDate()}일`}
             </div>
           </div>
         </div>
