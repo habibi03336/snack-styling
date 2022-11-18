@@ -78,6 +78,7 @@ export interface StyleAns {
     outer: string | null;
     bag: string | null;
   };
+  postDate: string;
   comments: string;
   codiTemplate: CodiTemplate;
 }
