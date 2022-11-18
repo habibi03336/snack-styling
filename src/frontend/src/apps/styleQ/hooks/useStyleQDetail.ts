@@ -24,6 +24,8 @@ const useStyleQDetail = (styleQId: number) => {
                     bottom: ans.codi.bottom ? ans.codi.bottom : null,
                     cap: ans.codi.cap ? ans.codi.cap : null,
                     footwear: ans.codi.footwear ? ans.codi.footwear : null,
+                    outer: ans.codi.outer ? ans.codi.outer : null,
+                    bag: ans.codi.bag ? ans.codi.bag : null,
                     id: ans.mid,
                   },
                 ],
