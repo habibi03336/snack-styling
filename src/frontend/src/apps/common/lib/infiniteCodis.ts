@@ -13,6 +13,8 @@ async function infiniteCodis(page: number) {
       top: null,
       bottom: null,
       footwear: null,
+      outer: null,
+      bag: null,
       cap: null,
     };
 
@@ -23,7 +25,9 @@ async function infiniteCodis(page: number) {
         key === "top" ||
         key === "bottom" ||
         key === "footwear" ||
-        key === "cap"
+        key === "cap" ||
+        key === "outer" ||
+        key === "bag"
       ) {
         if (codi[key] !== null) {
           codi_full_url[key] = codi[key];

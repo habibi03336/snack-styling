@@ -28,6 +28,8 @@ export interface Codi {
   bottom: string | null;
   cap: string | null;
   footwear: string | null;
+  outer: string | null;
+  bag: string | null;
 }
 
 export interface CodiTemplate {
@@ -73,6 +75,8 @@ export interface StyleAns {
     bottom: string | null;
     cap: string | null;
     footwear: string | null;
+    outer: string | null;
+    bag: string | null;
   };
   comments: string;
   codiTemplate: CodiTemplate;
