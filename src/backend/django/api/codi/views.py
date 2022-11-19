@@ -9,7 +9,6 @@ from api.codi.serializers import (CodiCreateSerializer, CodiDetailSerializer,
                                   CodiDuplicateSerializer, CodiSerializer,
                                   CodiUpdateSerializer,
                                   CodiUserCreateSerializer, CodiUserSerializer)
-from api.libs import isSelfRequest
 from api.permissions import UserAccessPermission
 from model.codimodel.models import Codi
 

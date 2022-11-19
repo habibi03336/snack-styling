@@ -79,7 +79,7 @@ def remove(
     return cutout
 
 
-def shapingToSquare(img: PILImage) -> PILImage:
+def shaping_to_square(img: PILImage) -> PILImage:
     bgcolor = (0, 0, 0, 0)
     width, height = img.size
     if width == height:
@@ -93,7 +93,7 @@ def shapingToSquare(img: PILImage) -> PILImage:
     return result
 
 
-def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
+def remove_background(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
     if settings.DEBUG == True:
         return raw_img
     
@@ -102,7 +102,7 @@ def removeBackground(raw_img: InMemoryUploadedFile) -> InMemoryUploadedFile:
 
     start = time.time()
     pil_img = remove(pil_img)
-    pil_img = shapingToSquare(pil_img)
+    pil_img = shaping_to_square(pil_img)
     pil_img = pil_img.resize((1000,1000))
     end = time.time()
     print(f"Process Time: {end - start}s")

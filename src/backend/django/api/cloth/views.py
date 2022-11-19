@@ -53,8 +53,8 @@ class ClothViewSet(ModelViewSet):
     @action(detail=False, methods=['patch'], url_path="multi-update")
     def multiple_tag_update(self, request, *args, **kwargs):
         print("Cloth: Partial update RUN")
-        requestData = request.data["clothes"]
-        serializer = self.get_serializer(many=True, data=requestData)
+        cloth_data = request.data["clothes"]
+        serializer = self.get_serializer(many=True, data=cloth_data)
         serializer.is_valid(raise_exception=True)
         id_list = serializer.get_id_list()
         instance = self.get_queryset().filter(id__in=id_list)

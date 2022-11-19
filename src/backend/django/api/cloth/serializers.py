@@ -2,7 +2,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from api.cloth.libs import removeBackground
+from api.cloth.libs import remove_background
 from api.exceptions import AlreadyTerminated
 from model.clothmodel.models import Cloth
 
@@ -19,7 +19,7 @@ class ClothCreateSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
     def create(self, validated_data):
-        result = removeBackground(validated_data['image'])
+        result = remove_background(validated_data['image'])
         validated_data['image'] = result
         return super().create(validated_data)
 
