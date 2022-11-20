@@ -38,12 +38,12 @@ public class MailService {
             }
             mailRepository.save(new Mail(toAddress,number));
             String htmlStr = "<h3>안녕하세요! "+id+"님<br></h3>"+
-                    "커피스타일링 서비스에 가입해주셔서 감사합니다.<br>인증번호는 다음과 같습니다.<br></h3>"+
+                    "스낵스타일링 서비스에 가입해주셔서 감사합니다.<br>인증번호는 다음과 같습니다.<br></h3>"+
                     "<h1>"+number+"<h1>";
             messageHelper.setText(htmlStr, true);
             messageHelper.setTo(toAddress);
-            messageHelper.setSubject("[커피스타일링] 회원가입 인증 메일입니다.");
-            messageHelper.setFrom(email,"커피스타일링");
+            messageHelper.setSubject("[스낵스타일링] 회원가입 인증 메일입니다.");
+            messageHelper.setFrom(email,"스낵스타일링");
             mailSender.send(message);
         }catch(Exception e){
             throw new ServerException("메일 서버와 통신에 실패했습니다.");
