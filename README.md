@@ -2,5 +2,7 @@
 
 <p align="center">
     <img src="doc/snack.png">
-    <img src="doc/link.png">
+    <a href="https://www.snackstyling.com">
+        <img src="doc/link.png" width=300px>
+    </a>
 </p>
